@@ -6,7 +6,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
     let errorName = false
 
-    if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newRecipe.name) === true) {
+    if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newChar.nombre) === true) {
         errorName = true
     }
 
