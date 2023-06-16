@@ -28,7 +28,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             <div>
             <p> {`Aptidudes de nivel 1: `}</p>
             {personaje.apt1.map((a) => {           
-                return <p>{a}</p>
+                return <p key={a}>{a}</p>
             })}
             </div>
             <button onClick={subirNivel} disabled={personaje.nivel<5?false:true} >Subir de nivel</button>
