@@ -4,6 +4,12 @@ import { useRouter } from "next/router"
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
+    let errorName = false
+
+    if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newRecipe.name) === true) {
+        errorName = true
+    }
+
     function onSubmit(e) {
         e.preventDefault()
         router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
@@ -44,7 +50,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             <div style={{display: 'flex', flexDirection: 'row'}}>
             <form style={{width: 580, minWidth: 580}} onSubmit={(e)=> onSubmit(e)}>
                 <label style={{fontSize: 40}}>{(newChar.nombre===''? '': newChar.nombre + ': ' ) + (newChar.raza==='raza' || newChar.raza===''? '': newChar.raza + ' ' ) + (newChar.clase==='clase' || newChar.clase===''? '': newChar.clase ) || 'Personaje'}</label>
-                <input type="text" name='nombre' onChange={onInputChange} value={newChar.nombre} placeholder='Nombre...'></input>
+                <input type="text" name='nombre' onChange={onInputChange} value={newChar.nombre} placeholder='Nombre... (Hasta 18 letras o comilla simple)'></input>
                 <select name='raza' onChange={onInputChange} value={newChar.raza}>
                 <option key={'raza'} value={'raza'}>Elegir raza</option>
                 {razas.map((c) => {
@@ -57,7 +63,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                     return <option key={c.clase} value={c.clase}>{c.clase}</option>
                 })}
                 </select>
-                <button type="submit" disabled={newChar.nombre !=='' && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
+                <button type="submit" disabled={errorName === true && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
             </form>            
             <div style={{border: 'solid white 2px', padding: '10px', marginLeft: '20px', width: '700px'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
