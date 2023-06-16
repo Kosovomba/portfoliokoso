@@ -11,7 +11,7 @@ export default function CharacterBuild() {
 
   function onClick(e) {
     e.preventDefault()
-    router.push('http://localhost:3000/')
+    router.push('https://portfoliokoso.vercel.app/')
   }  
     return (
     <div className={styles.main}>
