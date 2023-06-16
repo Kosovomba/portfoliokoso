@@ -63,7 +63,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                     return <option key={c.clase} value={c.clase}>{c.clase}</option>
                 })}
                 </select>
-                <button type="submit" disabled={errorName === true && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
+                <button type="submit" disabled={errorName === true || newChar.raza !=='' || newChar.clase !== ''?true:false}>Crear personaje</button>
             </form>            
             <div style={{border: 'solid white 2px', padding: '10px', marginLeft: '20px', width: '700px'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
