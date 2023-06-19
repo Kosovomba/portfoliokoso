@@ -9,14 +9,16 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newChar.nombre) === true) {
         errorName = true
     }
-
+   
     function onSubmit(e) {
         e.preventDefault()
         router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
+        // router.push(`https://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
     }
     function onInputChange(e) {
         e.preventDefault()        
-        setNewChar({...newChar, [e.target.name]: e.target.value})       
+        setNewChar({...newChar, [e.target.name]: (e.target.value === 'raza' || e.target.value === 'clase')?'': e.target.value})
+        console.log(newChar)
         if (e.target.name === 'raza') {
             if (e.target.value === 'raza') {
                 setCharacter({...character, raza: {raza: '', PV: 0, VM: 0, RD: 0, apt1: '', apt3: ''}})
@@ -63,7 +65,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                     return <option key={c.clase} value={c.clase}>{c.clase}</option>
                 })}
                 </select>
-                <button type="submit" disabled={errorName === true || newChar.raza !=='' || newChar.clase !== ''?true:false}>Crear personaje</button>
+                <button type="submit" disabled={errorName === false && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
             </form>            
             <div style={{border: 'solid white 2px', padding: '10px', marginLeft: '20px', width: '700px'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
