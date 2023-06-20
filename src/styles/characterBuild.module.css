@@ -1,3 +1,19 @@
 .main {
     background-color: rgb(221, 197, 178);
 }
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    border: 3px inset #ECDDD2;
+    min-width: fit-content;
+    padding: 4px;
+    margin: 4px
+}
+
+.description {
+    margin: 0px;
+    font-weight: 800;
+    font-size: 30
+}

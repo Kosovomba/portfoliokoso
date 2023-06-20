@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import ConjuroInicial from "./conjuroInicial"
 import AptInicialExp from "./aptInicialExp"
+import styles from "@src/styles/characterBuild.module.css"
+import {AiFillHeart} from "react-icons/ai"
+import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
 // import Characters from "./characters"
 
 export default function Character ({raza, clase, nombre, razaStats, claseStats}) {
@@ -22,16 +25,33 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
 
     return (
         <div>
-            <p>{`${nombre}: ${raza} ${clase}`}</p>
-            <p> {`Nivel: ${personaje.nivel}`}</p>
-            <p> {`PV: ${personaje.PV}`}</p>
-            <p> {`VM: ${personaje.VM}`}</p>
-            <p> {`RD: ${personaje.RD}`}</p>
-            <div>
-            <p> {`Aptidudes de nivel 1: `}</p>
-            <p> {personaje.apt1[0]}</p>
-            {clase !== 'Explorador'? <p> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}
+            <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px'}}>{`${nombre}: ${raza} ${clase}`}</p>
+            <div style={{display:'flex', flexDirection:'row', justifyContent: 'center'}}>
+            <div style={{margin: '10px'}}>
+            <div className={styles.card}>
+                <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
+            </div>
+            <div className={styles.card}>            
+                <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`PV: ${personaje.PV}`}</p>
+            </div>
+            <div className={styles.card}>            
+                <GiWalkingBoot style={{color:'#837367', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`VM: ${personaje.VM}`}</p>
+            </div>
+            <div className={styles.card}>            
+                <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`RD: ${personaje.RD}`}</p>
+            </div>
+            </div>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center'}}/>
+            <p className={styles.description}> {`Aptidudes de nivel 1: `}</p>
+            <p style={{maxWidth: '400px'}}> {personaje.apt1[0]}</p>
+            {clase !== 'Explorador'? <p style={{maxWidth: '400px'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
+            </div>
             </div>
             <button onClick={subirNivel} disabled={personaje.nivel<5?false:true} >Subir de nivel</button>
         </div>
