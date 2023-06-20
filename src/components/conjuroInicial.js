@@ -19,7 +19,7 @@ export default function conjuroInicial({personaje, setPersonaje, raza, clase, co
     return (
         <div>
             <div style={{border:'dotted brown 2px', padding: '5px'}}>
-            <p style={{fontWeight: 600}}>{clase === 'Mago'? 'Conjuros iniciales aprendidos:': 'Conjuro inicial aprendido'}</p>            
+            <p style={{fontWeight: 600}}>{clase === 'Mago'? 'Conjuros iniciales aprendidos:': 'Conjuro inicial aprendido:'}</p>            
             {personaje.apt1[2].length > 0? personaje.apt1[2].map((c) => <p style={{maxWidth: '400px'}} key={c}>{c}</p>): <p></p>}
             </div>
             {personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en un conjuro para elegirlo:</p>
