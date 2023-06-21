@@ -14,7 +14,7 @@ export default function images() {
 	        Clérigo: 'https://i.etsystatic.com/25103718/r/il/c1f1fc/4187826594/il_fullxfull.4187826594_lpjt.jpg',
 	        Druida: 'https://www.dndbeyond.com/avatars/thumbnails/7/426/1000/1000/636284770809045580.jpeg',
 	        Explorador: 'https://i.pinimg.com/originals/c6/5d/f1/c65df10694477b8b2a84e275d9f35626.jpg',
-	        Pícaro: 'https://medievalbritain.com/wp-content/uploads/2020/01/Medieval-Clothing_Hoods2.jpg',
+	        Pícaro: 'https://medievalbritain.com/wp-content/uploads/2020/01/medieval-clothes_hoods_where-to-get_02-300x300.jpg',
 	        Monje: 'https://img.freepik.com/free-vector/realistic-pairs-red-boxing-gloves_88138-275.jpg?w=360',
 	        Bardo: 'https://folclorecanario.com/wp-content/uploads/2022/03/Folclorecanario-laud.jpg',
             Caballero: 'https://64.media.tumblr.com/19cda7a7d3a0cbe523a64b1281a20b80/tumblr_nzkj20L0Tq1tho85xo1_1280.jpg',
