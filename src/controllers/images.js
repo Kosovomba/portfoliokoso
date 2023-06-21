@@ -18,7 +18,7 @@ export default function images() {
 	        Monje: 'https://img.freepik.com/free-vector/realistic-pairs-red-boxing-gloves_88138-275.jpg?w=360',
 	        Bardo: 'https://folclorecanario.com/wp-content/uploads/2022/03/Folclorecanario-laud.jpg',
             Caballero: 'https://64.media.tumblr.com/19cda7a7d3a0cbe523a64b1281a20b80/tumblr_nzkj20L0Tq1tho85xo1_1280.jpg',
-            Alquimista: 'https://www.dndbeyond.com/avatars/24423/642/637829132229702343.jpeg',
+            Alquimista: 'https://static.wikia.nocookie.net/fferpg/images/c/cd/Hi-Potion_Reforged.png/revision/latest/scale-to-width-down/256?cb=20200330162723',
             Hechicero: 'https://www.gamersdecide.com/sites/default/files/authors/u153316/dnd-1-cloak-displ.jpeg',
 	        Oráculo: 'https://cdna.artstation.com/p/assets/images/images/038/484/156/large/kayla-carrera-soraka-final-1.jpg?1623222165',
 	        Ninja: 'https://files.cults3d.com/uploaders/17882793/illustration-file/eaa910b0-c576-42ad-8207-8dbf0bedfb28/Etoile_Ninja_03_2021.png',
