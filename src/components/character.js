@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import ConjuroInicial from "./conjuroInicial"
 import AptInicialExp from "./aptInicialExp"
+import images from "../controllers/images"
 import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart} from "react-icons/ai"
 import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
@@ -25,8 +26,11 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
 
     return (
         <div>
-            <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px'}}>{`${nombre}: ${raza} ${clase}`}</p>
-            <div style={{display:'flex', flexDirection:'row', justifyContent: 'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+            <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
+            </div>
+            <div style={{display:'flex', flexDirection:'row'}}>
+            <img style={{maxWidth: 400, maxHeight: 400, marginLeft: '10px', border: 'ridge #754421 7px'}} width="400" src={images()[`${raza}${clase}`]} alt='imagen'/>
             <div style={{margin: '10px'}}>
             <div className={styles.card}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
