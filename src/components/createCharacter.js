@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
+import images from "../controllers/images"
 
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
@@ -80,12 +81,15 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             </div>
             </div>
             <>
-            <div style={{border: 'solid white 2px', padding: '10px'}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: 900}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de raza: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.raza.PV}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.raza.VM}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 1: ' + character.raza.apt1}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 3: ' + character.raza.apt3}</p>
+            </div >            
+                <img style={{maxWidth: 400, maxHeight: 400}} width="400" height="300" src={images()[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>
             </div>
             <div style={{border: 'solid white 2px', padding: '10px'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de clase: </p>
@@ -105,7 +109,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 {character.clase.cdp.map(functionMap)}
                 </div>
             </div>           
-            </>
+            </>            
         </div>
     )
 }
