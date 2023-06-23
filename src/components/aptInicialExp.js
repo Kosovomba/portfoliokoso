@@ -7,13 +7,18 @@ export default function AptInicialExp({personaje, setPersonaje}) {
         aptAux[2] = [e.target.value]
         setPersonaje({...personaje, apt1: aptAux})
     }
+    function handleEdit(e) {
+        e.preventDefault()
+        aptAux[2] = []        
+        setPersonaje({...personaje, apt1: aptAux})
+    }
     return (
         <div>
             {personaje.apt1[2].length === 0? <div style={{display: 'flex', flexDirection: 'column'}}>
                 <p>Elige una aptitud inicial</p>
                 <button style={{maxWidth: '400px'}} value={apti1} onClick={onClick}>{apti1}</button>
                 <button style={{maxWidth: '400px'}} value={apti2} onClick={onClick}>{apti2}</button>
-                </div>: <p style={{maxWidth: '400px'}}>{personaje.apt1[2][0]}</p>}
+                </div>: <div><p style={{maxWidth: '400px'}}>{personaje.apt1[2][0]}</p> <button onClick={handleEdit} value={'edit'}>Editar</button></div>}
         </div>
     )
 }

@@ -15,15 +15,20 @@ export default function conjuroInicial({personaje, setPersonaje, raza, clase, co
         console.log(apt1Conjuros)
         setPersonaje({...personaje, apt1: apt1Conjuros})
     }
+    function handleEdit(e) {
+        e.preventDefault()
+        apt1Conjuros[2] = []        
+        setPersonaje({...personaje, apt1: apt1Conjuros})
+    }
 
     return (
         <div>
             <div style={{border:'dotted brown 2px', padding: '5px'}}>
             <p style={{fontWeight: 600}}>{clase === 'Mago'? 'Conjuros iniciales aprendidos:': 'Conjuro inicial aprendido:'}</p>            
-            {personaje.apt1[2].length > 0? personaje.apt1[2].map((c) => <p style={{maxWidth: '400px'}} key={c}>{c}</p>): <p></p>}
+            {personaje.apt1[2].length > 0? <div>{personaje.apt1[2].map((c) => <p style={{maxWidth: '400px'}} key={c}>{c}</p>)} <button onClick={handleEdit} value={'edit'}>Editar</button></div>: <p></p>}
             </div>
             {personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en un conjuro para elegirlo:</p>
-            {conjurosInicialesFiltrados.map((c)=> <button style={{maxWidth: '400px'}} onClick={handleButton} key={c.aptitud} value={c.aptitud}>{c.aptitud}</button>)}</div>:null}
+            {conjurosInicialesFiltrados.map((c)=> <button style={{maxWidth: '400px'}} onClick={handleButton} key={c.aptitud} value={c.aptitud}>{c.aptitud}</button>)}</div>:null}            
             {console.log(personaje.apt1[2])}
         </div>
     )

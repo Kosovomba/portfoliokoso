@@ -49,12 +49,14 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
                 <p className={styles.description}> {`RD: ${personaje.RD}`}</p>
             </div>
             </div>
-            <div className={styles.card} style={{border: '5px inset #ECDDD2'}}>
-            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center'}}/>
+            <div>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptidudes de nivel 1: `}</p>
             <p style={{maxWidth: '400px'}}> {personaje.apt1[0]}</p>
             {clase !== 'Explorador'? <p style={{maxWidth: '400px'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
+            </div>
             </div>
             </div>
             <button onClick={subirNivel} disabled={personaje.nivel<5?false:true} >Subir de nivel</button>
