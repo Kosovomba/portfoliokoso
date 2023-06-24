@@ -30,7 +30,10 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
             </div>
             <div style={{display:'flex', flexDirection:'row', marginBottom: '10px'}}>
+            <div style={{display:'flex', flexDirection:'column'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginLeft: '10px', border: 'ridge #754421 7px'}} width="400" src={images()[`${raza}${clase}`]} alt='imagen'/>
+            <button style={{maxWidth:'fit-content', margin: '5px', position:'relative', left:'320px'}} onClick={subirNivel} disabled={personaje.nivel<5?false:true} >Subir de nivel</button>
+            </div>
             <div style={{margin: '10px'}}>
             <div className={styles.card}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
@@ -58,8 +61,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
             </div>
             </div>
-            </div>
-            <button onClick={subirNivel} disabled={personaje.nivel<5?false:true} >Subir de nivel</button>
+            </div>            
         </div>
     )    
 }

@@ -16,7 +16,7 @@ export default function CharacterBuild() {
   }  
     return (
     <div className={styles.main}>
-    <button onClick={onClick}>Volver</button>
+    <button onClick={onClick} style={{margin:'10px'}}>Volver</button>
     {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats}/>:null}
     </div>
     )    
