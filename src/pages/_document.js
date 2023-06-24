@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en" data-theme="dark">
       <Head />
 
-      <body>
+      <body style={{margin: '0px'}}>
         <Main />
         <NextScript />
       </body>

@@ -29,7 +29,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             <div style={{display: 'flex', justifyContent: 'center'}}>
             <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
             </div>
-            <div style={{display:'flex', flexDirection:'row'}}>
+            <div style={{display:'flex', flexDirection:'row', marginBottom: '10px'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginLeft: '10px', border: 'ridge #754421 7px'}} width="400" src={images()[`${raza}${clase}`]} alt='imagen'/>
             <div style={{margin: '10px'}}>
             <div className={styles.card}>
