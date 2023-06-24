@@ -5,10 +5,16 @@ import images from "../controllers/images"
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
+    const [showButtons, setShowButtons] = useState({showApt2: false, showCDP: false, showCI: false})
     let errorName = false
 
     if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newChar.nombre) === true) {
         errorName = true
+    }
+
+    function buttonHandler(e) {
+        e.preventDefault()
+        setShowButtons({...showButtons, [e.target.value]: !showButtons[e.target.value]})
     }
    
     function onSubmit(e) {
@@ -44,7 +50,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
         return (
             <div style={{margin: 2, border: 'solid gray 1px'}}>
                 <p style={{fontSize: 15, fontFamily: 'cursive', margin: 0}} key={a.requisitos || 'Ninguno'} value={a.requisitos || 'Ninguno'}>Requisitos: {a.requisitos || 'Ninguno'}.</p>
-                <p style={{fontSize: 18, margin: 1}} key={a.aptitud} value={a.aptitud}>{a.aptitud}</p>
+                <p style={{fontSize: 18, margin: 1}}><span key={a.nombre} value={a.nombre}>{a.nombre}</span><span key={a.aptitud} value={a.aptitud}>{a.aptitud}</span></p>
             </div>
         )
     }
@@ -97,16 +103,18 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.clase.VM}</p>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
                 <p style={{margin: 2, marginBottom: 10}}>{'Aptitud de nivel 1: ' + character.clase.apt1}</p>  
-                {character.clase['conjuros iniciales'] && character.clase['conjuros iniciales'].length>0?<p style={{margin: 2, fontSize: 18}}>Lista de conjuros iniciales:</p>:null}              
-                {character.clase['conjuros iniciales']?.map(functionMap)}
+                {character.clase['conjuros iniciales'] && character.clase['conjuros iniciales'].length>0?<div style={{display:'flex', flexDirection:'row' , margin: 2, fontSize: 18}}>
+                    <span style={{maxWidth:'fit-content'}}>{'Lista de conjuros iniciales: '}</span><button onClick={buttonHandler} value={'showCI'} style={{maxWidth:'fit-content', position:'relative', left:'940px', padding:'4px'}}>{showButtons.showCI===true?'Esconder':'Mostrar'}</button>
+                                                                                                         </div>:null}                              
+                {showButtons.showCI===true?character.clase['conjuros iniciales']?.map(functionMap):null}
                 </div>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
-                <p style={{margin: 2}}>{'Aptitudes de nivel 2 o mayor: '}</p>
-                {character.clase['apt2+'].map(functionMap)}
+                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Aptitudes de nivel 2 o mayor: '}</span><button onClick={buttonHandler} value={'showApt2'} style={{maxWidth:'fit-content', position:'relative', left:'890px', padding:'4px'}}>{showButtons.showApt2===true?'Esconder':'Mostrar'}</button></div>
+                {showButtons.showApt2===true?character.clase['apt2+'].map(functionMap):null}
                 </div>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
-                <p style={{margin: 2}}>{'Clases de prestigio: '}</p>
-                {character.clase.cdp.map(functionMap)}
+                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Clases de prestigio: '}</span><button onClick={buttonHandler} value={'showCDP'} style={{maxWidth:'fit-content', position:'relative', left:'980px', padding:'4px'}}>{showButtons.showCDP===true?'Esconder':'Mostrar'}</button></div>                
+                {showButtons.showCDP===true?character.clase.cdp.map(functionMap):null}
                 </div>
             </div>           
             </>            
