@@ -7,12 +7,9 @@ export default function conjuroInicial({personaje, setPersonaje, raza, clase, co
     let arrConjuros = apt1Conjuros[2]
     function handleButton(e) {
         e.preventDefault()
-        conjurosInicialesFiltrados = conjurosInicialesFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)
-        console.log(conjurosInicialesFiltrados)
+        conjurosInicialesFiltrados = conjurosInicialesFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)        
         arrConjuros.push(e.target.value)
-        console.log(arrConjuros)
         apt1Conjuros[2] = arrConjuros
-        console.log(apt1Conjuros)
         setPersonaje({...personaje, apt1: apt1Conjuros})
     }
     function handleEdit(e) {

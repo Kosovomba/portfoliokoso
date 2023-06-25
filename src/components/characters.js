@@ -2,12 +2,12 @@ export default function Characters(req, res) {
     // res.status(200).json(
         return(
         { razas: [
-            {raza: "Humano", PV: 8, VM: 2, RD: 0, apt1: "Si tira un 1, cuenta como 2.", apt3: "el 1 y 2 cuentan como 3."},
-            {raza: "Enano", PV: 10, VM: 0, RD: 1, apt1: "Gana RD +1.", apt3: "ignora venenos y cualquier efecto que reste VM."},
+            {raza: "Humano", PV: 8, VM: 2, RD: 0, apt1: "Si tira un 1, cuenta como 2.", apt3: "El 1 y 2 cuentan como 3 (reemplaza al beneficio de nivel 1)."},
+            {raza: "Enano", PV: 10, VM: 0, RD: 1, apt1: "Gana RD +1.", apt3: "Ignora venenos y cualquier efecto que reste VM."},
             {raza: "Elfo", PV: 6, VM: 3, RD: 0, apt1: "Gana 1d6 extra de acción.", apt3: "1xturno reroll de movimiento y elige."},
             {raza: "Orco", PV: 12, VM: 2, RD: 0, apt1: "+1 de daño en ataques con armas c/c, y +1 extra con 6 en el dado.", apt3: "+1 de daño con 5 en el dado y +2 con 6 (en lugar del +1)."},
-            {raza: "Gnomo", PV: 6, VM: 1, RD: 0, apt1: "1/6 chance de evadir cualquier efecto (daño o no); +1 PE x piso.", apt3: "2/6 de chance, +1 PE x piso (total de +2)."},
-            {raza: "Mediano", PV: 6, VM: 1, RD: 0, apt1: "1xturno reroll de cualquier d6; +1 en tiradas de encontrar cosas.", apt3: "cuando hace algún reroll, elige con cuál tirada quedarse; +1 en tiradas de abrir cosas."}
+            {raza: "Gnomo", PV: 6, VM: 1, RD: 0, apt1: "1/6 chance de evadir cualquier efecto (daño o no); +1 PE x piso.", apt3: "2/6 de chance (reemplaza el 1/6 de nivel 1), +1 PE x piso (total de +2)."},
+            {raza: "Mediano", PV: 6, VM: 1, RD: 0, apt1: "1xturno reroll de cualquier d6; +1 en tiradas de encontrar cosas.", apt3: "Cuando hace algún reroll, elige con cuál tirada quedarse; +1 en tiradas de abrir cosas."}
           ],
           clases: [
             {clase: "Guerrero", PV: 10, VM: 1, RD: 0, apt1: "Ataque en carga: 1xturno, si le sobró casillas de movimiento luego de moverse al menos dos casillas, lo transforma en un ataque que hace daño igual a la cantidad que le sobró (gastando ese movimiento restante); puede sumar el bono de arma y aptitudes, pero no puede activar efectos que dependan de efectuar un ataque.",
