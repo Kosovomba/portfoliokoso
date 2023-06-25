@@ -1,6 +1,7 @@
 .main {
     background-color: #D8C7BB;
-    height: 100vh;
+    height: fit-content;
+    min-height: 100vh;
 }
 
 .card {

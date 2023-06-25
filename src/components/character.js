@@ -21,15 +21,47 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
         claseStatsFiltrados: claseStats['apt2+']
     })    
     let apt2 = personaje['apt2+']
+    function isDisabled(req) {
+        if(req.length>0) {
+            if (personaje.clase === 'Explorador') {                
+                if (personaje.nivel <3) return true
+                let value = true
+                let reqAux = req.slice(34, -1)
+                personaje['apt2+'].forEach((p) => {
+                    if(p.nombre === 'Luchador versátil: ') value=false
+                })
+                if (personaje.apt1[2].length>0 && reqAux === personaje.apt1[2][0].slice(0,reqAux.length - personaje.apt1[2][0].length)) {
+                    value=false
+                }
+                return value
+            }
+            else {
+            if (req.charAt(0) === 'A') {
+                let value = true                
+                if (personaje['apt2+'].length>0) {
+                    personaje['apt2+'].forEach((p) => {
+                    let reqAux = req.slice(9, -1) + ': '
+                    if(p.nombre === reqAux) {
+                        value=false
+                    }
+                })
+                }
+                return value
+            }
+            else {
+                let reqAux = req.slice(6)[0]
+                return personaje.nivel > reqAux -1?false:true
+            }
+            }
+        }
+        else return false
+    } 
 
     function handleAptitud2(e) {
         e.preventDefault()
-        let claseStatsFiltrados = personaje.claseStatsFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)
-        console.log(claseStatsFiltrados)
-        apt2.push(e.target.value)
-        console.log(apt2)
+        apt2.push(personaje.claseStatsFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` === e.target.value)[0])
+        let claseStatsFiltrados = personaje.claseStatsFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)        
         setPersonaje({...personaje, ['apt2+']: apt2, claseStatsFiltrados: claseStatsFiltrados})
-        console.log(claseStatsFiltrados)
     }
 
     function subirNivel(e) {
@@ -80,9 +112,9 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptitudes de nivel 2 o mayor: `}</p>
-            {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{maxWidth: '400px'}} key={a}>{a}</p>):null}
+            {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{maxWidth: '400px'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
             {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
-            {personaje.claseStatsFiltrados.map((a)=> <button style={{maxWidth: '400px'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
+            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{maxWidth: '400px'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}${a.nombre}${a.aptitud}`}</button>)}</div>:null}
             </div>
             </div>
             </div>            
