@@ -17,10 +17,13 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
         RD: razaStats.RD + claseStats.RD,
         apt1: [razaStats.apt1, claseStats.apt1, []],
         apt3: razaStats.apt3,
+        CDPClase: claseStats.cdp,
+        CDP: {},
         'apt2+': [],
         claseStatsFiltrados: claseStats['apt2+']
     })    
     let apt2 = personaje['apt2+']
+
     function isDisabled(req) {
         if(req.length>0) {
             if (personaje.clase === 'Explorador') {                
@@ -57,11 +60,68 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
         else return false
     } 
 
+    function isDisabledCDP(req) {
+        if(req.length>0) {
+            if (personaje.clase === 'Explorador') {
+                let value = true
+                if(req.length>30 && personaje['apt2+'.length>0]) {
+                    personaje['apt2+'].forEach((p) => {
+                        if(p.nombre === 'Presa/enemigo predilecto: ') value=false
+                    })
+                }
+                else {
+                    personaje['apt2+'].forEach((p) => {
+                        if(p.nombre === 'Luchador versátil: ') value=false
+                    })
+                    if (personaje.apt1[2].length>0 && personaje.apt1[2][0].length<60) {
+                        value=false
+                    }
+                }
+                return value
+            }
+            else {
+                if (req.charAt(0) === 'A') {
+                    let value = true                
+                    if (personaje['apt2+'].length>0) {
+                        personaje['apt2+'].forEach((p) => {
+                        let reqAux = req.slice(9, -1) + ': '
+                        if(p.nombre === reqAux) {
+                            value=false
+                        }
+                    })
+                    }
+                    return value
+                }
+                if (req.charAt(0) === 'N') {
+                    let reqAux = req.slice(6)[0]
+                    return personaje.nivel > reqAux -1?false:true
+                }
+                else {
+                    return (personaje.apt1[2].length>0 && personaje.apt1[2][0].length<70)? false:true                    
+                }
+            }
+        }
+        else return false
+    }
+
     function handleAptitud2(e) {
         e.preventDefault()
         apt2.push(personaje.claseStatsFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` === e.target.value)[0])
         let claseStatsFiltrados = personaje.claseStatsFiltrados.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)        
         setPersonaje({...personaje, ['apt2+']: apt2, claseStatsFiltrados: claseStatsFiltrados})
+    }
+
+    function handleCDP(e) {
+        e.preventDefault()
+        let CDP = personaje.CDPClase.filter((c)=> `${c.nombre}${c.aptitud}` === e.target.value)[0]
+        let CDPClase = personaje.CDPClase.filter((c)=> `${c.nombre}${c.aptitud}` !== e.target.value)
+        setPersonaje({...personaje, CDPClase: CDPClase, CDP: CDP})
+    }
+
+    function handleEdit(e) {
+        e.preventDefault()
+        let aux = [...personaje.CDPClase, personaje.CDP]
+        setPersonaje({...personaje, CDPClase: aux, CDP: {}})
     }
 
     function subirNivel(e) {
@@ -115,6 +175,14 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{maxWidth: '400px'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
             {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
             {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{maxWidth: '400px', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
+            </div>
+            </div>
+            <div>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
+            <p className={styles.description}> {`Clase de prestigio: `}</p>
+            {personaje.CDP.nombre?<div><p style={{maxWidth: '400px'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p><button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
+            {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{maxWidth: '400px', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
             </div>
             </div>            
