@@ -19,8 +19,8 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
    
     function onSubmit(e) {
         e.preventDefault()
-        // router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
-        router.push(`https://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
+        router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
+        // router.push(`https://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
     }
     function onInputChange(e) {
         e.preventDefault()        

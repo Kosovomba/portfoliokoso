@@ -62,12 +62,15 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
 
     function isDisabledCDP(req) {
         if(req.length>0) {
+            console.log(req, personaje['apt2+'], personaje.apt1[2])
             if (personaje.clase === 'Explorador') {
                 let value = true
-                if(req.length>30 && personaje['apt2+'.length>0]) {
+                if(req.length>30) {
+                    if (personaje['apt2+'].length>0) {
                     personaje['apt2+'].forEach((p) => {
-                        if(p.nombre === 'Presa/enemigo predilecto: ') value=false
+                        if(p.nombre === 'Presa/Enemigo predilecto: ') value=false
                     })
+                    }
                 }
                 else {
                     personaje['apt2+'].forEach((p) => {
