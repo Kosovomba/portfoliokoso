@@ -114,7 +114,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             <p className={styles.description}> {`Aptitudes de nivel 2 o mayor: `}</p>
             {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{maxWidth: '400px'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
             {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
-            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{maxWidth: '400px'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}${a.nombre}${a.aptitud}`}</button>)}</div>:null}
+            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{maxWidth: '400px', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
             </div>
             </div>
             </div>            
