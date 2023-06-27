@@ -1,4 +1,39 @@
-.main {
+/* #combatientes { */
+    /* background-image: url(https://i.gifer.com/origin/94/9453bb10dcc37daf75abcf3fea141fc8_w200.webp); */
+    /* background-color: transparent; */
+    /* background-size: 80%;
+    background-position: center center;
+    background-repeat: no-repeat; */
+/* } */
+.main1 {
+    position:relative;
+    background: #E3CAB3;
+    height: fit-content;
+    min-height: 100vh;
+    /* z-index: -1; */
+}
+.main2 {
+    background-color: #E8C9C9;
+    height: fit-content;
+    min-height: 100vh;
+    /* https://i.gifer.com/origin/94/9453bb10dcc37daf75abcf3fea141fc8_w200.webp */
+}
+.main3 {
+    background-color: #C6BABA;
+    height: fit-content;
+    min-height: 100vh;
+}
+.main4 {
+    background-color: #CFDFC1;
+    height: fit-content;
+    min-height: 100vh;
+}
+.main5 {
+    background-color: #F3EBC3;
+    height: fit-content;
+    min-height: 100vh;
+}
+.main6 {
     background-color: #D8C7BB;
     height: fit-content;
     min-height: 100vh;
@@ -8,7 +43,7 @@
     display: flex;
     flex-direction: column;
     justify-content:center;
-    border: 3px inset #ECDDD2;
+    border: 3px inset;
     min-width: fit-content;
     padding: 4px;
     margin: 4px

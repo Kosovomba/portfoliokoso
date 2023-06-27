@@ -15,7 +15,7 @@ export default function CharacterBuild() {
     // router.push('https://localhost:3000')
   }  
     return (
-    <div className={styles.main}>
+    <div className={raza==='Humano'?styles.main1:raza==='Elfo'?styles.main2:raza==='Enano'?styles.main3:raza==='Orco'?styles.main4:raza==='Mediano'?styles.main5:styles.main6}>    
     <button onClick={onClick} style={{margin:'10px'}}>Volver</button>
     {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats}/>:null}
     </div>
