@@ -95,7 +95,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 1: ' + character.raza.apt1}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 3: ' + character.raza.apt3}</p>
             </div>
-                <img style={{maxWidth: 400, maxHeight: 400, border: 'solid white 2px'}} width="400" src={images()[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>            
+                <img style={{maxWidth: 400, maxHeight: 400, border: 'solid white 2px'}} width="400" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>            
             </div>
             <div style={{border: 'solid white 2px', padding: '10px'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de clase: </p>

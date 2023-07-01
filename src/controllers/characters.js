@@ -1,7 +1,6 @@
-export default function Characters(req, res) {
-    // res.status(200).json(
-        return(
-        { razas: [
+let characters = {
+    // res.status(200).json(        
+         razas: [
             {raza: "Humano", PV: 8, VM: 2, RD: 0, apt1: "Si tira un 1, cuenta como 2.", apt3: "El 1 y 2 cuentan como 3 (reemplaza al beneficio de nivel 1)."},
             {raza: "Enano", PV: 10, VM: 0, RD: 1, apt1: "Gana RD +1.", apt3: "Ignora venenos y cualquier efecto que reste VM."},
             {raza: "Elfo", PV: 6, VM: 3, RD: 0, apt1: "Gana 1d6 extra de acción.", apt3: "1xturno reroll de movimiento y elige."},
@@ -195,6 +194,7 @@ export default function Characters(req, res) {
                       {requisitos: '', nombre: 'Ninja ocre: ', aptitud: "1xturno, usa 1d6 de acción para hacer daño de fuego en una cantidad de casillas consecutivas = igual a nivelx2, a partir de una adyacente; no puede repetirse ninguna casilla. Este daño no se reduce con RD de armadura. Se considera un ataque con arma, por lo que suma daño de arma equipada, pero debe comprar un arma especial (arma especial +1 al daño = 1PP)."}]
             }
           ]
-        }
-    )
+        
+    
 }
+export default characters

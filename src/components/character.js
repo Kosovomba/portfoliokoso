@@ -139,7 +139,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
             </div>
             <div style={{display:'flex', flexFlow:'wrap', marginBottom: '10px'}}>
             <div style={{display:'flex', flexDirection:'column'}}>
-            <img style={{maxWidth: 400, maxHeight: 400, marginLeft: '10px', border: 'ridge #754421 7px'}} width="400" src={images()[`${raza}${clase}`]} alt='imagen'/>
+            <img style={{maxWidth: 400, maxHeight: 400, marginLeft: '10px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <button style={{maxWidth:'fit-content', margin: '5px', position:'relative', left:'320px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
             </div>
             <div style={{margin: '10px'}}>

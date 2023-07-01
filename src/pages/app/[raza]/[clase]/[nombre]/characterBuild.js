@@ -1,13 +1,13 @@
 import Character from "@src/components/character"
 import { useRouter } from "next/router"
 import styles from "@src/styles/characterBuild.module.css"
-import Characters from "../../../../../components/characters"
+import characters from "../../../../../controllers/characters"
 
 export default function CharacterBuild() {
   const router = useRouter()
   const {raza, clase, nombre} = router.query
-  const razaStats = Characters().razas.filter((r) => r.raza === raza)[0]
-  const claseStats = Characters().clases.filter((c) => c.clase === clase)[0]
+  const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
+  const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
 
   function onClick(e) {
     e.preventDefault()

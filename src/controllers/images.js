@@ -1,6 +1,6 @@
-export default function images() {
-    return (
-        {
+let images = {
+    
+        
 			'': 'https://i1.sndcdn.com/avatars-XzN3e7SttTRoyI2N-XQRvUQ-t500x500.jpg',
             Humano: 'https://static.vecteezy.com/system/resources/thumbnails/004/607/791/small/man-face-emotive-icon-smiling-male-character-in-blue-shirt-flat-illustration-isolated-on-white-happy-human-psychological-portrait-positive-emotions-user-avatar-for-app-web-design-vector.jpg',
             Orco: 'https://cdn-icons-png.flaticon.com/512/1615/1615645.png',
@@ -123,6 +123,7 @@ export default function images() {
             GnomoHechicero: 'https://i.pinimg.com/originals/96/df/93/96df93d1e2547efa87cfb629001c4697.jpg',
 	        'GnomoOráculo': 'https://i.pinimg.com/originals/55/5b/33/555b33e8368460f1040df3c07eb5b714.png',
 	        GnomoNinja: 'https://i.pinimg.com/originals/62/4f/70/624f701a669d8ddf78b1d7a9eba43e57.png',         
-        }
-    )
+        
+    
 }
+export default images

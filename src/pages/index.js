@@ -2,15 +2,15 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '../styles/Home.module.css'
-import characters from '../components/characters'
+import characters from '../controllers/characters'
 import CreateCharacter from '@src/components/createCharacter'
 import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const razas = characters().razas
-  const clases = characters().clases
+  const razas = characters.razas
+  const clases = characters.clases
   const [character, setCharacter] = useState({raza: {raza: '', PV: 0, VM: 0, RD: 0, apt1: '', apt3: ''},
                                               clase: {clase: '', PV: 0, VM: 0, RD: 0, apt1: '', 'apt2+': [], 'conjuros iniciales': [], cdp: []}})
   return (
