@@ -13,39 +13,39 @@
     background: #E3CAB3;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
     /* z-index: -1; */
 }
 .main2 {
     background-color: #E8C9C9;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
     /* https://i.gifer.com/origin/94/9453bb10dcc37daf75abcf3fea141fc8_w200.webp */
 }
 .main3 {
     background-color: #C6BABA;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
 }
 .main4 {
     background-color: #CFDFC1;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
 }
 .main5 {
     background-color: #F3EBC3;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
 }
 .main6 {
     background-color: #D8C7BB;
     height: fit-content;
     min-height: 100vh;
-    min-width: 100vh;
+    min-width: fit-content;
 }
 
 .card {
