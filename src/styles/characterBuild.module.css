@@ -5,7 +5,10 @@
     background-position: center center;
     background-repeat: no-repeat; */
 /* } */
-
+.main0 {
+    background: #E3CAB3;
+    height: fit-content;
+}
 .main1 {
     background: #E3CAB3;
     height: fit-content;

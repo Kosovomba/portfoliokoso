@@ -9,8 +9,9 @@ export default function CharacterBuild() {
   const {raza, clase, nombre} = router.query
   const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
   const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
-  let mainX = raza==='Humano'?'main1':raza==='Elfo'?'main2':raza==='Enano'?'main3':raza==='Orco'?'main4':raza==='Mediano'?'main5':'main6'
+  let mainX = raza==='Humano'?'main1':raza==='Elfo'?'main2':raza==='Enano'?'main3':raza==='Orco'?'main4':raza==='Mediano'?'main5':raza==='Gnomo'?'main6':'main0'
   let gifUrls = {
+    main0: '',
     main1: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGUxaXQzbzg1d2dtbWZ6c3Mzb211YnN1dWU2b3Rlc2p0aGpoZHFjeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KHQtiY0hcPlPT3F3Zp/giphy.gif',
     main2: 'https://i.gifer.com/origin/94/9453bb10dcc37daf75abcf3fea141fc8_w200.webp',
     main3: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWt4czgwZTd6MWt3OTAyazQ4c3M3cHQ0cGQ4ejN6NXh3aHIyb3B0YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Wmp1EOzVybWd13s5DB/giphy.gif',
@@ -23,7 +24,7 @@ export default function CharacterBuild() {
   function onClick(e) {
     e.preventDefault()
     router.push('https://portfoliokoso.vercel.app/')
-    // router.push('https://localhost:3000')    
+    // router.push('https://localhost:3000')
   }  
 
   setTimeout(()=> {
@@ -33,7 +34,7 @@ export default function CharacterBuild() {
     return (
     <div className={styles[mainX]}>
     <button onClick={onClick} style={{margin:'10px'}}>Volver</button>
-    {disp==='show'?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
+    {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
     {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats}/>:null}
     </div>
     )    
