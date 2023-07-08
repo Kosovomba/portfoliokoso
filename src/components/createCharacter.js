@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
 import images from "../controllers/images"
+import Image from "next/image"
 
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
@@ -55,11 +56,11 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
         )
     }
     return (
-        <div style={{width: '1300px'}}>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-            <form style={{width: 580, minWidth: 580}} onSubmit={(e)=> onSubmit(e)}>
+        <div style={{width: '100%', display: 'flex', flexFlow: 'wrap'}}>
+            <div style={{display: 'flex', flexFlow: 'wrap'}}>
+            <form style={{width: '400px', maxHeight:'fit-content', padding: '7px'}} onSubmit={(e)=> onSubmit(e)}>
                 <label style={{fontSize: 40}}>{(newChar.nombre===''? '': newChar.nombre + ': ' ) + (newChar.raza==='raza' || newChar.raza===''? '': newChar.raza + ' ' ) + (newChar.clase==='clase' || newChar.clase===''? '': newChar.clase ) || 'Personaje'}</label>
-                <input type="text" name='nombre' onChange={onInputChange} value={newChar.nombre} placeholder='Nombre... (Hasta 18 letras o comilla simple)'></input>
+                <input type="text" name='nombre' onChange={onInputChange} value={newChar.nombre} placeholder='Nombre... (Hasta 18 letras o comilla)'></input>
                 <select name='raza' onChange={onInputChange} value={newChar.raza}>
                 <option key={'raza'} value={'raza'}>Elegir raza</option>
                 {razas.map((c) => {
@@ -74,7 +75,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 </select>
                 <button type="submit" disabled={errorName === false && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
             </form>            
-            <div style={{border: 'solid white 2px', padding: '10px', marginLeft: '20px', width: '700px'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: '410px', maxWidth: '99%'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Puntos de vida: ${character.clase.PV + character.raza.PV}`}</p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Velocidad de movimiento: ${character.clase.VM + character.raza.VM}`}</p>
@@ -87,33 +88,33 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             </div>
             </div>
             <>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div style={{border: 'solid white 2px', padding: '10px', width: 900}}>
+            <div style={{display: 'flex', flexFlow: 'wrap'}}>
+            <Image style={{alignSelf: 'center', maxWidth: '99%', maxHeight: 410, border: 'solid white 2px'}} height='410' width="410" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>                
+            <div style={{border: 'solid white 2px', padding: '10px', width: 410, maxWidth: '99%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de raza: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.raza.PV}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.raza.VM}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 1: ' + character.raza.apt1}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 3: ' + character.raza.apt3}</p>
             </div>
-                <img style={{maxWidth: 400, maxHeight: 400, border: 'solid white 2px'}} width="400" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>            
             </div>
-            <div style={{border: 'solid white 2px', padding: '10px'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: 'fit-content', maxWidth: '98%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de clase: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.clase.PV}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.clase.VM}</p>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
                 <p style={{margin: 2, marginBottom: 10}}>{'Aptitud de nivel 1: ' + character.clase.apt1}</p>  
                 {character.clase['conjuros iniciales'] && character.clase['conjuros iniciales'].length>0?<div style={{display:'flex', flexDirection:'row' , margin: 2, fontSize: 18}}>
-                    <span style={{maxWidth:'fit-content'}}>{'Lista de conjuros iniciales: '}</span><button onClick={buttonHandler} value={'showCI'} style={{maxWidth:'fit-content', position:'relative', left:'940px', padding:'4px'}}>{showButtons.showCI===true?'Esconder':'Mostrar'}</button>
+                    <span style={{maxWidth:'fit-content'}}>{'Lista de conjuros iniciales: '}</span><button onClick={buttonHandler} value={'showCI'} style={{maxWidth:'fit-content', position:'relative', left:'10px', padding:'4px'}}>{showButtons.showCI===true?'Esconder':'Mostrar'}</button>
                                                                                                          </div>:null}                              
                 {showButtons.showCI===true?character.clase['conjuros iniciales']?.map(functionMap):null}
                 </div>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
-                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Aptitudes de nivel 2 o mayor: '}</span><button onClick={buttonHandler} value={'showApt2'} style={{maxWidth:'fit-content', position:'relative', left:'890px', padding:'4px'}}>{showButtons.showApt2===true?'Esconder':'Mostrar'}</button></div>
+                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Aptitudes de nivel 2 o mayor: '}</span><button onClick={buttonHandler} value={'showApt2'} style={{maxWidth:'fit-content', position:'relative', left:'10px', padding:'4px'}}>{showButtons.showApt2===true?'Esconder':'Mostrar'}</button></div>
                 {showButtons.showApt2===true?character.clase['apt2+'].map(functionMap):null}
                 </div>
                 <div style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
-                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Clases de prestigio: '}</span><button onClick={buttonHandler} value={'showCDP'} style={{maxWidth:'fit-content', position:'relative', left:'980px', padding:'4px'}}>{showButtons.showCDP===true?'Esconder':'Mostrar'}</button></div>                
+                <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Clases de prestigio: '}</span><button onClick={buttonHandler} value={'showCDP'} style={{maxWidth:'fit-content', position:'relative', left:'10px', padding:'4px'}}>{showButtons.showCDP===true?'Esconder':'Mostrar'}</button></div>                
                 {showButtons.showCDP===true?character.clase.cdp.map(functionMap):null}
                 </div>
             </div>           
