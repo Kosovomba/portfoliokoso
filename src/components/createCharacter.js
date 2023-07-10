@@ -63,7 +63,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
         )
     }
     return (        
-        <div style={{width: '100%', display: 'flex', flexFlow: 'wrap', marginTop:'8vh'}}>
+        <div style={{width: '100%', display: 'flex', flexFlow: 'wrap', marginTop:'8vh', justifyContent:'center'}}>
             <div style={{display: 'flex', flexFlow: 'wrap'}}>
             <form style={{width: '400px', maxHeight:'fit-content', padding: '7px'}} onSubmit={(e)=> onSubmit(e)}>
                 <label style={{fontSize: 40}}>{(newChar.nombre===''? '': newChar.nombre + ': ' ) + (newChar.raza==='raza' || newChar.raza===''? '': newChar.raza + ' ' ) + (newChar.clase==='clase' || newChar.clase===''? '': newChar.clase ) || 'Personaje'}</label>
