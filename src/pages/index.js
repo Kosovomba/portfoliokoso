@@ -5,7 +5,6 @@ import styles from '../styles/Home.module.css'
 import characters from '../controllers/characters'
 import CreateCharacter from '@src/components/createCharacter'
 import { useState } from 'react'
-import NavBar from '../components/navBar'
 import '@picocss/pico'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -48,11 +47,7 @@ export default function Home() {
             </a>
           </div>
         </div> */}
-        {/* <div> */}
-          <NavBar/>
-          <CreateCharacter razas={razas} clases={clases} character={character} setCharacter={setCharacter}/>
-        {/* </div> */}
-
+          <CreateCharacter razas={razas} clases={clases} character={character} setCharacter={setCharacter}/>    
         {/* <div className={styles.center}>
           <Image
             className={styles.logo}
@@ -63,7 +58,6 @@ export default function Home() {
             priority
           />
         </div> */}
-
         {/* <div className={styles.grid}>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
