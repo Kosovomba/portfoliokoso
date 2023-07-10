@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import styles from "@src/styles/characterBuild.module.css"
 import characters from "../../../../../controllers/characters"
 import { useState } from "react"
+import NavBar from "@src/components/navBar"
 
 export default function CharacterBuild() {
   const router = useRouter()
@@ -21,11 +22,11 @@ export default function CharacterBuild() {
   }
   const [disp, setDisp] = useState('show')
 
-  function onClick(e) {
-    e.preventDefault()
-    router.push('https://portfoliokoso.vercel.app/')
-    // router.push('https://localhost:3000')
-  }  
+  // function onClick(e) {
+  //   e.preventDefault()
+    // router.push('https://portfoliokoso.vercel.app/')
+  //   router.push('https://localhost:3000')
+  // }  
 
   setTimeout(()=> {
     setDisp('')
@@ -33,7 +34,8 @@ export default function CharacterBuild() {
 
     return (
     <div className={styles[mainX]}>
-    <button onClick={onClick} style={{margin:'10px'}}>Volver</button>
+    <NavBar/>
+    {/* <button onClick={onClick} style={{margin:'10px'}}>Volver</button> */}
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
     {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats}/>:null}
     </div>

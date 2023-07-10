@@ -135,7 +135,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats})
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <p style={{fontSize: 40, display:'flex', justifyContent:'center', margin:'1px', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
+            <p style={{marginTop:'7vh', fontSize: 40, display:'flex', justifyContent:'center', margin:'1px', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
             </div>
             <div style={{display:'flex', flexFlow:'wrap', marginBottom: '10px'}}>
             <div style={{display:'flex', flexDirection:'column'}}>

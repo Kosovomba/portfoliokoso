@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import images from "../controllers/images"
 import Image from "next/image"
@@ -8,6 +8,13 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
     const [showButtons, setShowButtons] = useState({showApt2: false, showCDP: false, showCI: false})
     let errorName = false
+    
+    useEffect(()=>{
+        let usuario = {usuario: 'José', personajes: [{raza: 'Elfo', clase: 'Explorador', nivel: 2},{raza: 'Orco', clase: 'Bárbaro', nivel: 3}]}
+        localStorage.setItem('usuario1', JSON.stringify(usuario))
+        let personajesUsuario1 = JSON.parse(localStorage.getItem('usuario1'))
+        console.log(personajesUsuario1)
+    }, [])
 
     if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newChar.nombre) === true) {
         errorName = true
@@ -55,8 +62,8 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             </div>
         )
     }
-    return (
-        <div style={{width: '100%', display: 'flex', flexFlow: 'wrap'}}>
+    return (        
+        <div style={{width: '100%', display: 'flex', flexFlow: 'wrap', marginTop:'8vh'}}>
             <div style={{display: 'flex', flexFlow: 'wrap'}}>
             <form style={{width: '400px', maxHeight:'fit-content', padding: '7px'}} onSubmit={(e)=> onSubmit(e)}>
                 <label style={{fontSize: 40}}>{(newChar.nombre===''? '': newChar.nombre + ': ' ) + (newChar.raza==='raza' || newChar.raza===''? '': newChar.raza + ' ' ) + (newChar.clase==='clase' || newChar.clase===''? '': newChar.clase ) || 'Personaje'}</label>
@@ -86,9 +93,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             <p style={{marginBottom: '2px'}}>{`*(cláseo) ${character.clase.apt1}`}</p>
             </div>            
             </div>
-            </div>
-            <>
-            <div style={{display: 'flex', flexFlow: 'wrap'}}>
+            </div>            
             <Image style={{alignSelf: 'center', maxWidth: '99%', maxHeight: 410, border: 'solid white 2px'}} height='410' width="410" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>                
             <div style={{border: 'solid white 2px', padding: '10px', width: 410, maxWidth: '99%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de raza: </p>
@@ -96,8 +101,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.raza.VM}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 1: ' + character.raza.apt1}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Aptitud de nivel 3: ' + character.raza.apt3}</p>
-            </div>
-            </div>
+            </div>            
             <div style={{border: 'solid white 2px', padding: '10px', width: 'fit-content', maxWidth: '98%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de clase: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.clase.PV}</p>
@@ -117,8 +121,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 <div style={{display:'flex', flexDirection:'row' , margin: 2}}><span style={{maxWidth:'fit-content'}}>{'Clases de prestigio: '}</span><button onClick={buttonHandler} value={'showCDP'} style={{maxWidth:'fit-content', position:'relative', left:'10px', padding:'4px'}}>{showButtons.showCDP===true?'Esconder':'Mostrar'}</button></div>                
                 {showButtons.showCDP===true?character.clase.cdp.map(functionMap):null}
                 </div>
-            </div>           
-            </>            
+            </div>                       
         </div>
     )
 }
