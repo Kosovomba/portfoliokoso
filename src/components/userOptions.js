@@ -63,7 +63,7 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
 
     return <div>
         <button onClick={cargarPers}>Cargar personaje</button>
-        {carg===true?selectPers():carg!==false?<p>'No hay personajes guardados'</p>:null}
+        {carg===true?selectPers():carg!==false?<p>No hay personajes guardados</p>:null}
         {currentChar.index !=='personajes'?<button onClick={onButtonClick}>Cargar</button>:null}
         <button onClick={cerrarClick}>Cerrar sesión</button>
     </div>
