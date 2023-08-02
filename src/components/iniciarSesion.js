@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import {GiTireIronCross} from "react-icons/gi"
+
 export default function IniciarSesion({usuarios, userNames, userEMails, show, setShow}) {
     const [user, setUser] = useState({name: '', password: ''})
     const router = useRouter()
 
     function iniciarSes() {
         localStorage.setItem('usuario', user.name)
-        setUser({...user, password: ''})
+        setUser({...user, password: ''})        
         alert(`Iniciaste sesión como ${user.name}`)
         setUser({...user, name: ''})
         router.reload()
-        console.log(localStorage.getItem('usuario'))
+        // console.log(localStorage.getItem('usuario'))             
     }
 
     function onInputChange(e) {
@@ -33,9 +35,7 @@ export default function IniciarSesion({usuarios, userNames, userEMails, show, se
             console.log(status)
             if (status === true) {
                 iniciarSes()
-                setShow(!show)
-                setTimeout(()=>router.push(router.pathname), 1500)
-                
+                setShow(!show)                
             }
             else alert(status)
         })
@@ -49,12 +49,17 @@ export default function IniciarSesion({usuarios, userNames, userEMails, show, se
         setShow(!show)
         router.push('/app/createUser')
     }
+    function handleClose(e) {
+        e.preventDefault()
+        setShow(!show)
+    }
 
     return (
         <div style={{display: 'grid', position: 'fixed', top: '6.5vh', width:'100%', height:'100%', background:'rgba(0, 0, 0, 0.6)'}}>
         <div style={{marginBottom: '350px', display: 'flex', flexDirection:'column', alignItems: 'center', background: 'white', minWidth:'fit-content', justifySelf:'center', padding:'20px', boxShadow:'4px 2px 2px black', width:'80%', maxWidth: '60vh', height:'fit-content', alignSelf:'center'}}>
+            <button onClick={handleClose} style={{color: 'black', fontSize:'25px', border: 'solid 1px black', width:'fit-content', padding: '0px 5px 5px 5px', position: 'absolute', alignSelf:'flex-end'}}><GiTireIronCross/></button>
             <form style={{display: 'flex', flexDirection:'column'}} onSubmit={(e)=> onSubmit(e)}>                                
-                <input style={{minHeight:'30px', minWidth:'350px', fontSize:'20px', padding:'6px', marginTop:'25px'}} type="text" name='name' onChange={onInputChange} value={user.name} placeholder='Nombre de usuario...'></input>
+                <input style={{minHeight:'30px', minWidth:'350px', fontSize:'20px', padding:'6px', marginTop:'55px'}} type="text" name='name' onChange={onInputChange} value={user.name} placeholder='Nombre de usuario...'></input>
                 <input style={{minHeight:'30px', minWidth:'350px', fontSize:'20px', padding:'6px', marginTop:'25px'}} type="text" name='password' onChange={onInputChange} value={user.password} placeholder='Password...'></input>                
                 <button style={{minHeight:'30px', minWidth:'350px', fontSize:'25px', padding:'6px', marginTop:'25px'}} type="submit" disabled={user.name === '' || user.password === ''?true:false}>Iniciar sesión</button>
                 {/* <button type="submit">Crear usuario</button> */}

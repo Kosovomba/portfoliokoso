@@ -4,6 +4,7 @@ import AptInicialExp from "./aptInicialExp"
 import images from "../controllers/images"
 import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart} from "react-icons/ai"
+import axios from "axios"
 import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
 // import Characters from "./characters"
 
@@ -21,7 +22,13 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
         CDP: CDP,
         'apt2+': apt2Mas,
         claseStatsFiltrados: claseStats['apt2+']
-    })    
+    })
+    const [usu, setUsu] = useState('')
+    useEffect(()=> {
+        let us = localStorage.getItem('usuario')
+        us?setUsu(us):null
+    },[])
+
     let apt2 = personaje['apt2+']
 
     function isDisabled(req) {
@@ -131,6 +138,18 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
         e.preventDefault()        
         setPersonaje({...personaje, nivel: personaje.nivel + 1})
     }
+    function guardarPersonaje(e) {
+        e.preventDefault()
+        let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
+        // axios.post('http://localhost:3000/api/add-character', newCharacter)
+        axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
+        .then(() => {            
+            alert('Personaje guardado')
+        })
+        .catch((error)=> {
+            console.log(error)
+        })
+    }
 
     return (
         <div>
@@ -140,7 +159,10 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
             <div style={{display:'flex', flexFlow:'wrap', marginBottom: '10px'}}>
             <div style={{display:'flex', flexDirection:'column'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
-            <button style={{maxWidth:'fit-content', margin: '5px', position:'relative', left:'320px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
+            <div>
+            <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={usu!==''?false:true} >Guardar personaje</button>
+            <button style={{maxWidth:'fit-content', margin: '5px', position:'relative', left:'180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
+            </div>
             </div>
             <div style={{margin: '10px'}}>
             <div className={styles.card}>

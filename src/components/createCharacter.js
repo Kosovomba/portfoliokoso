@@ -28,6 +28,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
    
     function onSubmit(e) {
         e.preventDefault()
+        localStorage.removeItem('currentCharacter')
         router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
         // router.push(`http://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
     }

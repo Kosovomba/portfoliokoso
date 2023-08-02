@@ -21,20 +21,21 @@ export default function CharacterBuild() {
     main5: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmQ0ZWYzZDAyc3B6ZGh3M3kybzJlNzZzaTY1NjR4dWN4bXEzM2drdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/fW4qzqnk9WluHMbAtZ/giphy.gif',
     main6: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXR2eWEyYXcxa3ZwZjRuaGZqbmY1aHFxeTFlbTlxeWJpYzh0Z2w0cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3ov9k8fmDbIqzzbsLS/giphy.gif'
   }
-  const [disp, setDisp] = useState('show')
+  const [disp, setDisp] = useState('show')  
 
   setTimeout(()=> {
     setDisp('')
   }, 1800)
 
   useEffect(()=>{
-    const cC = localStorage.getItem('currentCharacter')
+    let cC = localStorage.getItem('currentCharacter')
     if (cC){
+      cC = JSON.parse(cC)
       setStats({
         nivel: cC.nivel,
-        apt1Arr: cC.apt1Arr,
-        CDP: cC.CDP,
-        apt2Mas: cC.apt2Mas
+        apt1Arr: cC.apt1arr,
+        CDP: cC.cdp,
+        apt2Mas: cC.apt2mas
     })
     }
     console.log(stats.nivel, stats.apt1Arr, stats.CDP, stats.apt2Mas)
