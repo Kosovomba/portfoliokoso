@@ -53,7 +53,7 @@ export default function CreateUser() {
     if(newUser.name.length === 0 || newUser.name.length > 15 || /[^a-z0-9ñáéíóú]/i.test(newUser.name) === true) {        
         errorName = true        
     }
-    if(newUser.password.length === 0 || newUser.password.length > 10 || /[^a-z0-9ñáéíóú]/i.test(newUser.password) === true) {        
+    if(newUser.password.length === 0 || newUser.password.length > 15 || /[^a-z0-9ñáéíóú]/i.test(newUser.password) === true) {        
         errorPassword = true
     }
     if(/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(newUser.eMail) === false) {        
@@ -68,7 +68,7 @@ export default function CreateUser() {
             <form onSubmit={(e)=> onSubmit(e)} style={{width: '400px', marginTop:'12vh', maxHeight:'fit-content', padding: '7px'}}>                
                 <input type="text" name='eMail' onChange={onInputChange} value={newUser.eMail} placeholder='Correo electrónico...'></input>
                 <input type="text" name='name' onChange={onInputChange} value={newUser.nombre} placeholder='Nombre de usuario... (hasta 15 caracteres alfanuméricos)'></input>
-                <input type="text" name='password' onChange={onInputChange} value={newUser.password} placeholder='Password... (hasta 10 caracteres alfanuméricos)'></input>
+                <input type="text" name='password' onChange={onInputChange} value={newUser.password} placeholder='Password... (hasta 15 caracteres alfanuméricos)'></input>
                 <input type="text" name='rePassword' onChange={onInputChange} value={newUser.rePassword} placeholder='Repite el password...'></input>
                 <button type="submit" disabled={errorName === false && errorEMail === false && errorPassword === false && errorRePassword === false?false:true}>Crear usuario</button>
                 {/* <button type="submit">Crear usuario</button> */}

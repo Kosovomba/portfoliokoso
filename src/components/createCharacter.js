@@ -17,7 +17,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
         console.log(personajesUsuario1)
     }, [])
 
-    if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú']/i.test(newChar.nombre) === true) {
+    if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú'\s]/i.test(newChar.nombre) === true) {
         errorName = true
     }
 
