@@ -6,9 +6,11 @@ import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart} from "react-icons/ai"
 import axios from "axios"
 import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
+import { useRouter } from "next/router"
 // import Characters from "./characters"
 
 export default function Character ({raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
+    const router = useRouter()
     const [personaje, setPersonaje] = useState({nombre: nombre,
         raza: raza,
         clase: clase,
@@ -27,6 +29,9 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
+        if(localStorage.getItem('currentCharacter') && personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0) {
+            router.reload()
+        }
     },[])
 
     let apt2 = personaje['apt2+']
