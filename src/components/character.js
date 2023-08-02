@@ -7,19 +7,19 @@ import {AiFillHeart} from "react-icons/ai"
 import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
 // import Characters from "./characters"
 
-export default function Character ({raza, clase, nombre, razaStats, claseStats}) {
+export default function Character ({raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
     const [personaje, setPersonaje] = useState({nombre: nombre,
         raza: raza,
         clase: clase,
-        nivel: 1,
+        nivel: nivel,
         PV: razaStats.PV + claseStats.PV,
         VM: razaStats.VM + claseStats.VM,
         RD: razaStats.RD + claseStats.RD,
-        apt1: [razaStats.apt1, claseStats.apt1, []],
+        apt1: [razaStats.apt1, claseStats.apt1, apt1Arr],
         apt3: razaStats.apt3,
         CDPClase: claseStats.cdp,
-        CDP: {},
-        'apt2+': [],
+        CDP: CDP,
+        'apt2+': apt2Mas,
         claseStatsFiltrados: claseStats['apt2+']
     })    
     let apt2 = personaje['apt2+']

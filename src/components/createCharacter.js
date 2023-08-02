@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import images from "../controllers/images"
 import Image from "next/image"
+// import axios from "axios"
 
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
@@ -28,10 +29,10 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     function onSubmit(e) {
         e.preventDefault()
         router.push(`https://portfoliokoso.vercel.app/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
-        // router.push(`https://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
+        // router.push(`http://localhost:3000/app/${newChar.raza}/${newChar.clase}/${newChar.nombre}/characterBuild`)
     }
     function onInputChange(e) {
-        e.preventDefault()        
+        e.preventDefault()
         setNewChar({...newChar, [e.target.name]: (e.target.value === 'raza' || e.target.value === 'clase')?'': e.target.value})
         console.log(newChar)
         if (e.target.name === 'raza') {

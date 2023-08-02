@@ -1,12 +1,14 @@
+'use client'
 import Character from "@src/components/character"
 import { useRouter } from "next/router"
 import styles from "@src/styles/characterBuild.module.css"
 import characters from "../../../../../controllers/characters"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function CharacterBuild() {
   const router = useRouter()
   const {raza, clase, nombre} = router.query
+  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[]})
   const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
   const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
   let mainX = raza==='Humano'?'main1':raza==='Elfo'?'main2':raza==='Enano'?'main3':raza==='Orco'?'main4':raza==='Mediano'?'main5':raza==='Gnomo'?'main6':'main0'
@@ -21,20 +23,28 @@ export default function CharacterBuild() {
   }
   const [disp, setDisp] = useState('show')
 
-  // function onClick(e) {
-  //   e.preventDefault()
-    // router.push('https://portfoliokoso.vercel.app/')
-  //   router.push('https://localhost:3000')
-  // }  
-
   setTimeout(()=> {
     setDisp('')
   }, 1800)
 
+  useEffect(()=>{
+    const cC = localStorage.getItem('currentCharacter')
+    if (cC){
+      setStats({
+        nivel: cC.nivel,
+        apt1Arr: cC.apt1Arr,
+        CDP: cC.CDP,
+        apt2Mas: cC.apt2Mas
+    })
+    }
+    console.log(stats.nivel, stats.apt1Arr, stats.CDP, stats.apt2Mas)
+  },[])
+  
+
     return (
     <div className={styles[mainX]}>
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
-    {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats}/>:null}
+    {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
     </div>
     )    
 }
