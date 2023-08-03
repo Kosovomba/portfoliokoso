@@ -7,8 +7,8 @@ export default function CreateUser() {
     
     let usuarios, userNames, userEMails
     const [newUser, setNewUser] = useState({name: '', eMail: '', avatar: '', password: '', rePassword: ''})    
-    // axios.get('https://portfoliokoso.vercel.app/api/get-users')
-    axios.get('http://localhost:3000/api/get-users')    
+    axios.get('https://portfoliokoso.vercel.app/api/get-users')
+    // axios.get('http://localhost:3000/api/get-users')    
         .then((users) => {
                 usuarios = users.data.usuarios
                 userNames = users.data.userNames

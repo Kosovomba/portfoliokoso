@@ -153,8 +153,8 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     function guardarPersonaje(e) {
         e.preventDefault()
         let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
-        axios.post('http://localhost:3000/api/add-character', newCharacter)
-        // axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
+        // axios.post('http://localhost:3000/api/add-character', newCharacter)
+        axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
         .then(() => {            
             alert('Personaje guardado')
         })

@@ -16,8 +16,8 @@ export default function NavBar() {
     
     function onClick(e) {
         e.preventDefault()
-        // axios.get('https://portfoliokoso.vercel.app/api/get-users')
-        axios.get('http://localhost:3000/api/get-users')
+        axios.get('https://portfoliokoso.vercel.app/api/get-users')
+        // axios.get('http://localhost:3000/api/get-users')
         .then((users) => {
             setInfo({...info, 
                 usuarios: users.data.usuarios,
