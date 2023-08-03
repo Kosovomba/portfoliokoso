@@ -31,12 +31,15 @@ export default function CharacterBuild() {
     let cC = localStorage.getItem('currentCharacter')
     if (cC){
       cC = JSON.parse(cC)
+      if (cC.raza !== raza || cC.clase !== clase || cC.nombre !== nombre) {
+        localStorage.removeItem('currentCharacter')
+      } else {
       setStats({
         nivel: cC.nivel,
         apt1Arr: cC.apt1arr,
         CDP: cC.cdp,
         apt2Mas: cC.apt2mas
-    })
+      })}
     }
     console.log(stats.nivel, stats.apt1Arr, stats.CDP, stats.apt2Mas)
   },[])
