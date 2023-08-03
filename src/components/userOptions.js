@@ -16,8 +16,8 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
     }
     function cargarPers(e) {
         e.preventDefault()
-        axios.post('https://portfoliokoso.vercel.app/api/get-user-characters', {name: localStorage.getItem('usuario')})
-        // axios.post('http://localhost:3000/api/get-user-characters', {name: localStorage.getItem('usuario')})
+        // axios.post('https://portfoliokoso.vercel.app/api/get-user-characters', {name: localStorage.getItem('usuario')})
+        axios.post('http://localhost:3000/api/get-user-characters', {name: localStorage.getItem('usuario')})
         .then((personajes) => {
             personajes = personajes.data
             localStorage.setItem('personajes', JSON.stringify(personajes))
@@ -42,8 +42,8 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
     function onButtonClick(e) {
         localStorage.setItem('currentCharacter', JSON.stringify(currentChar))
         console.log(JSON.parse(localStorage.getItem('currentCharacter')))
-        router.push(`https://portfoliokoso.vercel.app/app/${currentChar.raza}/${currentChar.clase}/${currentChar.nombre}/characterBuild`)
-        // router.push(`http://localhost:3000/app/${currentChar.raza}/${currentChar.clase}/${currentChar.nombre}/characterBuild`)           
+        // router.push(`https://portfoliokoso.vercel.app/app/${currentChar.raza}/${currentChar.clase}/${currentChar.nombre}/characterBuild`)
+        router.push(`http://localhost:3000/app/${currentChar.raza}/${currentChar.clase}/${currentChar.nombre}/characterBuild`)           
         if (router.pathname.length>13 && router.pathname.slice(router.pathname.length -14) === 'characterBuild') {
             setTimeout(()=>{
                 router.reload()

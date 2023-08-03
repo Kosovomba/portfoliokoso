@@ -29,8 +29,15 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
-        if(localStorage.getItem('currentCharacter') && personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0) {
+        let cC = JSON.parse(localStorage.getItem('currentCharacter'))
+        if(cC && personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0) {
             router.reload()
+        }
+        if (cC) {            
+            if (cC.raza !== raza || cC.nombre !== nombre || cC.clase !== clase){
+                localStorage.removeItem('currentCharacter')
+                router.reload()
+            }
         }
     },[])
 
@@ -146,8 +153,8 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     function guardarPersonaje(e) {
         e.preventDefault()
         let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
-        // axios.post('http://localhost:3000/api/add-character', newCharacter)
-        axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
+        axios.post('http://localhost:3000/api/add-character', newCharacter)
+        // axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
         .then(() => {            
             alert('Personaje guardado')
         })
