@@ -48,7 +48,7 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
             setTimeout(()=>{
                 router.reload()
             }, 500)
-        }        
+        }
     }
     function selectPers() {
         return <div>

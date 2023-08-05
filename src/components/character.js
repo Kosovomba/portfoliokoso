@@ -20,10 +20,13 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
         RD: razaStats.RD + claseStats.RD,
         apt1: [razaStats.apt1, claseStats.apt1, apt1Arr],
         apt3: razaStats.apt3,
-        CDPClase: claseStats.cdp,
+        CDPClase: Object.keys(CDP).length === 0?claseStats.cdp:claseStats.cdp.filter((c)=>c.nombre !== CDP.nombre),
         CDP: CDP,
         'apt2+': apt2Mas,
-        claseStatsFiltrados: claseStats['apt2+']
+        claseStatsFiltrados: claseStats['apt2+'].filter((a)=>{
+            let apt2Nombres = apt2Mas.map((ap)=> ap.nombre)
+            return !apt2Nombres.includes(a.nombre)
+        })
     })
     const [usu, setUsu] = useState('')
     useEffect(()=> {
@@ -173,7 +176,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
-            <button style={{maxWidth:'fit-content', margin: '5px', position:'relative', left:'180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
+            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
             </div>
             </div>
             <div style={{margin: '10px'}}>

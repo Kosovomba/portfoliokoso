@@ -12,7 +12,7 @@ export default function CreateUser() {
         .then((users) => {
                 usuarios = users.data.usuarios
                 userNames = users.data.userNames
-                userEMails = users.data.userEMails
+                userEMails = users.data.userEMails.map(e => e.toLowerCase())
                 console.log(userNames, userEMails)
         })
         .catch((error)=> {
@@ -34,7 +34,7 @@ export default function CreateUser() {
         if (userNames.includes(newUser.name)) {
             alert('The name is in use. Insert a different one')
         }
-        else if (userEMails.includes(newUser.eMail)) {
+        else if (userEMails.includes(newUser.eMail.toLowerCase())) {
             alert('The email is in use. Insert a different one')
             }
             else {
