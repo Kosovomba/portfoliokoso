@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 export default function CharacterBuild() {
   const router = useRouter()
   const {raza, clase, nombre} = router.query
-  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[]})
+  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0})
   const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
   const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
   let mainX = raza==='Humano'?'main1':raza==='Elfo'?'main2':raza==='Enano'?'main3':raza==='Orco'?'main4':raza==='Mediano'?'main5':raza==='Gnomo'?'main6':'main0'
@@ -35,7 +35,8 @@ export default function CharacterBuild() {
         nivel: cC.nivel,
         apt1Arr: cC.apt1arr,
         CDP: cC.cdp,
-        apt2Mas: cC.apt2mas
+        apt2Mas: cC.apt2mas,
+        ID: cC.id
       })
     }
   },[])
@@ -44,7 +45,7 @@ export default function CharacterBuild() {
     return (
     <div className={styles[mainX]}>
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
-    {razaStats?<Character raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
+    {razaStats?<Character ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
     </div>
     )    
 }

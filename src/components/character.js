@@ -11,9 +11,10 @@ import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
 // import Characters from "./characters"
 
-export default function Character ({raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
+export default function Character ({ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
     const router = useRouter()
     const [personaje, setPersonaje] = useState({nombre: nombre,
+        ID: ID, 
         raza: raza,
         clase: clase,
         nivel: nivel,
@@ -161,8 +162,10 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     function guardarPersonaje(e) {
         e.preventDefault()
         let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
-        // axios.post('http://localhost:3000/api/add-character', newCharacter)
-        axios.post('https://portfoliokoso.vercel.app/api/add-character', newCharacter)
+        let option = 'add-character'
+        localStorage.getItem('currentCharacter')?option = 'update-character': null
+        // axios.post(`http://localhost:3000/api/${option}`, newCharacter)
+        axios.post(`https://portfoliokoso.vercel.app/api/${option}`, newCharacter)
         .then(() => {            
             alert('Personaje guardado')
         })
