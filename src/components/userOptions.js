@@ -36,8 +36,8 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
     }
     function onInputChange(e) {
         e.preventDefault()
-        console.log(e.target.value)
         setCurrentChar({...pers[e.target.value], index: e.target.value})
+        console.log(currentChar)
     }
     function onButtonClick(e) {
         localStorage.setItem('currentCharacter', JSON.stringify(currentChar))

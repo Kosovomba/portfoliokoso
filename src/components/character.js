@@ -33,6 +33,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
     })
     const [usu, setUsu] = useState('')
     const [pestaña, setPestaña] = useState('opciones')
+    const [guardando, setGuardando] = useState(false)
     let subirNiv = true
 
     useEffect(()=> {
@@ -161,13 +162,27 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
     }
     function guardarPersonaje(e) {
         e.preventDefault()
+        setGuardando(true)
         let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
         let option = 'add-character'
         localStorage.getItem('currentCharacter')?option = 'update-character': null
         // axios.post(`http://localhost:3000/api/${option}`, newCharacter)
         axios.post(`https://portfoliokoso.vercel.app/api/${option}`, newCharacter)
-        .then(() => {            
+        .then(() => {
+            localStorage.setItem('currentCharacter', JSON.stringify({
+                nombre: personaje.nombre,
+                id: personaje.ID, 
+                raza: personaje.raza,
+                clase: personaje.clase,
+                nivel: personaje.nivel,
+                Usuario: usu,
+                apt1arr: personaje.apt1[2],
+                cdp: personaje.CDP,
+                apt2mas: personaje['apt2+']
+            }))
+            console.log(localStorage.getItem('currentCharacter'))
             alert('Personaje guardado')
+            setGuardando(false)
         })
         .catch((error)=> {
             console.log(error)
@@ -202,7 +217,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
             <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'425px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <div>
-            <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
+            <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
