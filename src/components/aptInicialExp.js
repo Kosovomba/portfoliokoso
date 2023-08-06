@@ -16,8 +16,8 @@ export default function AptInicialExp({personaje, setPersonaje}) {
         <div>
             {personaje.apt1[2].length === 0? <div style={{display: 'flex', flexDirection: 'column'}}>
                 <p>Elige una aptitud inicial</p>
-                <button style={{maxWidth: '400px'}} value={apti1} onClick={onClick}>{apti1}</button>
-                <button style={{maxWidth: '400px'}} value={apti2} onClick={onClick}>{apti2}</button>
+                <button style={{width: 'fit-content', maxWidth: '100%', textAlign:'left'}} value={apti1} onClick={onClick}>{apti1}</button>
+                <button style={{width: 'fit-content', maxWidth: '100%', textAlign:'left'}} value={apti2} onClick={onClick}>{apti2}</button>
                 </div>: <div><p style={{maxWidth: '400px'}}>{personaje.apt1[2][0]}</p> <button disabled={personaje.nivel>1} onClick={handleEdit} value={'edit'}>Editar</button></div>}
         </div>
     )

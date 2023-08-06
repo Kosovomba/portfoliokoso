@@ -6,6 +6,7 @@ import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart} from "react-icons/ai"
 import axios from "axios"
 import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
+import {BsPersonBoundingBox} from 'react-icons/bs'
 import { useRouter } from "next/router"
 // import Characters from "./characters"
 
@@ -29,6 +30,8 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
         })
     })
     const [usu, setUsu] = useState('')
+    const [pestaña, setPestaña] = useState('opciones')
+
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
@@ -165,65 +168,81 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
             console.log(error)
         })
     }
+    function handlePestaña (e) {
+        e.preventDefault()
+        setPestaña(e.target.value)
+    }
 
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
             <p style={{marginTop:'7vh', fontSize: 40, display:'flex', justifyContent:'center', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
             </div>
-            <div style={{display:'flex', flexFlow:'wrap', marginBottom: '10px'}}>
-            <div style={{display:'flex', flexDirection:'column'}}>
+            {/* <div style={{display:'flex', flexFlow:'wrap'}}> */}
+            <div style={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>
+            <div style={{display:'flex', flexFlow:'wrap', minWidth: '400px', justifyContent: 'center'}}>
+                <button onClick={handlePestaña} value={'opciones'} style={{height:'50px', width:'120px'}}>Opciones</button>
+                <button onClick={handlePestaña} value={'estadísticas'} style={{height:'50px', width:'120px'}}>Estadísticas</button>
+                <button onClick={handlePestaña} value={'racialesEIniciales'} style={{height:'50px', width:'120px'}}>Aptitudes raciales e iniciales</button>
+                <button onClick={handlePestaña} value={'2oMayor'} style={{height:'50px', width:'120px'}}>Aptitudes de nivel 2 o mayor</button>
+                <button onClick={handlePestaña} value={'cdp'} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
+                <button onClick={handlePestaña} value={'equipamiento'} style={{height:'50px', width:'120px'}}>Equipamiento</button>
+            </div>
+            <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'425px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
             </div>
             </div>
-            <div style={{margin: '10px'}}>
-            <div className={styles.card}>
+            <div name={'estadísticas'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
+            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
             </div>
-            <div className={styles.card}>            
+            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
                 <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`PV: ${personaje.PV}`}</p>
             </div>
-            <div className={styles.card}>            
+            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
                 <GiWalkingBoot style={{color:'#837367', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`VM: ${personaje.VM}`}</p>
             </div>
-            <div className={styles.card}>            
+            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
                 <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`RD: ${personaje.RD}`}</p>
             </div>
             </div>
-            <div>
+            <div name={'racialesEIniciales'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptitudes raciales: `}</p>
             <p style={{maxWidth: '400px'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
-            {personaje.nivel >2?<p style={{maxWidth: '400px'}}>{`${personaje.apt3} (nivel 3)`}</p>:null}
+            {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
             <p className={styles.description}> {`Aptitudes cláseas de nivel 1: `}</p>
-            {clase !== 'Explorador'? <p style={{maxWidth: '400px'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
+            {clase !== 'Explorador'? <p> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
             </div>
             </div>
-            <div>
+            <div name={'2oMayor'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptitudes de nivel 2 o mayor: `}</p>
-            {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{maxWidth: '400px'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
+            {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{width:'fit-content', maxWidth: '100%'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
             {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
-            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{maxWidth: '400px', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
+            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
             </div>
             </div>
-            <div>
+            <div name={'cdp'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Clase de prestigio: `}</p>
-            {personaje.CDP.nombre?<div><p style={{maxWidth: '400px'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p><button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
-            {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{maxWidth: '400px', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
+            {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p><button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
+            {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
+            </div>
+            <div name={'equipamiento'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
+                Equipamiento
             </div>
             </div>            
         </div>

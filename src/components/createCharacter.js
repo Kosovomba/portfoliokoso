@@ -7,7 +7,7 @@ import Image from "next/image"
 export default function CreateCharacter({razas, clases, character, setCharacter}){  
     const router = useRouter()
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
-    const [showButtons, setShowButtons] = useState({showApt2: false, showCDP: false, showCI: false})
+    const [showButtons, setShowButtons] = useState({showApt2: false, showCDP: false, showCI: false, showAi: false})
     let errorName = false
     
     useEffect(()=>{
@@ -92,7 +92,8 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             <div style={{padding: '5px', margin: 2, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>
             <p style={{marginBottom: '2px'}}>{`Aptitudes de nivel 1: `}</p>
             <p style={{marginBottom: '2px'}}>{`*(racial) ${character.raza.apt1}`}</p>
-            <p style={{marginBottom: '2px'}}>{`*(cláseo) ${character.clase.apt1}`}</p>
+            {/* <p style={{marginBottom: '2px'}}>{`*(cláseo) ${character.clase.apt1}`}</p> */}
+            <div>{`*(cláseo) ${showButtons.showAi===true?character.clase.apt1:''}`}<button onClick={buttonHandler} value={'showAi'} style={{maxWidth:'fit-content', float:'right', padding:'4px', height:'fit-content'}}>{showButtons.showAi===true?'Esconder':'Mostrar'}</button></div>
             </div>            
             </div>
             </div>            
