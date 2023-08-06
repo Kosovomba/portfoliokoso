@@ -22,7 +22,7 @@ export default function conjuroInicial({personaje, setPersonaje, raza, clase, co
         <div>
             <div style={{border:'dotted brown 2px', padding: '5px'}}>
             <p style={{fontWeight: 600}}>{clase === 'Mago'? 'Conjuros iniciales aprendidos:': 'Conjuro inicial aprendido:'}</p>            
-            {personaje.apt1[2].length > 0? <div>{personaje.apt1[2].map((c) => <p style={{maxWidth: '100%'}} key={c}>{c}</p>)} <button onClick={handleEdit} value={'edit'}>Editar</button></div>: <p></p>}
+            {personaje.apt1[2].length > 0? <div>{personaje.apt1[2].map((c) => <p style={{maxWidth: '100%'}} key={c}>{c}</p>)} <button onClick={handleEdit} value={'edit'} disabled={personaje.nivel>1}>Editar</button></div>: <p></p>}
             </div>
             {personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en un conjuro para elegirlo:</p>
             {conjurosInicialesFiltrados.map((c)=> <button style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleButton} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.nombre}${c.aptitud}`}</button>)}</div>:null}            

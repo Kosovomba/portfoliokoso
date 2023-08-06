@@ -5,8 +5,9 @@ import images from "../controllers/images"
 import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart} from "react-icons/ai"
 import axios from "axios"
-import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter} from "react-icons/gi"
+import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter, GiBackpack} from "react-icons/gi"
 import {BsPersonBoundingBox} from 'react-icons/bs'
+import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
 // import Characters from "./characters"
 
@@ -31,6 +32,7 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
     })
     const [usu, setUsu] = useState('')
     const [pestaña, setPestaña] = useState('opciones')
+    let subirNiv = true
 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
@@ -172,6 +174,12 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
         e.preventDefault()
         setPestaña(e.target.value)
     }
+    if (clase === 'Explorador' && personaje.apt1[2].length === 0) {        
+        subirNiv = false
+        }
+    if (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) {        
+        subirNiv = false
+        }        
 
     return (
         <div>
@@ -181,18 +189,18 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
             {/* <div style={{display:'flex', flexFlow:'wrap'}}> */}
             <div style={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>
             <div style={{display:'flex', flexFlow:'wrap', minWidth: '400px', justifyContent: 'center'}}>
-                <button onClick={handlePestaña} value={'opciones'} style={{height:'50px', width:'120px'}}>Opciones</button>
-                <button onClick={handlePestaña} value={'estadísticas'} style={{height:'50px', width:'120px'}}>Estadísticas</button>
-                <button onClick={handlePestaña} value={'racialesEIniciales'} style={{height:'50px', width:'120px'}}>Aptitudes raciales e iniciales</button>
-                <button onClick={handlePestaña} value={'2oMayor'} style={{height:'50px', width:'120px'}}>Aptitudes de nivel 2 o mayor</button>
-                <button onClick={handlePestaña} value={'cdp'} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
-                <button onClick={handlePestaña} value={'equipamiento'} style={{height:'50px', width:'120px'}}>Equipamiento</button>
+                <button onClick={handlePestaña} value={'opciones'} disabled={pestaña === 'opciones'?true:false} style={{height:'50px', width:'120px'}}>Opciones</button>
+                <button onClick={handlePestaña} value={'estadísticas'} disabled={pestaña === 'estadísticas'?true:false} style={{height:'50px', width:'120px'}}>Estadísticas</button>
+                <button onClick={handlePestaña} value={'racialesEIniciales'} disabled={pestaña === 'racialesEIniciales'?true:false} style={{height:'50px', width:'120px'}}>Aptitudes raciales e iniciales</button>
+                <button onClick={handlePestaña} value={'2oMayor'} disabled={pestaña === '2oMayor'?true:false} style={{height:'50px', width:'120px', border:personaje['apt2+'].length + 1 < personaje.nivel?'solid 1px red':pestaña === '2oMayor'?'solid 1px rgba(0,0,0,0.2)':'solid 1px black'}}>Aptitudes de nivel 2 o mayor{personaje['apt2+'].length + 1 < personaje.nivel?<MdOutlinePlusOne style={{color:'red', fontSize: 25, position:'absolute'}}/>:null}</button>
+                <button onClick={handlePestaña} value={'cdp'} disabled={pestaña === 'cdp'?true:false} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
+                <button onClick={handlePestaña} value={'equipamiento'} disabled={pestaña === 'equipamiento'?true:false} style={{height:'50px', width:'120px'}}>Equipamiento</button>
             </div>
             <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'425px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
-            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4)?true:false} >Subir de nivel</button>
+            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
             <div name={'estadísticas'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
@@ -242,7 +250,10 @@ export default function Character ({raza, clase, nombre, razaStats, claseStats, 
             </div>
             </div>
             <div name={'equipamiento'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
-                Equipamiento
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiBackpack style={{color:'#7E603B', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
+            <p className={styles.description}> {`Equipamiento: `}</p>            
+            </div>
             </div>
             </div>            
         </div>
