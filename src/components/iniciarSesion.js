@@ -30,8 +30,8 @@ export default function IniciarSesion({usuarios, userNames, userEMails, show, se
             alert('The user name does not exist')
         }
         else {
-        axios.post('https://portfoliokoso.vercel.app/api/check-user', user)
-        // axios.post('http://localhost:3000/api/check-user', user)
+        // axios.post('https://portfoliokoso.vercel.app/api/check-user', user)
+        axios.post('http://localhost:3000/api/check-user', user)
         .then((status) => {
             status = status.data
             console.log(status)
