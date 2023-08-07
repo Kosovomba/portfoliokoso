@@ -9,14 +9,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     const [newChar, setNewChar] = useState({nombre: '', raza: '', clase: ''})
     const [showButtons, setShowButtons] = useState({showApt2: false, showCDP: false, showCI: false, showAi: false})
     let errorName = false
-    
-    useEffect(()=>{
-        let usuario = {usuario: 'José', personajes: [{raza: 'Elfo', clase: 'Explorador', nivel: 2},{raza: 'Orco', clase: 'Bárbaro', nivel: 3}]}
-        localStorage.setItem('usuario1', JSON.stringify(usuario))
-        let personajesUsuario1 = JSON.parse(localStorage.getItem('usuario1'))
-        console.log(personajesUsuario1)
-    }, [])
-
+   
     if(newChar.nombre.length === 0 || newChar.nombre.length > 18 || /[^a-zñáéíóú'\s]/i.test(newChar.nombre) === true) {
         errorName = true
     }
