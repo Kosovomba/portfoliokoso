@@ -161,6 +161,18 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
         e.preventDefault()        
         setPersonaje({...personaje, nivel: personaje.nivel + 1})
     }
+
+    function bajarNivel(e) {
+        e.preventDefault()
+        let cartel = `Bajaste a nivel ${personaje.nivel -1}.`
+        if (personaje.nivel === personaje['apt2+'].length + 1) {
+            let aux = personaje['apt2+'].pop()
+            setPersonaje({...personaje, claseStatsFiltrados: personaje.claseStatsFiltrados.push(aux)})
+            cartel = cartel + ` Se eliminó la aptitud elegida en nivel ${personaje.nivel}.`
+        }
+        setPersonaje({...personaje, nivel: personaje.nivel - 1})
+        alert(cartel)
+    }
     function guardarPersonaje(e) {
         e.preventDefault()
         setGuardando(true)
@@ -219,7 +231,8 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
-            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '180px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
+            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>
+            <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
             <div name={'estadísticas'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
