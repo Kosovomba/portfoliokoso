@@ -27,7 +27,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
         CDPClase: Object.keys(CDP).length === 0?claseStats.cdp:claseStats.cdp.filter((c)=>c.nombre !== CDP.nombre),
         CDP: CDP,
         'apt2+': apt2Mas,
-        claseStatsFiltrados: claseStats['apt2+'].filter((a)=>{
+        claseStatsFiltrados: claseStats['apt2+'].filter((a)=>{            
             let apt2Nombres = apt2Mas.map((ap)=> ap.nombre)
             return !apt2Nombres.includes(a.nombre)
         })
@@ -268,9 +268,25 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptitudes de nivel 2 o mayor: `}</p>
-            {personaje['apt2+'].length>0?personaje['apt2+'].map((a)=> <p style={{width:'fit-content', maxWidth: '100%'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>):null}
+            {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
+                return <div key={`a2${ind}`}>
+                <p style={{width:'fit-content', maxWidth: '100%'}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
+                <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'400px', border:'1px solid black'}}>
+                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'60px', justifyContent:'center', alignContent:'center'}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'340px', justifyContent:'center', alignContent:'center'}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
+                    {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'60px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'340px', justifyContent:'center', alignContent:'center'}}>{f}</span></div>)}
+                </div>
+                </div>
+            }):null}
             {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
-            {personaje.claseStatsFiltrados.map((a)=> <button disabled={isDisabled(a.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}</button>)}</div>:null}
+            {personaje.claseStatsFiltrados.map((a,i)=> {
+               return <div key={`a${i}`} style={{border:'2px solid brown', margin:'1px'}}>
+                <button disabled={isDisabled(a.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}{a.tabla?<br/>:null}</button>
+                {personaje.claseStatsFiltrados[i].tabla? <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'400px', border:'1px solid black'}}>
+                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'60px', justifyContent:'center', alignContent:'center'}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'340px', justifyContent:'center', alignContent:'center'}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
+                    {a.tabla?.map((f,i)=> <div key={`f${i}`} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'60px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'340px', justifyContent:'center', alignContent:'center'}}>{f}</span></div>)}
+                </div>:null}
+            </div>}
+            )}</div>:null}
             </div>
             </div>
             <div name={'cdp'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
