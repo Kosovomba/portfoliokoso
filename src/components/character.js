@@ -261,7 +261,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <p style={{maxWidth: '100%'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
             {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
             <p className={styles.description}> {`Aptitudes cláseas de nivel 1: `}</p>
-            {clase !== 'Explorador'? <p> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
+            {clase !== 'Explorador'? <p style={{maxWidth: '100%'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
             </div>
             </div>
