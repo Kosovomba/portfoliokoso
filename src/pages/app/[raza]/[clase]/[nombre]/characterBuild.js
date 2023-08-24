@@ -10,7 +10,16 @@ export default function CharacterBuild() {
   const {raza, clase, nombre} = router.query
   const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0})
   const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
-  const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
+  const claseStats = characters.clases.filter((c) => c.clase === clase)[0]  
+
+  let conjurosInicialesCombinados = [...characters.clases[3]["conjuros iniciales"], ...characters.clases[12]["conjuros iniciales"]]
+  let hash = {}
+  let conjurosInicialesCombinadosfiltrados = conjurosInicialesCombinados.filter((e) => {
+    const exist = !hash[e.nombre];
+    hash[e.nombre] = true;
+    return exist;
+  })
+
   let mainX = raza==='Humano'?'main1':raza==='Elfo'?'main2':raza==='Enano'?'main3':raza==='Orco'?'main4':raza==='Mediano'?'main5':raza==='Gnomo'?'main6':'main0'
   let gifUrls = {
     main0: '',
@@ -45,7 +54,7 @@ export default function CharacterBuild() {
     return (
     <div className={styles[mainX]}>
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
-    {razaStats?<Character ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
+    {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
     </div>
     )    
 }

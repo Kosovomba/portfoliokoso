@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import ConjuroInicial from "./conjuroInicial"
 import AptInicialExp from "./aptInicialExp"
+import ConjuroExtra from "./conjuroExtra"
 import images from "../controllers/images"
 import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart, AiOutlineArrowDown} from "react-icons/ai"
@@ -12,7 +13,7 @@ import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
 // import Characters from "./characters"
 
-export default function Character ({ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
+export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
     const router = useRouter()
     const [personaje, setPersonaje] = useState({nombre: nombre,
         ID: ID, 
@@ -36,7 +37,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
     const [pestaña, setPestaña] = useState('opciones')
     const [guardando, setGuardando] = useState(false)
     let subirNiv = true
-
+    console.log(conjurosInicialesCombinadosfiltrados)
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
@@ -271,6 +272,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
             {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
                 return <div key={`a2${ind}`}>
                 <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
+                {a.nombre === 'Lanzador experimentado: '?<ConjuroExtra personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null }
                 <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
                     <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
                     {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
@@ -293,7 +295,7 @@ export default function Character ({ID, raza, clase, nombre, razaStats, claseSta
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Clase de prestigio: `}</p>
-            {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p><button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
+            {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p>{personaje.CDP.hasOwnProperty('extra')?<ConjuroExtra personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={conjurosInicialesCombinadosfiltrados} />:null}<button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
             {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
             </div>
