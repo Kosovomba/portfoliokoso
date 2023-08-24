@@ -258,7 +258,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <p className={styles.description}> {`Aptitudes raciales: `}</p>
-            <p style={{maxWidth: '400px'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
+            <p style={{maxWidth: '100%'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
             {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
             <p className={styles.description}> {`Aptitudes cláseas de nivel 1: `}</p>
             {clase !== 'Explorador'? <p> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
