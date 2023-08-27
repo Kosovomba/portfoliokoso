@@ -17,10 +17,23 @@ import Mercado from "./mercado"
 
 export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
     const router = useRouter()
+    let equip = [
+        ['Botas', 'Otorga +1 a VM.', 'https://i.ebayimg.com/thumbs/images/g/QsYAAOSwuU1hIKQj/s-l640.jpg', 'Equipar'],
+        ['Armadura', 'Otorga +1 a RD, por armadura equipada.', 'https://mcishop.azureedge.net/mciassets/w_3_0078279_knights-torso-armor-with-gorget_550.png', 'Equipar'],
+        ['Armadura pesada', 'Otorga +2 a RD, por armadura equipada.', 'https://image.lexica.art/md2/0a49a0fc-4d5d-4b5d-9da7-6ad3dd517776', 'Equipar'],
+        ['Arma cuerpo a cuerpo', 'Otorga +1 al daño de ataques cuerpo a cuerpo, por arma equipada.', '', 'Equipar'],
+        ['Arma a distancia', 'Otorga +1 al daño de ataques a distancia, por arma equipada.', '', 'Equipar'],
+        ['Amuleto de la suerte', 'Otorga +1 a encontrar tesoros y abrir cerraduras.', 'https://i.etsystatic.com/11680929/r/il/96ecb4/2777284084/il_fullxfull.2777284084_9j4g.jpg', 'Equipar'],
+        ['Potenciador', 'Las aptitudes que se pueden usar 1xpiso, ahora pueden usarse 2xpiso; pero máximo 1xturno.', 'https://ae01.alicdn.com/kf/H37b5217f0d444fd4a66f6419afafe40cP/Amuleto-potenciador-de-la-ruleta-del-Palacio-de-las-estrellas-Feng-Shui-llavero-de-la-suma.jpg', 'Equipar'],
+        ['Poción de curación', 'Se usa en un turno, gastando 1d6 de acción, se descarta y cura: 5 (con 1 o 2 en 1d6), 6 (con 3 o 4 en 1d6) o 7 de daño (con 5 o 6 en 1d6).', 'https://db4sgowjqfwig.cloudfront.net/campaigns/157632/assets/775857/potion_of_healing.png?1504791538', 'Usar'],
+        ['Poción de restablecimiento', 'Se usa en un turno, gastando 1d6 de acción, se descarta, elimina un efecto negativo y cura: 1 (con 1 o 2 en 1d6), 2 (con 3 o 4 en 1d6) o 3 de daño (con 5 o 6 en 1d6).', 'https://cdn.nookazon.com/150x150/diablo2resurrected/potion/full_rejuv_potion.png', 'Usar'],
+        ['Orbe de curación', 'Cualquier jugador puede usar una acción (en su turno) para curarse a él o a un aliado, la cantidad que quiera (siempre que haya al menos esa cantidad en la reserva del orbe); luego resta de la reserva la cantidad usada.', 'https://i0.wp.com/www.sundarimagic.com/wp-content/uploads/2021/04/dmkrv4-35813064-cdc8-44f3-a80b-04112498785f.jpeg?fit=1024%2C1027&ssl=1', 'UsarOrbe'],
+        ['Arma de ninja','Otorga +1 al daño de la aptitud del Ninja ocre.', 'https://cdn.shopify.com/s/files/1/1099/4438/files/sai_1_480x480.png?v=1660016636', 'Equipar']
+      ]
     let imagenArmaCC = ['Guerrero', 'Paladín', 'Explorador', 'Alquimista'].includes(clase)?'https://www.larpwarriors.co.uk/pub/media/catalog/product/cache/8ae2250be418cee7f3ca9f58f71e1975/r/f/rfb_wing_sword_large.jpg':clase==='Bárbaro'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/battle_axe_weapon_elden_ring_wiki_guide_200px.png':clase==='Clérigo'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/mace_hammer_weapon_elden_ring_wiki_guide_200px.png':['Druida', 'Monje', 'Oráculo'].includes(clase)?'https://www.larpwarriors.co.uk/pub/media/catalog/product/cache/8ae2250be418cee7f3ca9f58f71e1975/w/o/wooden_quarterstaff_large.jpg':clase==='Caballero'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/lance_greatspear_weapon_elden_ring_wiki_guide_200px.png':'https://m.media-amazon.com/images/I/41vQsBoRKSL._AC_UF1000,1000_QL80_.jpg'
-    equipamiento[3][2] = imagenArmaCC
+    equip[3][2] = imagenArmaCC
     let imagenArmaDis = ['Guerrero', 'Explorador'].includes(clase)?'https://static.wikia.nocookie.net/arksurvivalevolved_gamepedia/images/6/65/Bow.png/revision/latest?cb=20150615094550':clase==='Ninja'?'https://i.ebayimg.com/images/g/ao0AAOSweyNZkQHd/s-l400.jpg':clase==='Alquimista'?'https://cdnb.artstation.com/p/assets/images/images/048/642/137/large/anna-smoke-red-magic-bottle.jpg?1650553489':clase==='Pícaro'?'https://cdn.webshopapp.com/shops/184325/files/353386562/1500x4000x3/practice-throwing-knives.jpg':'https://m.media-amazon.com/images/I/41hq2HsOlgL.jpg'
-    equipamiento[4][2] = imagenArmaDis
+    equip[4][2] = imagenArmaDis
     const [personaje, setPersonaje] = useState({nombre: nombre,
         ID: ID, 
         raza: raza,
@@ -45,7 +58,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [guardando, setGuardando] = useState(false)
     const [mercado, setMercado] = useState(false)
     let subirNiv = true
-    console.log(conjurosInicialesCombinadosfiltrados)
+    
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
@@ -318,8 +331,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <GiBackpack style={{color:'#7E603B', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <div style={{display:'flex', flexWrap:'wrap', alignItems:'center'}}><h2> {`Equipamiento: `}</h2><button disabled={mercado} onClick={handleMercado} style={{marginLeft:'10px', height:'fit-content', padding:'6px', fontSize:'20px'}}>Comprar</button></div>
             <div style={{display:'flex', flexFlow:'wrap'}}>
-            {personaje.equipamiento.map((o) => {
-                return o[3] > 0? <Objeto key={o[0]} nombre={o[0]} descripcion={o[1]} imagen={o[2]} cantidad={o[3]} opcion={o[4]} estado={o[5]} nota={o[6]} />:null
+            {personaje.equipamiento.map((o,i) => {
+                o = [...equip[i], ...o]
+                return o[4] > 0? <Objeto key={o[0]} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} />:null
                 })}
             </div>
             {mercado&&<Mercado personaje={personaje} setPersonaje={setPersonaje} mercado={mercado} setMercado={setMercado} clase={personaje.clase} raza={personaje.raza}/>}

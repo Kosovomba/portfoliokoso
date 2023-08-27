@@ -1,5 +1,5 @@
 import Image from "next/image"
-export default function Objeto({nombre, descripcion, imagen, cantidad, opcion, estado, nota}) {
+export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, estado, nota}) {
     let handles = {
         Usar: function(e) {
             e.preventDefault()

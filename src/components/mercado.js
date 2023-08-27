@@ -8,7 +8,7 @@ export default function Mercado({clase, raza, mercado, setMercado, personaje, se
     function handleComprar(e) {
         e.preventDefault()
         let equipamiento = personaje.equipamiento
-        equipamiento[e.target.value][3] = equipamiento[e.target.value][3] + 1
+        equipamiento[e.target.value][0] = equipamiento[e.target.value][0] + 1
         setPersonaje({...personaje, equipamiento: equipamiento})
         console.log(e.target.value)
     }
@@ -16,17 +16,17 @@ export default function Mercado({clase, raza, mercado, setMercado, personaje, se
         <div className={styles.container}>
             <button className={styles.c} onClick={handleClose}>< GiTireIronCross/></button>
             <h2 className={styles.t}>Mercado</h2>
-            <p className={styles.p}>Botas: Otorga +1 a VM.<button disabled={personaje.equipamiento[0][3] > 0} onClick={handleComprar} value='0' className={styles.b}>Comprar (1 PP)</button></p>
-            <p className={styles.p}>Armadura: Otorga +1 a RD, por armadura equipada.<button disabled={personaje.equipamiento[1][3] > 0} onClick={handleComprar} value='1' className={styles.b}>Comprar (2 PP)</button></p>
-            <p className={styles.p}>Armadura pesada (sólo guerrero, caballero o paladín, cuando tengan la aptitud correspondiente): Otorga +2 a RD, por armadura equipada.<button disabled={personaje.equipamiento[2][3] > 0} onClick={handleComprar} value='2' className={styles.b}>Comprar (3 PP)</button></p>
-            <p className={styles.p}>Arma cuerpo a cuerpo<button disabled={personaje.equipamiento[3][3] > 0} onClick={handleComprar} value='3' className={styles.b}>Comprar (3 PP)</button></p>
-            <p className={styles.p}>Arma a distancia<button disabled={personaje.equipamiento[4][3] > 0} onClick={handleComprar} value='4' className={styles.b}>Comprar (3 PP)</button></p>
-            <p className={styles.p}>Amuleto de la suerte: Otorga +1 a encontrar tesoros y abrir cerraduras.<button disabled={personaje.equipamiento[5][3] > 0} onClick={handleComprar} value='5' className={styles.b}>Comprar (3 PP)</button></p>
-            <p className={styles.p}>Potenciador<button disabled={personaje.equipamiento[6][3] > 0} onClick={handleComprar} value='6' className={styles.b}>Comprar (4 PP)</button></p>
-            <p className={styles.p}>Poción de curación<button disabled={personaje.equipamiento[7][3] + personaje.equipamiento[8][3]>= personaje.nivel} onClick={handleComprar} value='7' className={styles.b}>Comprar (1 PP)</button></p>
-            <p className={styles.p}>Poción de restablecimiento<button disabled={personaje.equipamiento[7][3] + personaje.equipamiento[8][3]>= personaje.nivel} onClick={handleComprar} value='8' className={styles.b}>Comprar (1 PP)</button></p>
+            <p className={styles.p}>Botas: Otorga +1 a VM.<button disabled={personaje.equipamiento[0][0] > 0} onClick={handleComprar} value='0' className={styles.b}>Comprar (1 PP)</button></p>
+            <p className={styles.p}>Armadura: Otorga +1 a RD, por armadura equipada.<button disabled={personaje.equipamiento[1][0] > 0} onClick={handleComprar} value='1' className={styles.b}>Comprar (2 PP)</button></p>
+            <p className={styles.p}>Armadura pesada (sólo guerrero, caballero o paladín, cuando tengan la aptitud correspondiente): Otorga +2 a RD, por armadura equipada.<button disabled={personaje.equipamiento[2][0] > 0} onClick={handleComprar} value='2' className={styles.b}>Comprar (3 PP)</button></p>
+            <p className={styles.p}>Arma cuerpo a cuerpo<button disabled={personaje.equipamiento[3][0] > 0} onClick={handleComprar} value='3' className={styles.b}>Comprar (3 PP)</button></p>
+            <p className={styles.p}>Arma a distancia<button disabled={personaje.equipamiento[4][0] > 0} onClick={handleComprar} value='4' className={styles.b}>Comprar (3 PP)</button></p>
+            <p className={styles.p}>Amuleto de la suerte: Otorga +1 a encontrar tesoros y abrir cerraduras.<button disabled={personaje.equipamiento[5][0] > 0} onClick={handleComprar} value='5' className={styles.b}>Comprar (3 PP)</button></p>
+            <p className={styles.p}>Potenciador<button disabled={personaje.equipamiento[6][0] > 0} onClick={handleComprar} value='6' className={styles.b}>Comprar (4 PP)</button></p>
+            <p className={styles.p}>Poción de curación<button disabled={personaje.equipamiento[7][0] + personaje.equipamiento[8][0]>= personaje.nivel} onClick={handleComprar} value='7' className={styles.b}>Comprar (1 PP)</button></p>
+            <p className={styles.p}>Poción de restablecimiento<button disabled={personaje.equipamiento[7][0] + personaje.equipamiento[8][0]>= personaje.nivel} onClick={handleComprar} value='8' className={styles.b}>Comprar (1 PP)</button></p>
             <p className={styles.p}>Orbe de curación<button onClick={handleComprar} value='9' className={styles.b}>Comprar (X PP)</button></p>
-            <p className={styles.p}>Arma de ninja<button disabled={personaje.equipamiento[10][3] > 0} onClick={handleComprar} value='10' className={styles.b}>Comprar (1 PP)</button></p>            
+            <p className={styles.p}>Arma de ninja<button disabled={personaje.equipamiento[10][0] > 0} onClick={handleComprar} value='10' className={styles.b}>Comprar (1 PP)</button></p>            
         </div>
     )
 }
