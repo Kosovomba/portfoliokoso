@@ -31,7 +31,7 @@ const [currentChar, setCurrentChar] = useState({index: 'personajes'})
         })        
     }
     function cargarP(aux, optio) {
-        let personajes = aux.map((p)=> p = {...p, apt2mas: JSON.parse(p.apt2mas), cdp: JSON.parse(p.cdp), apt1arr: JSON.parse(p.apt1arr)})
+        let personajes = aux.map((p)=> p = {...p, apt2mas: JSON.parse(p.apt2mas), cdp: JSON.parse(p.cdp), apt1arr: JSON.parse(p.apt1arr), equipamiento: JSON.parse(p.equipamiento)})
         setPers(personajes)
         setOpt(optio)
         setCarg(true)

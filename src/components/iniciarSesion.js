@@ -61,7 +61,7 @@ export default function IniciarSesion({usuarios, userNames, userEMails, show, se
     }
 
     return (
-        <div style={{display: 'grid', position: 'fixed', zIndex:1, top: '6.5vh', width:'100%', height:'100%', background:'rgba(0, 0, 0, 0.6)'}}>
+        <div style={{display: 'grid', position: 'fixed', zIndex:99, top: '6.5vh', width:'100%', height:'100%', background:'rgba(0, 0, 0, 0.6)'}}>
         <div style={{marginBottom: '350px', display: 'flex', flexDirection:'column', alignItems: 'center', background: 'white', minWidth:'fit-content', justifySelf:'center', padding:'20px', boxShadow:'4px 2px 2px black', width:'80%', maxWidth: '60vh', height:'fit-content', alignSelf:'center'}}>
             <button onClick={handleClose} style={{color: 'black', fontSize:'25px', border: 'solid 1px black', width:'40px', height: '40px', marginBottom: '0px',padding: '0px', position: 'absolute', alignSelf:'flex-end', justifyContent: 'center', alignItems: 'center', display: 'flex'}}><GiTireIronCross/></button>
             <form style={{display: 'flex', flexDirection:'column'}} onSubmit={(e)=> onSubmit(e)}>                                

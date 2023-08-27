@@ -8,9 +8,21 @@ import { useEffect, useState } from "react"
 export default function CharacterBuild() {
   const router = useRouter()
   const {raza, clase, nombre} = router.query
-  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0})
+  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0, equipamiento: [
+    ['Botas', 'Otorga +1 a VM.', 'https://i.ebayimg.com/thumbs/images/g/QsYAAOSwuU1hIKQj/s-l640.jpg', 0, 'Equipar', '', ''],
+    ['Armadura', 'Otorga +1 a RD, por armadura equipada.', 'https://mcishop.azureedge.net/mciassets/w_3_0078279_knights-torso-armor-with-gorget_550.png', 0, 'Equipar', '', ''],
+    ['Armadura pesada', 'Otorga +2 a RD, por armadura equipada.', 'https://image.lexica.art/md2/0a49a0fc-4d5d-4b5d-9da7-6ad3dd517776', 0, 'Equipar', '', ''],
+    ['Arma cuerpo a cuerpo', 'Otorga +1 al daño de ataques cuerpo a cuerpo, por arma equipada.', '', 0, 'Equipar', '', ''],
+    ['Arma a distancia', 'Otorga +1 al daño de ataques a distancia, por arma equipada.', '', 0, 'Equipar', '', ''],
+    ['Amuleto de la suerte', 'Otorga +1 a encontrar tesoros y abrir cerraduras.', 'https://i.etsystatic.com/11680929/r/il/96ecb4/2777284084/il_fullxfull.2777284084_9j4g.jpg', 0, 'Equipar', '', ''],
+    ['Potenciador', 'Las aptitudes que se pueden usar 1xpiso, ahora pueden usarse 2xpiso; pero máximo 1xturno.', 'https://ae01.alicdn.com/kf/H37b5217f0d444fd4a66f6419afafe40cP/Amuleto-potenciador-de-la-ruleta-del-Palacio-de-las-estrellas-Feng-Shui-llavero-de-la-suma.jpg', 0, 'Equipar', '', ''],
+    ['Poción de curación', 'Se usa en un turno, gastando 1d6 de acción, se descarta y cura: 5 (con 1 o 2 en 1d6), 6 (con 3 o 4 en 1d6) o 7 de daño (con 5 o 6 en 1d6).', 'https://db4sgowjqfwig.cloudfront.net/campaigns/157632/assets/775857/potion_of_healing.png?1504791538', 0, 'Usar', '', ''],
+    ['Poción de restablecimiento', 'Se usa en un turno, gastando 1d6 de acción, se descarta, elimina un efecto negativo y cura: 1 (con 1 o 2 en 1d6), 2 (con 3 o 4 en 1d6) o 3 de daño (con 5 o 6 en 1d6).', 'https://cdn.nookazon.com/150x150/diablo2resurrected/potion/full_rejuv_potion.png', 0, 'Usar', '', ''],
+    ['Orbe de curación', 'Cualquier jugador puede usar una acción (en su turno) para curarse a él o a un aliado, la cantidad que quiera (siempre que haya al menos esa cantidad en la reserva del orbe); luego resta de la reserva la cantidad usada.', 'https://i0.wp.com/www.sundarimagic.com/wp-content/uploads/2021/04/dmkrv4-35813064-cdc8-44f3-a80b-04112498785f.jpeg?fit=1024%2C1027&ssl=1', 0, 'UsarOrbe', '', ''],
+    ['Arma de ninja','Otorga +1 al daño de la aptitud del Ninja ocre.', 'https://cdn.shopify.com/s/files/1/1099/4438/files/sai_1_480x480.png?v=1660016636', 0, 'Equipar', '', '']
+  ]})
   const razaStats = characters.razas.filter((r) => r.raza === raza)[0]
-  const claseStats = characters.clases.filter((c) => c.clase === clase)[0]  
+  const claseStats = characters.clases.filter((c) => c.clase === clase)[0]
 
   let conjurosInicialesCombinados = [...characters.clases[3]["conjuros iniciales"], ...characters.clases[12]["conjuros iniciales"]]
   let hash = {}
@@ -41,11 +53,13 @@ export default function CharacterBuild() {
     if (cC){
       cC = JSON.parse(cC)
       setStats({
+        ...stats,
         nivel: cC.nivel,
         apt1Arr: cC.apt1arr,
         CDP: cC.cdp,
         apt2Mas: cC.apt2mas,
-        ID: cC.id
+        ID: cC.id,
+        equipamiento: cC.equipamiento
       })
     }
   },[])
@@ -54,7 +68,7 @@ export default function CharacterBuild() {
     return (
     <div className={styles[mainX]}>
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
-    {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas}/>:null}
+    {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas} equipamiento={stats.equipamiento}/>:null}
     </div>
     )    
 }

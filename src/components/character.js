@@ -11,10 +11,16 @@ import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter, GiBackpack} f
 import {BsPersonBoundingBox} from 'react-icons/bs'
 import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
+import Objeto from "./objeto"
+import Mercado from "./mercado"
 // import Characters from "./characters"
 
-export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas}) {
+export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
     const router = useRouter()
+    let imagenArmaCC = ['Guerrero', 'Paladín', 'Explorador', 'Alquimista'].includes(clase)?'https://www.larpwarriors.co.uk/pub/media/catalog/product/cache/8ae2250be418cee7f3ca9f58f71e1975/r/f/rfb_wing_sword_large.jpg':clase==='Bárbaro'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/battle_axe_weapon_elden_ring_wiki_guide_200px.png':clase==='Clérigo'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/mace_hammer_weapon_elden_ring_wiki_guide_200px.png':['Druida', 'Monje', 'Oráculo'].includes(clase)?'https://www.larpwarriors.co.uk/pub/media/catalog/product/cache/8ae2250be418cee7f3ca9f58f71e1975/w/o/wooden_quarterstaff_large.jpg':clase==='Caballero'?'https://eldenring.wiki.fextralife.com/file/Elden-Ring/lance_greatspear_weapon_elden_ring_wiki_guide_200px.png':'https://m.media-amazon.com/images/I/41vQsBoRKSL._AC_UF1000,1000_QL80_.jpg'
+    equipamiento[3][2] = imagenArmaCC
+    let imagenArmaDis = ['Guerrero', 'Explorador'].includes(clase)?'https://static.wikia.nocookie.net/arksurvivalevolved_gamepedia/images/6/65/Bow.png/revision/latest?cb=20150615094550':clase==='Ninja'?'https://i.ebayimg.com/images/g/ao0AAOSweyNZkQHd/s-l400.jpg':clase==='Alquimista'?'https://cdnb.artstation.com/p/assets/images/images/048/642/137/large/anna-smoke-red-magic-bottle.jpg?1650553489':clase==='Pícaro'?'https://cdn.webshopapp.com/shops/184325/files/353386562/1500x4000x3/practice-throwing-knives.jpg':'https://m.media-amazon.com/images/I/41hq2HsOlgL.jpg'
+    equipamiento[4][2] = imagenArmaDis
     const [personaje, setPersonaje] = useState({nombre: nombre,
         ID: ID, 
         raza: raza,
@@ -31,11 +37,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         claseStatsFiltrados: claseStats['apt2+'].filter((a)=>{            
             let apt2Nombres = apt2Mas.map((ap)=> ap.nombre)
             return !apt2Nombres.includes(a.nombre)
-        })
+        }),
+        equipamiento: equipamiento
     })
     const [usu, setUsu] = useState('')
     const [pestaña, setPestaña] = useState('opciones')
     const [guardando, setGuardando] = useState(false)
+    const [mercado, setMercado] = useState(false)
     let subirNiv = true
     console.log(conjurosInicialesCombinadosfiltrados)
     useEffect(()=> {
@@ -177,7 +185,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     function guardarPersonaje(e) {
         e.preventDefault()
         setGuardando(true)
-        let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP)}
+        let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP), equipamiento: JSON.stringify(personaje.equipamiento)}
         let option = 'add-character'
         localStorage.getItem('currentCharacter')?option = 'update-character': null
         // axios.post(`http://localhost:3000/api/${option}`, newCharacter)
@@ -192,7 +200,8 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 Usuario: usu,
                 apt1arr: personaje.apt1[2],
                 cdp: personaje.CDP,
-                apt2mas: personaje['apt2+']
+                apt2mas: personaje['apt2+'],
+                equipamiento: personaje.equipamiento
             }))
             console.log(localStorage.getItem('currentCharacter'))
             alert('Personaje guardado')
@@ -205,6 +214,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     function handlePestaña (e) {
         e.preventDefault()
         setPestaña(e.target.value)
+    }
+    function handleMercado(e) {
+        e.preventDefault()
+        setMercado(!mercado)
     }
     if (clase === 'Explorador' && personaje.apt1[2].length === 0) {        
         subirNiv = false
@@ -257,10 +270,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div name={'racialesEIniciales'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <p className={styles.description}> {`Aptitudes raciales: `}</p>
+            <h2> {`Aptitudes raciales: `}</h2>
             <p style={{maxWidth: '100%'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
             {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
-            <p className={styles.description}> {`Aptitudes cláseas de nivel 1: `}</p>
+            <h2> {`Aptitudes cláseas de nivel 1: `}</h2>
             {clase !== 'Explorador'? <p style={{maxWidth: '100%'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
             </div>
@@ -268,7 +281,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div name={'2oMayor'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <p className={styles.description}> {`Aptitudes de nivel 2 o mayor: `}</p>
+            <h2> {`Aptitudes de nivel 2 o mayor: `}</h2>
             {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
                 return <div key={`a2${ind}`}>
                 <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
@@ -295,7 +308,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div name={'cdp'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <p className={styles.description}> {`Clase de prestigio: `}</p>
+            <h2> {`Clase de prestigio: `}</h2>
             {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p>{personaje.CDP.hasOwnProperty('extra')?<ConjuroExtra personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={conjurosInicialesCombinadosfiltrados} />:null}<button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
             {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
@@ -303,7 +316,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div name={'equipamiento'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiBackpack style={{color:'#7E603B', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <p className={styles.description}> {`Equipamiento: `}</p>            
+            <div style={{display:'flex', flexWrap:'wrap', alignItems:'center'}}><h2> {`Equipamiento: `}</h2><button disabled={mercado} onClick={handleMercado} style={{marginLeft:'10px', height:'fit-content', padding:'6px', fontSize:'20px'}}>Comprar</button></div>
+            <div style={{display:'flex', flexFlow:'wrap'}}>
+            {personaje.equipamiento.map((o) => {
+                return o[3] > 0? <Objeto key={o[0]} nombre={o[0]} descripcion={o[1]} imagen={o[2]} cantidad={o[3]} opcion={o[4]} estado={o[5]} nota={o[6]} />:null
+                })}
+            </div>
+            {mercado&&<Mercado personaje={personaje} setPersonaje={setPersonaje} mercado={mercado} setMercado={setMercado} clase={personaje.clase} raza={personaje.raza}/>}
             </div>
             </div>
             </div>            

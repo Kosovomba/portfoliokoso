@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    /* background-size: cover; */
+    /* background-repeat: no-repeat; */
+    /* background-position: center center; */
+    background-image: url(https://i0.wp.com/textures.world/wp-content/uploads/2018/10/Dark-Wood-Seamless-Background-Texture-6-copy.jpg?resize=1140%2C759&ssl=1);
+    display: grid;
+    position: absolute;
+    z-index:2;
+    /* width: 1100; */
+    max-width: 110vh;
+    /* height:70%; */
+    color:white;
+    font-size:25px;
+    padding: 10px;
+    /* justify-content: center */
+}
+.p{
+    display: flex;
+    /* flex-flow: wrap; */
+    margin: 10px 0px 0px 0px;
+    border: 2px solid rgb(73, 23, 23);
+    background-color: rgba(71, 10, 10, 0.5);
+    height: fit-content;
+    align-items: center;
+}
+.t{
+    text-align: center;
+}
+.b{
+    height: fit-content;
+    width: 66px;
+    padding: 5px;
+    margin: 5px 5px 5px 20px;
+}
+.c{
+    display: flex;
+    color: black;
+    font-size:25px;
+    border: solid 1px black;
+    width:40px;
+    height: 40px;
+    margin: 2px 2px 0px 0px;
+    padding: 0px;
+    position: absolute;
+    justify-self:flex-end;
+    justify-content: center;
+    align-items: center;
+}
