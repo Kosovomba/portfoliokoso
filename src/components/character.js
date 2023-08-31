@@ -242,7 +242,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <p style={{marginTop:'7vh', fontSize: 40, display:'flex', justifyContent:'center', border: 'ridge #754421 17px', borderRadius: '20%', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
+            <p style={{marginTop:'7vh', fontSize: 40, display:'flex', justifyContent:'center', border: 'ridge #754421 17px', borderRadius: '20%', backgroundColor:'rgba(118,49,21,0.4)', maxWidth: 'fit-content', padding: '3px', marginBottom: '5px'}}>{`${nombre}: ${raza} ${clase}`}</p>
             </div>
             {/* <div style={{display:'flex', flexFlow:'wrap'}}> */}
             <div style={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>
@@ -336,9 +336,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 return o[4] > 0? <Objeto key={o[0]} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} />:null
                 })}
             </div>
+            </div>
+            </div>
             {mercado&&<Mercado personaje={personaje} setPersonaje={setPersonaje} mercado={mercado} setMercado={setMercado} clase={personaje.clase} raza={personaje.raza}/>}
-            </div>
-            </div>
             </div>            
         </div>
     )    

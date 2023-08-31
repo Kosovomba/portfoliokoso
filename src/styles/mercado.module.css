@@ -6,13 +6,15 @@
     background-image: url(https://i0.wp.com/textures.world/wp-content/uploads/2018/10/Dark-Wood-Seamless-Background-Texture-6-copy.jpg?resize=1140%2C759&ssl=1);
     display: grid;
     position: absolute;
+    align-self: center;
+    top: 80px;        
     z-index:2;
-    /* width: 1100; */
+    /* width: 96%; */
     max-width: 110vh;
     /* height:70%; */
     color:white;
     font-size:25px;
-    padding: 10px;
+    padding: 5px;
     /* justify-content: center */
 }
 .p{
@@ -26,6 +28,7 @@
 }
 .t{
     text-align: center;
+    /* margin: 1px; */
 }
 .b{
     height: fit-content;
@@ -40,7 +43,7 @@
     border: solid 1px black;
     width:40px;
     height: 40px;
-    margin: 2px 2px 0px 0px;
+    margin: 2px 20px 0px 0px;
     padding: 0px;
     position: absolute;
     justify-self:flex-end;

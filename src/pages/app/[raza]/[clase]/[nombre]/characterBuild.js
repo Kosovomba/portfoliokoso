@@ -45,7 +45,7 @@ export default function CharacterBuild() {
 
   setTimeout(()=> {
     setDisp('')
-  }, 1800)
+  }, 2100)
 
   useEffect(()=>{
     let cC = localStorage.getItem('currentCharacter')
@@ -66,7 +66,7 @@ export default function CharacterBuild() {
 
     return (
     <div className={styles[mainX]}>
-    {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%'}} alt='gif'/>:null}
+    {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%', pointerEvents:'none'}} alt='gif'/>:null}
     {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas} equipamiento={stats.equipamiento}/>:null}
     </div>
     )    
