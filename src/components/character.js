@@ -333,7 +333,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div style={{display:'flex', flexFlow:'wrap'}}>
             {personaje.equipamiento.map((o,i) => {
                 o = [...equip[i], ...o]
-                return o[4] > 0? <Objeto key={o[0]} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} />:null
+                return o[4] > 0? <Objeto key={o[0]} item={i} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} personaje={personaje} setPersonaje={setPersonaje}/>:null
                 })}
             </div>
             </div>

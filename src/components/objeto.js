@@ -1,9 +1,14 @@
 import Image from "next/image"
-export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, estado, nota}) {
+export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, estado, nota, item, personaje, setPersonaje}) {
     let handles = {
         Usar: function(e) {
             e.preventDefault()
-            console.log(e.target.value)
+            let cura = Math.ceil(Math.random()*3)
+            nombre === 'Poción de curación'? cura = (cura + 4)+' PV.':cura = cura + ' PV y eliminaste un efecto negativo.'
+            let equipamiento = personaje.equipamiento
+            equipamiento[e.target.value][0] = equipamiento[e.target.value][0] - 1
+            setPersonaje({...personaje, equipamiento: equipamiento})
+            alert(`Te curaste ${cura}`)
         },
         Dar: function(e) {
             e.preventDefault()
@@ -11,10 +16,19 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
         },
         Equipar: function(e) {
             e.preventDefault()
+            let equipamiento = personaje.equipamiento
+            equipamiento[e.target.value][1] = 'Equipado'
+            setPersonaje({...personaje, equipamiento: equipamiento})
+            alert(`Equipaste ${nombre}`)
             console.log(e.target.value)
         },
         Eliminar: function(e) {
             e.preventDefault()
+            let equipamiento = personaje.equipamiento
+            let eq = equipamiento[item][0]
+            equipamiento[item] = [eq-1, '', '']
+            setPersonaje({...personaje, equipamiento: equipamiento})
+            alert(`Eliminaste ${nombre}`)
             console.log(e.target.value)
         },
         UsarOrbe: function(e) {
@@ -36,7 +50,8 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
             <div style={{display:'flex', flexDirection:'column', marginLeft: '5px', position:'relative', top:'25px'}}>
                 <h3 style={{margin:'0px'}}>{nombre}:</h3>
                 <h4 style={{margin:'7px 0px 7px 0px'}}>{descripcion}</h4>
-                <button style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={opcion} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
+                {personaje.equipamiento[item][1]==='Equipado'?<h3 style={{color:'#CB0909'}}>(Equipado)</h3>:null}
+                <button disabled={personaje.equipamiento[item][1]==='Equipado'}style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={item} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
             </div>
         </div>
     )
