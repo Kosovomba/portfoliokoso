@@ -13,6 +13,7 @@ import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
 import Objeto from "./objeto"
 import Mercado from "./mercado"
+// import 
 // import Characters from "./characters"
 
 export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
@@ -249,13 +250,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div style={{display:'flex', flexFlow:'wrap', minWidth: '400px', justifyContent: 'center'}}>
                 <button onClick={handlePestaña} value={'opciones'} disabled={pestaña === 'opciones'?true:false} style={{height:'50px', width:'120px'}}>Opciones</button>
                 <button onClick={handlePestaña} value={'estadísticas'} disabled={pestaña === 'estadísticas'?true:false} style={{height:'50px', width:'120px'}}>Estadísticas</button>
-                <button onClick={handlePestaña} value={'racialesEIniciales'} disabled={pestaña === 'racialesEIniciales'?true:false} style={{height:'50px', width:'120px', padding:'3px', borderRadius:'2px', border:(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) ?'solid 2px red':pestaña === 'racialesEIniciales'?'solid 1px rgba(0,0,0,0.2)':'solid 1px rgba(0,0,0,0.5)'}}>Aptitudes raciales e iniciales{(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2)?<FaArrowDown style={{color:'red', fontSize: 22, position:'absolute', pointerEvents:'none'}}/>:null}</button>
-                <button onClick={handlePestaña} value={'2oMayor'} disabled={pestaña === '2oMayor'?true:false} style={{height:'50px', width:'120px', padding:'3px', borderRadius:'2px', border:personaje['apt2+'].length + 1 < personaje.nivel?'solid 2px red':pestaña === '2oMayor'?'solid 1px rgba(0,0,0,0.2)':'solid 1px rgba(0,0,0,0.5)'}}>Aptitudes de nivel 2 o mayor{personaje['apt2+'].length + 1 < personaje.nivel?<MdOutlinePlusOne style={{color:'red', fontSize: 25, position:'absolute', pointerEvents:'none'}}/>:null}</button>
+                <button onClick={handlePestaña} value={'racialesEIniciales'} disabled={pestaña === 'racialesEIniciales'?true:false} style={{height:'50px', width:'120px', border:(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) ?'solid 2px red':null}}>Aptitudes raciales e iniciales{(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2)?<FaArrowDown style={{color:'red', fontSize: 22, position:'absolute', pointerEvents:'none'}}/>:null}</button>
+                <button onClick={handlePestaña} value={'2oMayor'} disabled={pestaña === '2oMayor'?true:false} style={{height:'50px', width:'120px', border:personaje['apt2+'].length + 1 < personaje.nivel?'solid 2px red':null}}>Aptitudes de nivel 2 o mayor{personaje['apt2+'].length + 1 < personaje.nivel?<MdOutlinePlusOne style={{color:'red', fontSize: 25, position:'absolute', pointerEvents:'none'}}/>:null}</button>
                 <button onClick={handlePestaña} value={'cdp'} disabled={pestaña === 'cdp'?true:false} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
                 <button onClick={handlePestaña} value={'equipamiento'} disabled={pestaña === 'equipamiento'?true:false} style={{height:'50px', width:'120px'}}>Equipamiento</button>
             </div>
             <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'425px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
-            <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={images[`${raza}${clase}`]} alt='imagen'/>
+            <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={usu==='LadyLiz' && raza==='Humano' && clase === 'Druida'?'/imgs/lizy.jpg':images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>

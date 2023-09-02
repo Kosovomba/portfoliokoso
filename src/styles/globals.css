@@ -1,0 +1,21 @@
+button{
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.75);
+    /* border-color: rgb(30, 30, 30); */
+    border: 1.5px solid rgba(61, 122, 102, 0.7);
+    padding: 3px;
+    border-radius:2px;
+    /* color: aqua; */
+}
+button:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1.5px solid rgba(8, 16, 103, 0.5);
+    transition: 0.33s;
+    color: aquamarine;
+}
+button:disabled{
+    border: 1.5px solid rgba(30, 30, 30, 0.3);
+    cursor:auto;
+    background-color: rgba(255,255,255,0.6);
+    color: rgba(0,0,0,0.3)
+}
