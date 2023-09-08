@@ -247,7 +247,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             {/* <div style={{display:'flex', flexFlow:'wrap'}}> */}
             <div style={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>
-            <div style={{display:'flex', flexFlow:'wrap', minWidth: '400px', justifyContent: 'center'}}>
+            <div style={{display:'flex', flexFlow:'wrap', minWidth: '95%', justifyContent: 'center'}}>
                 <button onClick={handlePestaña} value={'opciones'} disabled={pestaña === 'opciones'?true:false} style={{height:'50px', width:'120px'}}>Opciones</button>
                 <button onClick={handlePestaña} value={'estadísticas'} disabled={pestaña === 'estadísticas'?true:false} style={{height:'50px', width:'120px'}}>Estadísticas</button>
                 <button onClick={handlePestaña} value={'racialesEIniciales'} disabled={pestaña === 'racialesEIniciales'?true:false} style={{height:'50px', width:'120px', border:(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) ?'solid 2px red':null}}>Aptitudes raciales e iniciales{(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2)?<FaArrowDown style={{color:'red', fontSize: 22, position:'absolute', pointerEvents:'none'}}/>:null}</button>
@@ -255,15 +255,15 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 <button onClick={handlePestaña} value={'cdp'} disabled={pestaña === 'cdp'?true:false} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
                 <button onClick={handlePestaña} value={'equipamiento'} disabled={pestaña === 'equipamiento'?true:false} style={{height:'50px', width:'120px'}}>Equipamiento</button>
             </div>
-            <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'425px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
-            <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="400" src={usu==='LadyLiz' && raza==='Humano' && clase === 'Druida'?'/imgs/lizy.jpg':images[`${raza}${clase}`]} alt='imagen'/>
+            <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'410px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
+            <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="385" src={usu==='LadyLiz' && raza==='Humano' && clase === 'Druida'?'/imgs/lizy.jpg':images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
-            <div name={'estadísticas'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
+            <div name={'estadísticas'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
             <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
@@ -281,7 +281,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 <p className={styles.description}> {`RD: ${personaje.RD}`}</p>
             </div>
             </div>
-            <div name={'racialesEIniciales'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
+            <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <h2> {`Aptitudes raciales: `}</h2>
@@ -292,7 +292,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
             </div>
             </div>
-            <div name={'2oMayor'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
+            <div name={'2oMayor'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <h2> {`Aptitudes de nivel 2 o mayor: `}</h2>
@@ -319,7 +319,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             )}</div>:null}
             </div>
             </div>
-            <div name={'cdp'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
+            <div name={'cdp'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <h2> {`Clase de prestigio: `}</h2>
@@ -327,7 +327,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
             </div>
-            <div name={'equipamiento'} style={{width:'425px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
+            <div name={'equipamiento'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
             <GiBackpack style={{color:'#7E603B', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
             <div style={{display:'flex', flexWrap:'wrap', alignItems:'center'}}><h2> {`Equipamiento: `}</h2><button disabled={mercado} onClick={handleMercado} style={{marginLeft:'10px', height:'fit-content', padding:'6px', fontSize:'20px'}}>Comprar</button></div>

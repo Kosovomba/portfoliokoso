@@ -63,8 +63,8 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
     }
     return (        
         <div style={{width: '100%', display: 'flex', flexFlow: 'wrap', marginTop:'8vh', justifyContent:'center'}}>
-            <div style={{display: 'flex', flexFlow: 'wrap'}}>
-            <form style={{width: '400px', maxHeight:'fit-content', padding: '7px'}} onSubmit={(e)=> onSubmit(e)}>
+            <div style={{display: 'flex', flexFlow: 'wrap', justifyContent:'center'}}>
+            <form style={{width: '375px', maxHeight:'fit-content', padding: '7px'}} onSubmit={(e)=> onSubmit(e)}>
                 <label style={{fontSize: 40}}>{(newChar.nombre===''? '': newChar.nombre + ': ' ) + (newChar.raza==='raza' || newChar.raza===''? '': newChar.raza + ' ' ) + (newChar.clase==='clase' || newChar.clase===''? '': newChar.clase ) || 'Personaje'}</label>
                 <input type="text" name='nombre' onChange={onInputChange} value={newChar.nombre} placeholder='Nombre... (Hasta 18 letras o comilla)'></input>
                 <select name='raza' onChange={onInputChange} value={newChar.raza}>
@@ -81,7 +81,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 </select>
                 <button style={{position:'relative', zIndex:0}} type="submit" disabled={errorName === false && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
             </form>            
-            <div style={{border: 'solid white 2px', padding: '10px', width: '410px', maxWidth: '99%'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: '380px', maxWidth: '99%'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Puntos de vida: ${character.clase.PV + character.raza.PV}`}</p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Velocidad de movimiento: ${character.clase.VM + character.raza.VM}`}</p>
@@ -94,8 +94,8 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             </div>            
             </div>
             </div>            
-            <Image style={{alignSelf: 'center', maxWidth: '99%', maxHeight: 410, border: 'solid white 2px'}} height='410' width="410" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>                
-            <div style={{border: 'solid white 2px', padding: '10px', width: 410, maxWidth: '99%'}}>
+            <Image style={{alignSelf: 'center', maxWidth: '99%', maxHeight: 410, border: 'solid white 2px'}} height='390' width="390" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>                
+            <div style={{border: 'solid white 2px', padding: '10px', width: 380, maxWidth: '99%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de raza: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.raza.PV}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.raza.VM}</p>
