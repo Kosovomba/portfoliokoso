@@ -81,7 +81,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
                 </select>
                 <button style={{position:'relative', zIndex:0}} type="submit" disabled={errorName === false && newChar.raza !=='' && newChar.clase !== ''?false:true}>Crear personaje</button>
             </form>            
-            <div style={{border: 'solid white 2px', padding: '10px', width: '380px', maxWidth: '99%'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: '390px', maxWidth: '99%'}}>
             <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de personaje: </p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Puntos de vida: ${character.clase.PV + character.raza.PV}`}</p>
             <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{`Velocidad de movimiento: ${character.clase.VM + character.raza.VM}`}</p>
@@ -95,7 +95,7 @@ export default function CreateCharacter({razas, clases, character, setCharacter}
             </div>
             </div>            
             <Image style={{alignSelf: 'center', maxWidth: '99%', maxHeight: 410, border: 'solid white 2px'}} height='390' width="390" src={images[`${newChar.raza}${newChar.clase}`]} alt='imagen'/>                
-            <div style={{border: 'solid white 2px', padding: '10px', width: 380, maxWidth: '99%'}}>
+            <div style={{border: 'solid white 2px', padding: '10px', width: 390, maxWidth: '99%'}}>
                 <p style={{marginBottom: 10, fontWeight: 700}}>Estadísticas de raza: </p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Puntos de vida: ' + character.raza.PV}</p>
                 <p style={{padding: '5px', margin: 2, marginBottom: 10, backgroundColor: 'rgb(3, 49, 57, 0.5)'}}>{'Velocidad de movimiento: ' + character.raza.VM}</p>

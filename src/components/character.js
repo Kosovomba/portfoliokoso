@@ -58,7 +58,18 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [pestaña, setPestaña] = useState('opciones')
     const [guardando, setGuardando] = useState(false)
     const [mercado, setMercado] = useState(false)
+    const [PVChange, setPVChange] = useState(0)
+    const [PVTotal, setPVTotal] = useState(0)
     let subirNiv = true
+    let RDDescription = personaje.equipamiento[2][1]==='Equipado'?'2 por armadura equipada':personaje.equipamiento[1][1]==='Equipado'?'1 por armadura equipada':null
+    // Semblante mayor de la deidad
+    // Guerero arcano
+    // Forma salvaje
+    // Combatiente de la naturaleza
+    // Aptitud animal
+    // Mutágeno
+    // Uso de ki (Ninja)
+    // Uso de ki mejorado (Ninja - bono de armadura)
     
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
@@ -233,6 +244,27 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         e.preventDefault()
         setMercado(!mercado)
     }
+
+    function setStat(i) {
+        let extra = 0
+        if (i === 1 & personaje.equipamiento[2][1] === 'Equipado') extra = extra + 2
+        else if (personaje.equipamiento[i][1] === 'Equipado') extra = extra + 1
+        return extra
+    }
+
+    function onPVChange(e) {
+        e.preventDefault()
+        setPVChange(e.target.value)
+    }
+
+    function handlePV(e) {
+        e.preventDefault()
+        let total = e.target.value === 'Sumar'?PVTotal + Math.floor(PVChange):PVTotal - PVChange
+        total > 0?total=0:total<0-personaje.PV?total=0-personaje.PV:null
+        setPVTotal(total)
+        setPVChange(0)
+    }
+
     if (clase === 'Explorador' && personaje.apt1[2].length === 0) {        
         subirNiv = false
         }
@@ -263,22 +295,32 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
-            <div name={'estadísticas'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
-            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>
+            <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
+            <div className={styles.card} style={{width:'70px', alignSelf: 'flex-start'}}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
             </div>
-            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
+            <div className={styles.card2}>
+            <div className={styles.card} style={{width:'70px'}}>            
                 <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
-                <p className={styles.description}> {`PV: ${personaje.PV}`}</p>
+                <p className={styles.description}> {`PV: ${personaje.PV + Math.floor(PVTotal)}/${personaje.PV}`}</p>
             </div>
-            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
+            <div style={{display:'flex', height:'fit-content', alignSelf:'center'}}>
+            <button value='Restar' onClick={handlePV}>Restar</button>
+            <input style={{width:'40px', height:'30px'}} type="number" min={0} onChange={onPVChange} value={PVChange}></input>
+            <button value='Sumar' onClick={handlePV}>Sumar</button>
+            </div>
+            </div>
+            <div className={styles.card} style={{width:'70px', alignSelf: 'flex-start'}}>            
                 <GiWalkingBoot style={{color:'#837367', fontSize: 40, alignSelf: 'center'}}/>
-                <p className={styles.description}> {`VM: ${personaje.VM}`}</p>
+                <p className={styles.description}> {`VM: ${personaje.VM + setStat(0)}`}</p>
             </div>
-            <div className={styles.card} style={{width:'60px', alignSelf: 'center'}}>            
+            <div className={styles.card2}>
+            <div className={styles.card} style={{width:'70px'}}>            
                 <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
-                <p className={styles.description}> {`RD: ${personaje.RD}`}</p>
+                <p className={styles.description}> {`RD: ${personaje.RD + setStat(1)}`}</p>
+            </div>
+            <p style={{alignSelf:'center'}}>{RDDescription}</p>
             </div>
             </div>
             <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
@@ -334,7 +376,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div style={{display:'flex', flexFlow:'wrap'}}>
             {personaje.equipamiento.map((o,i) => {
                 o = [...equip[i], ...o]
-                return o[4] > 0? <Objeto key={o[0]} item={i} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} personaje={personaje} setPersonaje={setPersonaje}/>:null
+                return o[4] > 0? <Objeto key={o[0]} item={i} nombre={o[0]} descripcion={o[1]} imagen={o[2]} opcion={o[3]} cantidad={o[4]} estado={o[5]} nota={o[6]} personaje={personaje} setPersonaje={setPersonaje} PVTotal={PVTotal} setPVTotal={setPVTotal}/>:null
                 })}
             </div>
             </div>

@@ -1,13 +1,18 @@
 import Image from "next/image"
-export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, estado, nota, item, personaje, setPersonaje}) {
+export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, estado, nota, item, personaje, setPersonaje, PVTotal, setPVTotal}) {
     let handles = {
         Usar: function(e) {
             e.preventDefault()
             let cura = Math.ceil(Math.random()*3)
+            let cura2 = cura + (nombre === 'Poción de curación'?4:0)
             nombre === 'Poción de curación'? cura = (cura + 4)+' PV.':cura = cura + ' PV y eliminaste un efecto negativo.'
             let equipamiento = personaje.equipamiento
             equipamiento[e.target.value][0] = equipamiento[e.target.value][0] - 1
+            let total = PVTotal + cura2
+            console.log(PVTotal, cura2, total)
+            total > 0?total=0:total<0-personaje.PV?total=0-personaje.PV:null
             setPersonaje({...personaje, equipamiento: equipamiento})
+            setPVTotal(total)
             alert(`Te curaste ${cura}`)
         },
         Dar: function(e) {
@@ -50,8 +55,8 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
             <div style={{display:'flex', flexDirection:'column', marginLeft: '5px', position:'relative', top:'25px'}}>
                 <h3 style={{margin:'0px'}}>{nombre}:</h3>
                 <h4 style={{margin:'7px 0px 7px 0px'}}>{descripcion}</h4>
-                {personaje.equipamiento[item][1]==='Equipado'?<h3 style={{color:'#CB0909'}}>(Equipado)</h3>:null}
-                <button disabled={personaje.equipamiento[item][1]==='Equipado'}style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={item} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
+                {estado==='Equipado'?<h3 style={{color:'#CB0909'}}>(Equipado)</h3>:null}
+                <button disabled={estado==='Equipado'}style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={item} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
             </div>
         </div>
     )
