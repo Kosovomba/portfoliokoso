@@ -61,7 +61,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [PVChange, setPVChange] = useState(0)
     const [PVTotal, setPVTotal] = useState(0)
     let subirNiv = true
-    let RDDescription = personaje.equipamiento[2][1]==='Equipado'?'2 por armadura equipada':personaje.equipamiento[1][1]==='Equipado'?'1 por armadura equipada':null
+    let RDDescription = personaje.equipamiento[2][1]==='Equipado'?'2 por armadura equipada.':personaje.equipamiento[1][1]==='Equipado'?'1 por armadura equipada.':null
     // Semblante mayor de la deidad
     // Guerero arcano
     // Forma salvaje
@@ -320,7 +320,11 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`RD: ${personaje.RD + setStat(1)}`}</p>
             </div>
-            <p style={{alignSelf:'center'}}>{RDDescription}</p>
+            <div>
+            <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: </p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{raza==='Enano'?'1 por raza.':'0 por raza.'}</p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{RDDescription}</p>
+            </div>
             </div>
             </div>
             <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>

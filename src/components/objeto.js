@@ -22,7 +22,7 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
         Equipar: function(e) {
             e.preventDefault()
             let equipamiento = personaje.equipamiento
-            equipamiento[e.target.value][1] = 'Equipado'
+            equipamiento[e.target.value][0] === 1? equipamiento[e.target.value][1] = 'Equipado':equipamiento[e.target.value][1] = 'Equipado x2'            
             setPersonaje({...personaje, equipamiento: equipamiento})
             alert(`Equipaste ${nombre}`)
             console.log(e.target.value)
@@ -55,8 +55,8 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
             <div style={{display:'flex', flexDirection:'column', marginLeft: '5px', position:'relative', top:'25px'}}>
                 <h3 style={{margin:'0px'}}>{nombre}:</h3>
                 <h4 style={{margin:'7px 0px 7px 0px'}}>{descripcion}</h4>
-                {estado==='Equipado'?<h3 style={{color:'#CB0909'}}>(Equipado)</h3>:null}
-                <button disabled={estado==='Equipado'}style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={item} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
+                {estado==='Equipado' || estado==='Equipado x2'?<h3 style={{color:'#CB0909'}}>{'('+estado+')'}</h3>:null}
+                <button disabled={estado==='Equipado x2' || (personaje.equipamiento[item][0] === 1 && estado==='Equipado')}style={{width:'fit-content', position:'absolute', left:opcion==='Equipar'?'145px':'163px', top:'167px'}} value={item} onClick={handles[opcion]}>{opcion==='UsarOrbe'?'Usar':opcion}</button>
             </div>
         </div>
     )
