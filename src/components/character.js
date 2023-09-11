@@ -7,7 +7,7 @@ import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart, AiOutlineArrowDown} from "react-icons/ai"
 import {FaArrowDown} from "react-icons/fa"
 import axios from "axios"
-import {GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter, GiBackpack} from "react-icons/gi"
+import {GiSai, GiBiceps, GiShoulderArmor, GiWalkingBoot, GiWingedScepter, GiBackpack, GiBroadsword, GiCrossedSwords, GiPocketBow} from "react-icons/gi"
 import {BsPersonBoundingBox} from 'react-icons/bs'
 import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
@@ -62,6 +62,14 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [PVTotal, setPVTotal] = useState(0)
     let subirNiv = true
     let RDDescription = personaje.equipamiento[2][1]==='Equipado'?'2 por armadura equipada.':personaje.equipamiento[1][1]==='Equipado'?'1 por armadura equipada.':null
+    let CCDescription = personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2'?'1 por arma equipada.':null
+    let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'1 por arma equipada.':null
+    let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'1 por arma a distancia equipada.':null
+    let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'1 por arma especial equipada.':null
+    let armaDisabled = (personaje['apt2+'].filter((a)=> a.nombre === 'Luchador versátil: ').length !== 0 || personaje.apt1[2][0] === 'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).')?'flex':'none'
+    let armaDisDisabled = (['Pícaro', 'Alquimista'].includes(clase) || (personaje.CDP.hasOwnProperty('extra') && ['Saeta', 'Rayo ', 'Proye'].includes(personaje.CDP.extra.slice(0,5))) || (clase !== 'Explorador' && personaje.apt1[2].filter((a)=>['Saeta', 'Rayo ', 'Proye'].includes(a.slice(0,5))).length !== 0) || (personaje['apt2+'].filter((a)=> a.nombre === 'Lanzador experimentado: ' && ['Rayo ', 'Proye'].includes(a.extra.slice(0,5))).length !== 0) || (personaje.apt1[2][0] === 'Arquería: Sus ataques pueden ser de rango 6 casillas.') || personaje['apt2+'].filter((a)=> ['Arquería: ', 'Luchador versátil: ', 'Uso mejorado de Ki: ', 'Armamento ninja: ', 'Misterios: '].includes(a.nombre)).length !== 0)?'flex':'none'
+    let aNinjaDisabled = personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Ninja ocre: '?'flex':'none'
+    
     // Semblante mayor de la deidad
     // Guerero arcano
     // Forma salvaje
@@ -247,8 +255,15 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
 
     function setStat(i) {
         let extra = 0
-        if (i === 1 & personaje.equipamiento[2][1] === 'Equipado') extra = extra + 2
-        else if (personaje.equipamiento[i][1] === 'Equipado') extra = extra + 1
+        if (i === 1 && personaje.equipamiento[2][1] === 'Equipado') extra = extra + 2
+        else if (personaje.equipamiento[i][1] === 'Equipado' || personaje.equipamiento[i][1] === 'Equipado x2') extra = extra + 1
+        if (i === 3 && raza === 'Orco') extra = extra + 1
+        return extra
+    }
+    function setStat2() {
+        let extra = 0        
+        if (personaje.equipamiento[3][1] === 'Equipado x2') extra = extra + 1
+        if (raza === 'Orco') extra = extra + 1
         return extra
     }
 
@@ -296,12 +311,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             </div>
             <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
-            <div className={styles.card} style={{width:'70px', alignSelf: 'flex-start'}}>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <div className={styles.card} style={{width:'98px', alignSelf: 'flex-start'}}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
             </div>
             <div className={styles.card2}>
-            <div className={styles.card} style={{width:'70px'}}>            
+            <div className={styles.card} style={{width:'98px'}}>            
                 <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`PV: ${personaje.PV + Math.floor(PVTotal)}/${personaje.PV}`}</p>
             </div>
@@ -311,19 +327,62 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <button value='Sumar' onClick={handlePV}>Sumar</button>
             </div>
             </div>
-            <div className={styles.card} style={{width:'70px', alignSelf: 'flex-start'}}>            
+            <div className={styles.card} style={{width:'98px', alignSelf: 'flex-start'}}>            
                 <GiWalkingBoot style={{color:'#837367', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`VM: ${personaje.VM + setStat(0)}`}</p>
             </div>
             <div className={styles.card2}>
-            <div className={styles.card} style={{width:'70px'}}>            
+            <div className={styles.card} style={{width:'98px'}}>            
                 <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`RD: ${personaje.RD + setStat(1)}`}</p>
             </div>
             <div>
             <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: </p>
-            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{raza==='Enano'?'1 por raza.':'0 por raza.'}</p>
+            {raza==='Enano'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>1 por raza.</p>:null}
             <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{RDDescription}</p>
+            </div>
+            </div>
+            <div className={styles.card2}>
+            <div className={styles.card} style={{width:'98px'}}>            
+                <GiBroadsword style={{color:'#9B9B9B', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`Daño: 1d6 ${setStat(3)!==0?`+ ${setStat(3)}`:''}`}</p>
+            </div>
+            <div>
+            <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque cuerpo a cuerpo) </p>
+            {raza==='Orco'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>1 por raza.</p>:null}
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription}</p>
+            </div>
+            </div>
+            <div className={styles.card2} style={{display: armaDisabled}}>
+            <div className={styles.card} style={{width:'98px'}}>            
+                <GiCrossedSwords style={{color:'#9B9B9B', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`Daño: 1d6 ${setStat2()!==0?`+ ${setStat2()}`:''}`}</p>
+            </div>
+            <div>
+            <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Combate con dos armas)</p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{raza==='Orco'?'1 por raza.':'0 por raza.'}</p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CC2Description}</p>
+            </div>
+            </div>
+            <div className={styles.card2} style={{display: armaDisDisabled}}>
+            <div className={styles.card} style={{width:'98px'}}>            
+                <GiPocketBow style={{transform: "rotate(270deg)", color:'#5E684C', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`Daño: 1d6 ${setStat(4)!==0?`+ ${setStat(4)}`:''}`}</p>
+            </div>
+            <div>
+            <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque a distancia)</p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{ADDescription}</p>
+            </div>
+            </div>
+            <div className={styles.card2} style={{display: aNinjaDisabled}}>
+            <div className={styles.card} style={{width:'98px'}}>            
+                <GiSai style={{color:'#8D8D8D', fontSize: 40, alignSelf: 'center'}}/>
+                <p className={styles.description}> {`Daño: 1d6 ${setStat(10)!==0?`+ ${setStat(10)}`:''}`}</p>
+            </div>
+            <div>
+            <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque de Ninja ocre)</p>
+            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{aNinjaDescription}</p>
+            </div>
             </div>
             </div>
             </div>
