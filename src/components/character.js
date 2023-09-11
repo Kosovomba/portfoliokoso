@@ -360,7 +360,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             <div>
             <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Combate con dos armas)</p>
-            <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{raza==='Orco'?'1 por raza.':'0 por raza.'}</p>
+            {raza==='Orco'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>1 por raza.</p>:null}
             <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CC2Description}</p>
             </div>
             </div>
