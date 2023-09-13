@@ -60,6 +60,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [mercado, setMercado] = useState(false)
     const [PVChange, setPVChange] = useState(0)
     const [PVTotal, setPVTotal] = useState(0)
+    const [aptitudes, setAptitudes] = useState(false)
     let subirNiv = true
     let RDDescription = personaje.equipamiento[2][1]==='Equipado'?'2 por armadura equipada.':personaje.equipamiento[1][1]==='Equipado'?'1 por armadura equipada.':null
     let CCDescription = personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2'?'1 por arma equipada.':null
@@ -71,7 +72,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     let aNinjaDisabled = personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Ninja ocre: '?'flex':'none'
     
     // Semblante mayor de la deidad
-    // Guerero arcano
+    // Guerrero arcano
     // Forma salvaje
     // Combatiente de la naturaleza
     // Aptitud animal
@@ -199,6 +200,11 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         setPersonaje({...personaje, CDPClase: aux, CDP: {}})
     }
 
+    function handleAptitudes(e) {
+        e.preventDefault()
+        setAptitudes(!aptitudes)
+    }
+
     function subirNivel(e) {
         e.preventDefault()        
         setPersonaje({...personaje, nivel: personaje.nivel + 1})
@@ -310,12 +316,39 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             </div>
-            <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>
-            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>            
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>            
+            
+                {aptitudes === false?<button className={styles.c} onClick={handleAptitudes}>Aptitudes</button>:
+                <div className={styles.d}>
+                    <p style={{fontSize:'20px', fontWeight:600, margin:0}}>Detalles de aptitudes:</p><button style={{position:'absolute', right:'3px', width:'25px', height:'25px'}} onClick={handleAptitudes}>X</button>
+                    <p style={{margin: 0, marginTop: 10}}> {`${personaje.apt1[0]} (nivel 1, raza)`}</p>
+                    {personaje.nivel >2?<p className={styles.apt}>{`${personaje.apt3} (nivel 3, raza)`}</p>:null}
+
+                    <p className={styles.apt}>{personaje.apt1[1]}</p>
+                    {personaje.apt1[2].length !== 0?personaje.apt1[2].map(a => <p key={a} className={styles.apt}>{a}</p>):null}
+                    
+                    {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
+                        return <div key={`a2${ind}`}>
+                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
+                        {a.nombre === 'Lanzador experimentado: ' && a.extra.length >0?<p>{a.extra}</p>:null }
+                        {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
+                        <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
+                            <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
+                            {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
+                        </div>
+                        </div>
+                        }):null}
+                    {personaje.CDP.nombre?<div>
+                        <p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p>
+                        {personaje.CDP.hasOwnProperty('extra')?<p>{personaje.CDP.extra}</p>:null}
+                        </div>:null}
+                </div>}
+            
             <div className={styles.card} style={{width:'98px', alignSelf: 'flex-start'}}>
                 <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
-            </div>
+            </div>            
             <div className={styles.card2}>
             <div className={styles.card} style={{width:'98px'}}>            
                 <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
