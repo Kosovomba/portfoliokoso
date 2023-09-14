@@ -1,4 +1,4 @@
-export default function conjuroInicial({personaje, setPersonaje, raza, clase, conjurosIniciales}) {    
+export default function conjuroInicial({personaje, setPersonaje, raza, clase, conjurosIniciales, bonos, setBonos}) {    
     let conjurosInicialesFiltrados = conjurosIniciales.filter((c) => 
     (c.requisitos ==='' || c.requisitos.slice(10) === raza.toLowerCase()))
     clase === 'Mago' && personaje.apt1[2].length === 1? conjurosInicialesFiltrados = conjurosInicialesFiltrados.filter((c) => 
@@ -16,6 +16,9 @@ export default function conjuroInicial({personaje, setPersonaje, raza, clase, co
         e.preventDefault()
         apt1Conjuros[2] = []        
         setPersonaje({...personaje, apt1: apt1Conjuros})
+        let setBo = {}
+        Object.keys(bonos).forEach(b=>setBo[b] = false)
+        setBonos(setBo)
     }
 
     return (

@@ -1,4 +1,4 @@
-export default function conjuroExtra({personaje, setPersonaje, raza, clase, conjurosIniciales}) {        
+export default function conjuroExtra({personaje, setPersonaje, raza, clase, conjurosIniciales, bonos, setBonos}) {        
     let conjurosFiltradosPorRaza = conjurosIniciales.filter((c) => 
     (c.requisitos ==='' || c.requisitos.slice(10) === raza.toLowerCase()))    
     clase === 'Mago' && personaje.apt1[2].length === 2? conjurosFiltradosPorRaza = conjurosFiltradosPorRaza.filter((c) => 
@@ -26,6 +26,7 @@ export default function conjuroExtra({personaje, setPersonaje, raza, clase, conj
         let CDP = personaje.CDP
         CDP.extra = ''
         setPersonaje({...personaje, CDP: CDP})
+        setBonos({...bonos, armaduraMagica: false})
     }
     function handleEdit2(e) {
         e.preventDefault()
@@ -33,6 +34,9 @@ export default function conjuroExtra({personaje, setPersonaje, raza, clase, conj
         let ind = personaje['apt2+'].map(a => a.nombre).indexOf('Lanzador experimentado: ')
         aux[ind].extra = ''
         setPersonaje({...personaje, 'apt2+': aux})
+        let setBo = {}
+        Object.keys(bonos).forEach(b=>setBo[b] = false)
+        setBonos(setBo)
     }
 
     return (
