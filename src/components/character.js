@@ -75,12 +75,12 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     let subirNiv = true
     let RDDescription = bonos.armaduraMagica===false? (personaje.equipamiento[2][1]==='Equipado'?'Armadura equipada: 2.':personaje.equipamiento[1][1]==='Equipado'?'Armadura equipada: 1.':''):(bonos.armaduraMagicax2)?'Armadura (no equipada, bono Cdp): 3.':'Armadura (no equipada): 2.'
     let RD2Description = bonos.ki?((personaje['apt2+'].filter((a)=> a.nombre === 'uso de ki mejorado: ').length !== 0)?'Uso de ki: 2 (1 de armadura).':'Uso de ki: 1.'):bonos.semblanteMayor?'Semblante mayor: 1':bonos.pociones?'Mutágeno: 1':bonos.formaSalvaje? (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Combatiente de la naturaleza: '?'Forma salvaje: 2 (1 por Cdp).':'Forma salvaje: 1.'):bonos.animalRD?'Aptitud animal: 1.':''
-    let CCDescription = bonos.formaSalvaje?((personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0?'Forma salvaje mayor: 2.':'Forma salvaje: 1.'):(personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2')?'1 por arma equipada.':''
-    let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'1 por arma equipada.':null
-    let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'1 por arma a distancia equipada.':null
-    let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'1 por arma especial equipada.':null
+    let CCDescription = bonos.formaSalvaje?((personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0?'Forma salvaje mayor: 2.':'Forma salvaje: 1.'):(personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2')?'Arma equipada: 1.':''
+    let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'Arma equipada: 1.':null
+    let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'Arma a distancia equipada: 1.':null
+    let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'Arma especial equipada: 1.':null
     let armaDisabled = (personaje['apt2+'].filter((a)=> a.nombre === 'Luchador versátil: ').length !== 0 || personaje.apt1[2][0] === 'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).')?'flex':'none'
-    let armaDisDisabled = (['Pícaro', 'Alquimista'].includes(clase) || (personaje.CDP.hasOwnProperty('extra') && ['Saeta', 'Rayo ', 'Proye'].includes(personaje.CDP.extra.slice(0,5))) || (clase !== 'Explorador' && personaje.apt1[2].filter((a)=>['Saeta', 'Rayo ', 'Proye'].includes(a.slice(0,5))).length !== 0) || (personaje['apt2+'].filter((a)=> a.nombre === 'Lanzador experimentado: ' && ['Rayo ', 'Proye'].includes(a.extra.slice(0,5))).length !== 0) || (personaje.apt1[2][0] === 'Arquería: Sus ataques pueden ser de rango 6 casillas.') || personaje['apt2+'].filter((a)=> ['Arquería: ', 'Luchador versátil: ', 'Uso mejorado de Ki: ', 'Armamento ninja: ', 'Misterios: '].includes(a.nombre)).length !== 0)?'flex':'none'
+    let armaDisDisabled = (['Pícaro', 'Alquimista'].includes(clase) || (personaje.CDP.hasOwnProperty('extra') && ['Saeta', 'Rayo ', 'Proye'].includes(personaje.CDP.extra.slice(0,5))) || (clase !== 'Explorador' && personaje.apt1[2].filter((a)=>['Saeta', 'Rayo ', 'Proye'].includes(a.slice(0,5))).length !== 0) || (personaje['apt2+'].filter((a)=> a.nombre === 'Lanzador experimentado: ' && ['Rayo ', 'Proye'].includes(a.extra.slice(0,5))).length !== 0) || (personaje.apt1[2][0] === 'Arquería: Sus ataques pueden ser de rango 6 casillas.') || personaje['apt2+'].filter((a)=> ['Arquería: ', 'Luchador versátil: ', 'Uso mejorado de Ki: ', 'Armamento ninja: ', 'Misterios: '].includes(a.nombre) && (a.nombre === 'Armamento ninja: '?personaje.equipamiento[4][1] === 'Equipado':true)).length !== 0)?'flex':'none'
     let aNinjaDisabled = personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Ninja ocre: '?'flex':'none'
     
     // 'Maestría con arma cuerpo a cuerpo: '
@@ -92,8 +92,11 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     // 'Arma de la deidad (conjuro): '
     // 'Semblante de la deidad (conjuro): '
     // Forma salvaje
-    // Forma salvaje mayor: 
-    // 'Aptitud animal (conjuro): '
+    // Forma salvaje mayor:
+    // 'Puño iluminado: '
+    // 'Montura: '
+    // 'Mutágeno mejorado: '
+    // 'Armamento ninja: '
 
 
     useEffect(()=> {
@@ -347,10 +350,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         setBonos({...bonos, [e.target.value]: !bonos[e.target.value]})
     }
 
-    function handleAA(e) {
-        e.preventDefault()
-        setBonos({...bonos, animalVM: !bonos.animalVM})
-    }
+    // function handleAA(e) {
+    //     e.preventDefault()
+    //     setBonos({...bonos, animalVM: !bonos.animalVM})
+    // }
 
     if (clase === 'Explorador' && personaje.apt1[2].length === 0) {        
         subirNiv = false
@@ -402,7 +405,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         if (a.nombre === 'Pociones: ' ) ap = 'pociones'
                         if (a.nombre === 'Aptitud animal (conjuro): ') ap = 'animal'
                         return <div key={`a2${ind}`}>
-                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<button value={ap} onClick={handleAI} style={{display: ap !== ''?'block':'none'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button><button value={'animalVM'} onClick={handleAA} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
+                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<button value={ap} onClick={handleAI} style={{display: ap !== ''?'block':'none'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
                         {a.nombre === 'Lanzador experimentado: ' && a.extra.length >0?<div><span>{a.extra}</span><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>:null }
                         {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
                         <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
@@ -488,6 +491,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div>
             <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque de Ninja ocre)</p>
             <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{aNinjaDescription}</p>
+            {personaje.equipamiento[10][1] === 'Equipado'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{'Armamento ninja: 1.'}</p>:null}
             </div>
             </div>
             </div>
