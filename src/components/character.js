@@ -70,12 +70,18 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         semblanteMayor: false, 
         pociones: false, 
         animalRD: false, 
-        animalVM: false
+        animalVM: false,
+        armaDeidad: false
         })
+    const [armaD, setArmaD] = useState(0)
     let subirNiv = true
     let RDDescription = bonos.armaduraMagica===false? (personaje.equipamiento[2][1]==='Equipado'?'Armadura equipada: 2.':personaje.equipamiento[1][1]==='Equipado'?'Armadura equipada: 1.':''):(bonos.armaduraMagicax2)?'Armadura (no equipada, bono Cdp): 3.':'Armadura (no equipada): 2.'
     let RD2Description = bonos.ki?((personaje['apt2+'].filter((a)=> a.nombre === 'uso de ki mejorado: ').length !== 0)?'Uso de ki: 2 (1 de armadura).':'Uso de ki: 1.'):bonos.semblanteMayor?'Semblante mayor: 1':bonos.pociones?'Mutágeno: 1':bonos.formaSalvaje? (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Combatiente de la naturaleza: '?'Forma salvaje: 2 (1 por Cdp).':'Forma salvaje: 1.'):bonos.animalRD?'Aptitud animal: 1.':''
-    let CCDescription = bonos.formaSalvaje?((personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0?'Forma salvaje mayor: 2.':'Forma salvaje: 1.'):(personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2')?'Arma equipada: 1.':''
+    let CCDescription = bonos.formaSalvaje?((personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0?'Forma salvaje mayor: 2.':'Forma salvaje: 1.'):
+        (personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2')?'Arma equipada: 1.':
+            (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Puño iluminado: ')?'Puño iluminado: 1.':''
+    let CCDescription2 = bonos.semblante? 'Semblante: 1.':null
+    let CCDescription3 = bonos.armaDeidad? `Arma de la deidad: ${armaD}.`:null
     let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'Arma equipada: 1.':null
     let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'Arma a distancia equipada: 1.':null
     let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'Arma especial equipada: 1.':null
@@ -89,15 +95,6 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     // 'Furia: '
     // 'Maestría en conjuros ofensivos: '
     // 'Mago de batalla: '
-    // 'Arma de la deidad (conjuro): '
-    // 'Semblante de la deidad (conjuro): '
-    // Forma salvaje
-    // Forma salvaje mayor:
-    // 'Puño iluminado: '
-    // 'Montura: '
-    // 'Mutágeno mejorado: '
-    // 'Armamento ninja: '
-
 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
@@ -300,9 +297,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
 
     function setACC() {
         let extra = 0
-        if ((personaje.equipamiento[3][1] === 'Equipado' || personaje.equipamiento[3][1] === 'Equipado x2') && !bonos.formaSalvaje) extra = extra + 1
-        if (bonos.semblante || (bonos.pociones && personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ').length !== 0)) extra = extra + 1
+        if ((personaje.equipamiento[3][1] === 'Equipado' || personaje.equipamiento[3][1] === 'Equipado x2' || (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Puño iluminado: ')) && !bonos.formaSalvaje) extra = extra + 1        
+        if (bonos.semblante || (personaje['apt2+'].filter((a)=> a.nombre === 'Montura: ')).length !== 0 ||(bonos.pociones && (personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ')).length !== 0) || (personaje.equipamiento[3][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0) || (bonos.pociones && personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ').length !== 0)) extra = extra + 1
         if (bonos.formaSalvaje)(personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0? extra = extra + 2:extra = extra + 1
+        if (personaje.equipamiento[3][1] === 'Equipado' && bonos.armaDeidad) extra = extra + armaD
         if (raza === 'Orco') extra = extra + 1
         return extra
     }
@@ -344,10 +342,19 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
 
     function handleAI(e) {
         e.preventDefault()
+        if (e.target.value === 'armaDeidad') {
+            if (!bonos.armaDeidad){
+            let bon = Math.ceil(Math.random()*3)
+            setArmaD(bon)
+            alert(`Arma de la deidad: Obtuviste +${bon} al daño`)
+            } else setArmaD(0)
+        }
         e.target.value === 'armaduraMagica' && bonos.armaduraMagica && bonos.armaduraMagicax2?
         setBonos({...bonos, armaduraMagica: false, armaduraMagicax2: false}):
         e.target.value === 'animal'?setBonos({...bonos, animalRD: !bonos.animalRD}):
-        setBonos({...bonos, [e.target.value]: !bonos[e.target.value]})
+        e.target.value === 'semblanteMayor'?setBonos({...bonos, semblanteMayor: !bonos.semblanteMayor, semblante: bonos.semblante !== bonos.semblanteMayor? bonos.semblante: !bonos.semblante}):
+        e.target.value === 'semblante' && bonos.semblante && (personaje['apt2+'].filter((a)=> a.nombre === 'Semblante mayor de la deidad (conjuro): ')).length !== 0?setBonos({...bonos, semblanteMayor: bonos.semblante !== bonos.semblanteMayor?bonos.semblanteMayor:!bonos.semblanteMayor, semblante: !bonos.semblante}):
+        setBonos({...bonos, [e.target.value]: !bonos[e.target.value]})        
     }
 
     // function handleAA(e) {
@@ -404,8 +411,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         if (a.nombre === 'Semblante de la deidad (conjuro): ' ) ap = 'semblante'
                         if (a.nombre === 'Pociones: ' ) ap = 'pociones'
                         if (a.nombre === 'Aptitud animal (conjuro): ') ap = 'animal'
+                        if (a.nombre === 'Arma de la deidad (conjuro): ') ap = 'armaDeidad'
                         return <div key={`a2${ind}`}>
-                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<button value={ap} onClick={handleAI} style={{display: ap !== ''?'block':'none'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
+                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<button value={ap} disabled={ap === 'armaDeidad' && personaje.equipamiento[3][1] !== 'Equipado'? true:false} onClick={handleAI} style={{display: ap !== ''?'block':'none'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
                         {a.nombre === 'Lanzador experimentado: ' && a.extra.length >0?<div><span>{a.extra}</span><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>:null }
                         {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
                         <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
@@ -420,13 +428,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         </div>:null}
                 </div>}
             
-            <div className={styles.card} style={{width:'98px', alignSelf: 'flex-start'}}>
-                <GiBiceps style={{color:'brown', fontSize: 38, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px', alignSelf: 'flex-start'}}>
+                <GiBiceps style={{color:'brown', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Nivel: ${personaje.nivel}`}</p>
             </div>            
             <div className={styles.card2}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <AiFillHeart style={{color:'red', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <AiFillHeart style={{color:'red', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`PV: ${personaje.PV + Math.floor(PVTotal)}/${personaje.PV}`}</p>
             </div>
             <div style={{display:'flex', height:'fit-content', alignSelf:'center'}}>
@@ -435,13 +443,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <button value='Sumar' onClick={handlePV}>Sumar</button>
             </div>
             </div>
-            <div className={styles.card} style={{width:'98px', alignSelf: 'flex-start'}}>            
-                <GiWalkingBoot style={{color:'#837367', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px', alignSelf: 'flex-start'}}>            
+                <GiWalkingBoot style={{color:'#837367', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`VM: ${personaje.VM + setVM()}`}</p>
             </div>
             <div className={styles.card2}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <GiShoulderArmor style={{color:'#855029', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <GiShoulderArmor style={{color:'#855029', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`RD: ${personaje.RD + setRD()}`}</p>
             </div>
             <div>
@@ -452,19 +460,24 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             </div>
             <div className={styles.card2}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <GiBroadsword style={{color:'#9B9B9B', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <GiBroadsword style={{color:'#9B9B9B', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Daño: 1d6 ${setACC()!==0?`+ ${setACC()}`:''}`}</p>
             </div>
             <div>
             <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque cuerpo a cuerpo) </p>
-            {raza==='Orco'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>1 por raza.</p>:null}
+            {raza==='Orco'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Raza: 1.</p>:null}
             <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription}</p>
+            {CCDescription2?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription2}</p>:null}
+            {personaje.equipamiento[3][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Armamento ninja: 1.</p>:null}
+            {bonos.pociones && (personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Mutágeno mejorado: 1.</p>:null}
+            {bonos.armaDeidad && personaje.equipamiento[3][1] === 'Equipado'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription3}</p>:null}
+            {(personaje['apt2+'].filter((a)=> a.nombre === 'Montura: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Montura: 1.</p>:null}
             </div>
             </div>
             <div className={styles.card2} style={{display: armaDisabled}}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <GiCrossedSwords style={{color:'#9B9B9B', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <GiCrossedSwords style={{color:'#9B9B9B', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Daño: 1d6 ${setACC2()!==0?`+ ${setACC2()}`:''}`}</p>
             </div>
             <div>
@@ -474,8 +487,8 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             </div>
             <div className={styles.card2} style={{display: armaDisDisabled}}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <GiPocketBow style={{transform: "rotate(270deg)", color:'#5E684C', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <GiPocketBow style={{transform: "rotate(270deg)", color:'#5E684C', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Daño: 1d6 ${setAD()!==0?`+ ${setAD()}`:''}`}</p>
             </div>
             <div>
@@ -484,14 +497,14 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             </div>
             </div>
             <div className={styles.card2} style={{display: aNinjaDisabled}}>
-            <div className={styles.card} style={{width:'98px'}}>            
-                <GiSai style={{color:'#8D8D8D', fontSize: 40, alignSelf: 'center'}}/>
+            <div className={styles.card} style={{width:'98px', height:'86px'}}>            
+                <GiSai style={{color:'#8D8D8D', fontSize: 50, alignSelf: 'center'}}/>
                 <p className={styles.description}> {`Daño: 1d6 ${setANinja()!==0?`+ ${setANinja()}`:''}`}</p>
             </div>
             <div>
             <p style={{alignSelf:'flex-start', margin:'2px'}}>Detalles: (Ataque de Ninja ocre)</p>
             <p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{aNinjaDescription}</p>
-            {personaje.equipamiento[10][1] === 'Equipado'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{'Armamento ninja: 1.'}</p>:null}
+            {personaje.equipamiento[10][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{'Armamento ninja: 1.'}</p>:null}
             </div>
             </div>
             </div>
