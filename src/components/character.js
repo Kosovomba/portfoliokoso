@@ -80,8 +80,8 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     let CCDescription = bonos.formaSalvaje?((personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0?'Forma salvaje mayor: 2.':'Forma salvaje: 1.'):
         (personaje.equipamiento[3][1]==='Equipado' || personaje.equipamiento[3][1]==='Equipado x2')?'Arma equipada: 1.':
             (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Puño iluminado: ')?'Puño iluminado: 1.':''
-    let CCDescription2 = bonos.semblante? 'Semblante: 1.':null
-    let CCDescription3 = bonos.armaDeidad? `Arma de la deidad: ${armaD}.`:null
+    let CCDescription2 = bonos.semblante? 'Semblante: 1.':(personaje.equipamiento[3][1]==='Equipado' && (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Mago de batalla: '))?'Mago de batalla: 1.':(personaje.equipamiento[3][1]==='Equipado' && (personaje['apt2+'].filter(a=>a.nombre === 'Arma mágica: ').length !== 0))?'Arma mágica: 1.':(personaje['apt2+'].filter(a=>a.nombre === 'Maestría con arma cuerpo a cuerpo: ').length !== 0)?'Maestría: 1.':null
+    let CCDescription3 = bonos.armaDeidad? `Arma de la deidad: ${armaD}.`:(PVTotal<=-10 && (personaje['apt2+'].filter((a)=> a.nombre === 'Furia: ').length !== 0))?'Furia: 2.':(Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Maestro en armas: ')?'Maestro en armas: 1.':''
     let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'Arma equipada: 1.':null
     let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'Arma a distancia equipada: 1.':null
     let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'Arma especial equipada: 1.':null
@@ -89,12 +89,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     let armaDisDisabled = (['Pícaro', 'Alquimista'].includes(clase) || (personaje.CDP.hasOwnProperty('extra') && ['Saeta', 'Rayo ', 'Proye'].includes(personaje.CDP.extra.slice(0,5))) || (clase !== 'Explorador' && personaje.apt1[2].filter((a)=>['Saeta', 'Rayo ', 'Proye'].includes(a.slice(0,5))).length !== 0) || (personaje['apt2+'].filter((a)=> a.nombre === 'Lanzador experimentado: ' && ['Rayo ', 'Proye'].includes(a.extra.slice(0,5))).length !== 0) || (personaje.apt1[2][0] === 'Arquería: Sus ataques pueden ser de rango 6 casillas.') || personaje['apt2+'].filter((a)=> ['Arquería: ', 'Luchador versátil: ', 'Uso mejorado de Ki: ', 'Armamento ninja: ', 'Misterios: '].includes(a.nombre) && (a.nombre === 'Armamento ninja: '?personaje.equipamiento[4][1] === 'Equipado':true)).length !== 0)?'flex':'none'
     let aNinjaDisabled = personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Ninja ocre: '?'flex':'none'
     
-    // 'Maestría con arma cuerpo a cuerpo: '
-    // 'Maestro en armas: '
-    // 'Arma mágica: '
-    // 'Furia: '
-    // 'Maestría en conjuros ofensivos: '
-    // 'Mago de batalla: '
+
 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
@@ -298,9 +293,11 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     function setACC() {
         let extra = 0
         if ((personaje.equipamiento[3][1] === 'Equipado' || personaje.equipamiento[3][1] === 'Equipado x2' || (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Puño iluminado: ')) && !bonos.formaSalvaje) extra = extra + 1        
-        if (bonos.semblante || (personaje['apt2+'].filter((a)=> a.nombre === 'Montura: ')).length !== 0 ||(bonos.pociones && (personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ')).length !== 0) || (personaje.equipamiento[3][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0) || (bonos.pociones && personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ').length !== 0)) extra = extra + 1
+        if (bonos.semblante || (personaje['apt2+'].filter((a)=> (a.nombre === 'Montura: ' || a.nombre === 'Maestría con arma cuerpo a cuerpo: '))).length !== 0 ||(bonos.pociones && (personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ')).length !== 0) || (personaje.equipamiento[3][1] === 'Equipado' && ((personaje['apt2+'].filter((a)=> (a.nombre === 'Armamento ninja: ' || a.nombre === 'Arma mágica: '))).length !== 0 || (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Mago de batalla: ')))) extra = extra + 1
         if (bonos.formaSalvaje)(personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ')).length !== 0? extra = extra + 2:extra = extra + 1
         if (personaje.equipamiento[3][1] === 'Equipado' && bonos.armaDeidad) extra = extra + armaD
+        if (personaje['apt2+'].filter(a=> a.nombre === 'Furia: ').length !== 0 && PVTotal <=-10) extra = extra + 2
+        if (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Maestro en armas: ') extra = extra + 1
         if (raza === 'Orco') extra = extra + 1
         return extra
     }
@@ -471,7 +468,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             {CCDescription2?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription2}</p>:null}
             {personaje.equipamiento[3][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Armamento ninja: 1.</p>:null}
             {bonos.pociones && (personaje['apt2+'].filter((a)=> a.nombre === 'Mutágeno mejorado: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Mutágeno mejorado: 1.</p>:null}
-            {bonos.armaDeidad && personaje.equipamiento[3][1] === 'Equipado'?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription3}</p>:null}
+            {CCDescription3?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{CCDescription3}</p>:null}
             {(personaje['apt2+'].filter((a)=> a.nombre === 'Montura: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Montura: 1.</p>:null}
             </div>
             </div>
