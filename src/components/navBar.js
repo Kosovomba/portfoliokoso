@@ -45,7 +45,7 @@ export default function NavBar() {
             {info.userOptions === true? <UserOptions/>:null}
             </div>
         </div>
-            {show === true && info.usuarios.length !== 0?<IniciarSesion show ={show} setShow={setShow} usuarios={info.usuarios} userNames={info.userNames} userEMails={info.userEMails} />: null}
+            {show === true && info.usuarios.length !== 0?<IniciarSesion info={info} setInfo={setInfo} show ={show} setShow={setShow} usuarios={info.usuarios} userNames={info.userNames} userEMails={info.userEMails} />: null}
         </div>
     )
 }

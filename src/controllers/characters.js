@@ -162,7 +162,7 @@ let characters = {
                 {requisitos: 'sólo para elfo', nombre: 'Rayo dividido: ', aptitud: "Realiza un ataque de 1d6 que ignora hasta 1 de RD de armadura equipada. El ataque se divide en dos y puede impactar a dos objetivos diferentes hasta a 6 casillas de distancia (no pueden impactar a un mismo objetivo). Se consideran dos ataques, pero el daño de ambos es el mismo (el resultado del d6 + cualquier bono que corresponda)."}
                                        ],
                 "apt2+": [{requisitos: '', nombre: 'Herencia dragonil: ', aptitud: "Si usa al menos un conjuro de fuego (saeta de fuego, bola de fuego), obtiene el siguiente beneficio hasta el inicio de su próximo turno: Los enemigos adyacentes reciben, al inicio de su turno, 1 de daño por cada conjuro de fuego usado (acumulativo, cuenta como una sola fuente de daño), que no se reduce."},
-                          {requisitos: '', nombre: 'Magia caótica: ', aptitud: "1xturno, cuando usa su primer conjuro que hace daño, tira 1d6 (sin gastar acción). Obtiene un efecto adicional según la siguiente tabla:",
+                          {requisitos: '', nombre: 'Magia caótica: ', aptitud: "1xturno, cuando usa su primer conjuro que hace daño, tira 1d6 (sin gastar acción). Obtiene un efecto adicional según la siguiente tabla y puede elegir un resultado menor al obtenido:",
                            tabla: ['El hechicero puede desplazarse hasta dos casillas (a elección).',
                                    'Se cura 1 PV.',
                                    'Hace +2 de daño.',

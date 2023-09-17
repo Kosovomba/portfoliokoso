@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import {GiTireIronCross} from "react-icons/gi"
 import {AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai"
 
-export default function IniciarSesion({usuarios, userNames, userEMails, show, setShow}) {
+export default function IniciarSesion({info, setInfo, usuarios, userNames, userEMails, show, setShow}) {
     const [user, setUser] = useState({name: '', password: ''})
     const [showPass, setShowPass] = useState(false)
     const router = useRouter()
@@ -13,8 +13,9 @@ export default function IniciarSesion({usuarios, userNames, userEMails, show, se
         localStorage.setItem('usuario', user.name)
         setUser({...user, password: ''})        
         alert(`Iniciaste sesión como ${user.name}`)
+        setInfo({...info, usuario: user.name})
         setUser({...user, name: ''})
-        router.reload()
+        // router.reload()
         // console.log(localStorage.getItem('usuario'))             
     }
 
