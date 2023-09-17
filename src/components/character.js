@@ -84,20 +84,14 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     let CCDescription2 = bonos.semblante? 'Semblante: 1.':(personaje.equipamiento[3][1]==='Equipado' && (Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Mago de batalla: '))?'Mago de batalla: 1.':(personaje.equipamiento[3][1]==='Equipado' && (personaje['apt2+'].filter(a=>a.nombre === 'Arma mágica: ').length !== 0))?'Arma mágica: 1.':(personaje['apt2+'].filter(a=>a.nombre === 'Maestría con arma cuerpo a cuerpo: ').length !== 0)?'Maestría: 1.':null
     let CCDescription3 = bonos.armaDeidad? `Arma de la deidad: ${armaD}.`:(PVTotal<=-10 && (personaje['apt2+'].filter((a)=> a.nombre === 'Furia: ').length !== 0))?'Furia: 2.':(Object.keys(personaje.CDP).length>0 && personaje.CDP.nombre === 'Maestro en armas: ')?'Maestro en armas: 1.':''
     let CC2Description = personaje.equipamiento[3][1]==='Equipado x2'?'Arma equipada: 1.':null
-    let ADDescription = personaje.equipamiento[4][1]==='Equipado'?'Arma a distancia equipada: 1.':null
-    let ADDescription2 = PVTotal <= -10 && (personaje['apt2+'].filter((a)=> a.nombre === 'Furia: ')).length !== 0?'Furia: 2.':(personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Maestro en armas: ')?'Maestro en armas: 1.':(personaje.equipamiento[4][1]==='Equipado' && personaje['apt2+'].filter(a => a.nombre === 'Armamento ninja: ').length !== 0)?'Armamento ninja: 1.':bonos.magiaC?'Magia caótica: 1.':''
-    let ADDescription3 = (raza === 'Orco' && Object.keys(personaje.CDP).length === 4 && clase === 'Bárbaro' && personaje.CDP.extra.slice(0,3) === 'Ray')?'Raza: 1.':''
+    let ADDescription = personaje.equipamiento[4][1]==='Equipado' && (clase !== 'Alquimista' || (personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length !== 0))?'Arma a distancia equipada: 1.':null
+    let ADDescription2 = PVTotal <= -10 && (personaje['apt2+'].filter((a)=> a.nombre === 'Furia: ')).length !== 0?'Furia: 2.':(personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Maestro en armas: ')?'Maestro en armas: 1.':(personaje.equipamiento[4][1]==='Equipado' && personaje['apt2+'].filter(a => a.nombre === 'Armamento ninja: ').length !== 0)?'Armamento ninja: 1.':bonos.magiaC?'Magia caótica: 1.':personaje['apt2+'].filter(a=>a.nombre === 'Maestría en conjuros ofensivos: ').length !== 0?'Maestría en conjuros ofensivos: 1.':personaje['apt2+'].filter(a=> a.nombre === 'Bombas potentes: ').length !== 0?'Bombas potentes: 1.':''
+    let ADDescription3 = (raza === 'Orco' && Object.keys(personaje.CDP).length === 4 && clase === 'Bárbaro' && personaje.CDP.extra.slice(0,3) === 'Ray')?'Raza: 1.':personaje['apt2+'].filter(a=> a.nombre === 'Bombas explosivas: ').length !== 0?'Bombas explosivas: 1.':''
     let aNinjaDescription = personaje.equipamiento[10][1]==='Equipado'?'Arma especial equipada: 1.':null
     let armaDisabled = (personaje['apt2+'].filter((a)=> a.nombre === 'Luchador versátil: ').length !== 0 || personaje.apt1[2][0] === 'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).')?'flex':'none'
     let armaDisDisabled = (['Pícaro', 'Alquimista'].includes(clase) || (personaje.CDP.hasOwnProperty('extra') && ['Saeta', 'Rayo ', 'Proye'].includes(personaje.CDP.extra.slice(0,5))) || (clase !== 'Explorador' && personaje.apt1[2].filter((a)=>['Saeta', 'Rayo ', 'Proye'].includes(a.slice(0,5))).length !== 0) || (personaje['apt2+'].filter((a)=> a.nombre === 'Lanzador experimentado: ' && ['Rayo ', 'Proye'].includes(a.extra.slice(0,5))).length !== 0) || (personaje.apt1[2][0] === 'Arquería: Sus ataques pueden ser de rango 6 casillas.') || personaje['apt2+'].filter((a)=> ['Arquería: ', 'Luchador versátil: ', 'Uso mejorado de Ki: ', 'Armamento ninja: ', 'Misterios: '].includes(a.nombre) && (a.nombre === 'Armamento ninja: '?personaje.equipamiento[4][1] === 'Equipado':true)).length !== 0)?'flex':'none'
     let aNinjaDisabled = personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Ninja ocre: '?'flex':'none'
     
-    // 'Maestría en conjuros ofensivos: '
-    // 'Bombas potentes: '
-    // 'Alquimia potenciada: '
-    // 'Bombas explosivas: '
-    // 'Mutágeno mejorado: '
-
 
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
@@ -321,11 +315,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         let extra = 0
         if (personaje.equipamiento[4][1] === 'Equipado') {
             extra = extra + 1
+            personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length !== 0?null:extra = extra - 1
             if (personaje['apt2+'].filter(a => a.nombre === 'Armamento ninja: ').length !== 0) extra = extra + 1
         }
-        if ((personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Maestro en armas: ') || bonos.magiaC) extra = extra + 1
+        if ((personaje.CDP.hasOwnProperty('nombre') && personaje.CDP.nombre === 'Maestro en armas: ') || bonos.magiaC || personaje['apt2+'].filter(a => (a.nombre === 'Maestría en conjuros ofensivos: ' || a.nombre === 'Bombas potentes: ')).length !== 0) extra = extra + 1
         if (personaje['apt2+'].filter(a=> a.nombre === 'Furia: ').length !== 0 && PVTotal <=-10) extra = extra + 2
-        if (raza === 'Orco' && clase === 'Bárbaro' && Object.keys(personaje.CDP).length === 4 && personaje.CDP.extra.slice(0,3) === 'Ray') extra = extra + 1
+        if ((raza === 'Orco' && clase === 'Bárbaro' && Object.keys(personaje.CDP).length === 4 && personaje.CDP.extra.slice(0,3) === 'Ray') || personaje['apt2+'].filter(a => a.nombre === 'Bombas explosivas: ').length !== 0) extra = extra + 1
+        if (bonos.pociones && personaje['apt2+'].filter(a => a.nombre === 'Mutágeno mejorado: ').length !== 0) extra = extra + 1
         return extra
     }
 
@@ -535,6 +531,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             {ADDescription?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{ADDescription}</p>:null}
             {ADDescription2?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{ADDescription2}</p>:null}
             {ADDescription3?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{ADDescription3}</p>:null}
+            {bonos.pociones && personaje['apt2+'].filter(a => a.nombre === 'Mutágeno mejorado: ').length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>Mutágeno mejorado: 1.</p>:null}
             </div>
             </div>
             <div className={styles.card2} style={{display: aNinjaDisabled}}>
