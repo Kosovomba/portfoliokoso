@@ -98,6 +98,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     useEffect(()=> {
         let us = localStorage.getItem('usuario')
         us?setUsu(us):null
+    },[])
+
+    useEffect(()=> {
         let cC = JSON.parse(localStorage.getItem('currentCharacter'))
         if(cC && personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0) {
             router.reload()
@@ -241,6 +244,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     }
     function guardarPersonaje(e) {
         e.preventDefault()
+        let us = localStorage.getItem('usuario')
+        us && usu !== ''?setUsu(us):null
+        if (usu !== '') {
         setGuardando(true)
         let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP), equipamiento: JSON.stringify(personaje.equipamiento)}
         let option = 'add-character'
@@ -267,6 +273,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         .catch((error)=> {
             console.log(error)
         })
+        } else {
+            alert('Debes iniciar sesión para guardar un personaje')
+        }
     }
     function handlePestaña (e) {
         e.preventDefault()
@@ -431,7 +440,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'410px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="385" src={usu==='LadyLiz' && raza==='Humano' && clase === 'Druida'?'/imgs/lizy.jpg':images[`${raza}${clase}`]} alt='imagen'/>
             <div>
-            <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || usu==='' || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
+            <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
