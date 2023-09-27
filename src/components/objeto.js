@@ -3,7 +3,7 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
     let handles = {
         Usar: function(e) {
             e.preventDefault()
-            let cura = Math.ceil(Math.random()*3)
+            let cura = Math.floor(Math.random()*3) + 1
             let cura2 = cura + (nombre === 'Poción de curación'?4:0)
             nombre === 'Poción de curación'? cura = (cura + 4)+' PV.':cura = cura + ' PV y eliminaste un efecto negativo.'
             let equipamiento = personaje.equipamiento

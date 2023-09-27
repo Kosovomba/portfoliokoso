@@ -372,7 +372,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         e.preventDefault()
         if (e.target.value === 'armaDeidad') {
             if (!bonos.armaDeidad){
-            let bon = Math.ceil(Math.random()*3)
+            let bon = Math.floor(Math.random()*3) + 1
             setArmaD(bon)
             alert(`Arma de la deidad: Obtuviste +${bon} al daño`)
             } else setArmaD(0)
@@ -407,7 +407,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     }
 
     function tirarD6(n = 0) {
-        let result = Math.ceil(Math.random()*6)
+        let result = Math.floor(Math.random()*6) + 1
         let cartel = ''
         if (raza === 'Humano'){
             if (personaje.nivel <3 && result === 1){
