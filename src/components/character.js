@@ -15,6 +15,14 @@ import Objeto from "./objeto"
 import Mercado from "./mercado"
 // import Characters from "./characters"
 
+// 'Imposición de manos: '
+// apt1: "1xturno puede usar el d6 para curar 1d6 + nivel (a él u otro adyacente)."
+// 'Curar: '
+// 'Uso de ki: '
+// 'Pociones: '
+// 'Curar (conjuro): '
+
+
 export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
     const router = useRouter()
     let equip = [
@@ -72,9 +80,14 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         animalVM: false,
         armaDeidad: false,
         magiaC: false,
-        desplazamiento: false
+        desplazamiento: false,
+        presciencia: false,
+        espinas: false,
+        regen: false,
+        llamarRayo: false
         })
     const [armaD, setArmaD] = useState(0)
+    const [regen, setRegen] = useState(0)
     const [desp, setDesp] = useState(0)
     let subirNiv = true
     let VMDescription = clase === 'Guerrero' && personaje['apt2+'].filter(a => a.nombre === 'Armadura pesada: ').length !== 0?'Aptitud "Armadura pesada": 1.':personaje['apt2+'].filter(a=> a.nombre === 'Montura: ').length !== 0?(clase === 'Caballero'?'Montura: 2.':'Montura: 3.'):PVTotal <= -10 && personaje['apt2+'].filter(a => a.nombre === 'Furia: ').length !== 0?'Furia: 1.':(personaje['apt2+'].filter(a => a.nombre === 'Maestría en conjuros defensivos: ').length !== 0 && (bonos.armaduraMagica || bonos.desplazamiento))?'Maestría en conjuros defensivos: 2.':personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ').length !== 0 && bonos.formaSalvaje?'Forma salvaje mayor: 1.':personaje['apt2+'].filter(a => a.nombre === 'Acción astuta: ').length !== 0?'Acción astuta: 1.':bonos.pociones?(personaje['apt2+'].filter(a => a.nombre === 'Mutágeno mejorado: ').length !== 0?'Mutágeno mejorado: 2':'Mutágeno: 1.'):''
@@ -373,9 +386,17 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         if (e.target.value === 'armaDeidad') {
             if (!bonos.armaDeidad){
             let bon = Math.floor(Math.random()*3) + 1
+            if (raza === 'Humano' && personaje.nivel > 2 && bon === 1) bon = 2
             setArmaD(bon)
             alert(`Arma de la deidad: Obtuviste +${bon} al daño`)
             } else setArmaD(0)
+        }
+        if (e.target.value === 'regen') {
+            if (!bonos.regen){
+            let bon = Math.floor(Math.random()*2) + 2
+            setRegen(bon)
+            alert(`Regeneración: Obtuviste ${bon} de regeneración`)
+            } else setRegen(0)
         }
         if (e.target.value === 'desplazamiento') {
             if (!bonos.desplazamiento){            
@@ -479,8 +500,12 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         if (a.nombre === 'Arma de la deidad (conjuro): ') ap = 'armaDeidad'
                         if (a.nombre === 'Magia caótica: ') ap = 'magiaC'
                         if (a.nombre === 'Desplazamiento (conjuro): ') ap = 'desplazamiento'
+                        if (a.nombre === 'Presciencia menor (conjuro): ') ap = 'presciencia'
+                        if (a.nombre === 'Espinas (conjuro): ') ap = 'espinas'
+                        if (a.nombre === 'Regeneración (conjuro): ') ap = 'regen'
+                        if (a.nombre === 'Llamar rayo (conjuro): ') ap = 'llamarRayo'
                         return <div key={`a2${ind}`}>
-                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<span style={{display:'flex'}}><span style={{fontSize:'18px', padding: '4px', color:'#BA1919', fontWeight:'600'}}>{a.nombre === 'Magia caótica: ' && bonos.magiaC?'Efecto 6 activo.':a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?`Activo: ${desp} ${desp > 1?'usos restantes':'uso restante'}`:''}</span><button onClick={handleDesp} style={{display: a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?'block':'none', height:'fit-content', alignSelf:'center'}}>Gastar 1 uso</button><button value={ap} disabled={ap === 'armaDeidad' && personaje.equipamiento[3][1] !== 'Equipado'? true:false} onClick={handleAI} style={{display: ap !== ''?'block':'none', height:'fit-content', alignSelf:'center'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':ap === 'magiaC'?'Activar efecto 6':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':ap === 'magiaC'?'Desactivar efecto 6':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button></span><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
+                        <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<span style={{display:'flex'}}><span style={{fontSize:'18px', padding: '4px', color:'#BA1919', fontWeight:'600'}}>{a.nombre === 'Magia caótica: ' && bonos.magiaC?'Efecto 6 activo.':a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?`Activo: ${desp} ${desp > 1?'usos restantes':'uso restante'}`:a.nombre === 'Regeneración (conjuro): ' && bonos.regen?`Regeneración por turno: ${regen}`:bonos[ap]?'Activo.':''}</span><button onClick={handleDesp} style={{display: a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?'block':'none', height:'fit-content', alignSelf:'center'}}>Gastar 1 uso</button><button value={ap} disabled={ap === 'armaDeidad' && personaje.equipamiento[3][1] !== 'Equipado'? true:false} onClick={handleAI} style={{display: ap !== ''?'block':'none', height:'fit-content', alignSelf:'center'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':ap === 'magiaC'?'Activar efecto 6':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':ap === 'magiaC'?'Desactivar efecto 6':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button></span><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
                         {a.nombre === 'Lanzador experimentado: ' && a.extra.length >0?<div><span>{a.extra}</span><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>:null }
                         {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
                         <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
