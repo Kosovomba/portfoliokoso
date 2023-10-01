@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import ConjuroInicial from "./conjuroInicial"
 import AptInicialExp from "./aptInicialExp"
 import ConjuroExtra from "./conjuroExtra"
+import CompañeroAnimal from "./compañeroAnimal"
 import images from "../controllers/images"
 import styles from "@src/styles/characterBuild.module.css"
 import {AiFillHeart, AiOutlineArrowDown} from "react-icons/ai"
@@ -86,6 +87,13 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         regen: false,
         llamarRayo: false
         })
+    let compa = {
+        PV: personaje['apt2+'].filter(a => a.nombre === 'Vínculo animal: ').length >0?personaje.nivel*3:personaje.nivel*2, 
+        VM: bonos.animalVM?1:0, 
+        RD: bonos.animalRD?1:0, 
+        daño: bonos.animalVM?1:0, 
+        teleport: personaje['apt2+'].filter(a => a.nombre === 'Vínculo animal: ').length >0?true:false
+    }
     const [armaD, setArmaD] = useState(0)
     const [regen, setRegen] = useState(0)
     const [desp, setDesp] = useState(0)
@@ -402,7 +410,21 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             if (!bonos.desplazamiento){            
             setDesp(personaje.nivel)
             } else setDesp(0)
-        }        
+        }
+        if (e.target.value === 'animal') {
+            if (!bonos.animalRD){            
+            compa.RD = 1
+            } else compa.RD = 0
+        }
+        if (e.target.value === 'animalVM') {
+            if (!bonos.animalVM){            
+            compa.VM = 1
+            compa.daño = 1
+            } else {
+                compa.VM = 0
+                compa.daño = 0
+            }
+        }
         e.target.value === 'armaduraMagica' && bonos.armaduraMagica && bonos.armaduraMagicax2?
         setBonos({...bonos, armaduraMagica: false, armaduraMagicax2: false}):
         e.target.value === 'animal'?setBonos({...bonos, animalRD: !bonos.animalRD}):
@@ -512,6 +534,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                             <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
                             {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}                            
                         </div>
+                        {/* {a.nombre === 'Compañero animal: '? <CompañeroAnimal PV={compa.PV} RD={compa.RD} VM={compa.VM} daño={compa.daño} teleport={compa.teleport} vinculo={personaje['apt2+'].filter(a=>a.nombre === 'Vínculo animal: ').length > 0} bonos={bonos} regen={regen} />:null} */}
                         <button onClick={handleMagiaC} style={{display: ap === 'magiaC'?'block':'none', position:'relative' , left:'300px'}}>Tirar d6</button>
                         </div>
                         }):null}
@@ -611,6 +634,9 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             {personaje.equipamiento[10][1] === 'Equipado' && (personaje['apt2+'].filter((a)=> a.nombre === 'Armamento ninja: ')).length !== 0?<p style={{alignSelf:'center', justifySelf:'flex-start', margin:'0px'}}>{'Armamento ninja: 1.'}</p>:null}
             </div>
             </div>
+            
+            {personaje['apt2+'].filter(a => a.nombre === 'Compañero animal: ').length > 0?<div className={styles.card}><span style={{textAlign:'center', fontSize:'18px', marginBottom:'4px'}}>Compañero animal.</span><CompañeroAnimal PV={compa.PV} RD={compa.RD} VM={compa.VM} daño={compa.daño} teleport={compa.teleport} vinculo={personaje['apt2+'].filter(a=>a.nombre === 'Vínculo animal: ').length > 0} bonos={bonos} regen={regen} /></div>:null}
+            
             </div>
             </div>
             <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
