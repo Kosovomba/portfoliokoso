@@ -16,14 +16,6 @@ import Objeto from "./objeto"
 import Mercado from "./mercado"
 // import Characters from "./characters"
 
-// 'Imposición de manos: '
-// apt1: "1xturno puede usar el d6 para curar 1d6 + nivel (a él u otro adyacente)."
-// 'Curar: '
-// 'Uso de ki: '
-// 'Pociones: '
-// 'Curar (conjuro): '
-
-
 export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
     const router = useRouter()
     let equip = [
@@ -449,6 +441,24 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         setDesp(desp - 1)
     }
 
+    function handleCurar(e) {
+        e.preventDefault()
+        let bono = e.target.value === 'curar1'?(personaje.nivel + (personaje.CDP && personaje.CDP.nombre === 'Purificador: '?1:0) + (bonos.semblante || bonos.semblanteMayor || personaje['apt2+'].filter(a => a.nombre === 'Reserva superior: ').length > 0?1:0)):(personaje['apt2+'].filter(a => a.nombre === 'Uso mejorado de Ki: ').length>0?1:0)
+        if (e.target.value === 'curar2') bono = bono + 2
+        let tirada = tirarD6(bono)
+        alert(tirada.cartel)
+    }
+
+    function handlePociones(e) {
+        e.preventDefault()
+        let bono = 0
+        if (personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length > 0) bono = bono + 1
+        if (Object.keys(personaje.CDP).length > 0 && personaje.CDP.nombre === 'Mercader: ') bono = bono + 2
+        let cura = tirarD6()
+        let result = Math.ceil(cura.resultado/2) + 2 + bono
+        alert(cura.cartel + ` Cura ${result}.`)
+    }
+
     function tirarD6(n = 0) {
         let result = Math.floor(Math.random()*6) + 1
         let cartel = ''
@@ -462,7 +472,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             result = 3
             }
         }
-        return {resultado: result, bono: n, cartel: 'Obtuviste ' + (cartel !== ''?cartel:result + ' en el dado.') + (n !== 0? `Resultado final: ${result + n}`:'')}
+        return {resultado: result, bono: n, cartel: 'Obtuviste ' + (cartel !== ''?cartel:result + ' en el dado.') + (n !== 0? ` Resultado final: ${result + n}.`:'')}
     }
 
     // function handleAA(e) {
@@ -509,8 +519,8 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                     <p style={{margin: 0, marginTop: 10}}> {`${personaje.apt1[0]} (nivel 1, raza)`}</p>
                     {personaje.nivel >2?<p className={styles.apt}>{`${personaje.apt3} (nivel 3, raza)`}</p>:null}
 
-                    <div style={{marginTop:'10px'}}><span>{personaje.apt1[1]}</span><button value={'formaSalvaje'} onClick={handleAI} style={{display: clase==='Druida'?'block':'none' , float:'right'}}>{bonos.formaSalvaje===false?'Activar':'Desactivar'}</button></div>
-                    {personaje.apt1[2].length !== 0?personaje.apt1[2].map(a => <div key={a}><span>{a}</span><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>):null}
+                    <div style={{marginTop:'10px'}}><span>{personaje.apt1[1]}</span><button value={'formaSalvaje'} onClick={handleAI} style={{display: clase==='Druida'?'block':'none' , float:'right'}}>{bonos.formaSalvaje===false?'Activar':'Desactivar'}</button><button value={'curar1'} onClick={handleCurar} style={{display: clase==='Clérigo'?'block':'none' , float:'right'}}>Curar</button></div>
+                    {personaje.apt1[2].length !== 0?personaje.apt1[2].map(a => <div key={a}><span>{a}</span><button value={Object.keys(personaje.CDP).length > 0 && personaje.CDP.nombre === 'Hierofante: '?'curar2':'curar0'} onClick={handleCurar} style = {{display: a.slice(0,3)==='Cur'?'block':'none' , float:'right'}}>Curar</button><button value={'curar0'} onClick={handleCurar} style = {{display: a.slice(0,3)==='Cur' && Object.keys(personaje.CDP).length > 0 && personaje.CDP.nombre === 'Hierofante: '?'block':'none' , float:'right'}}>Curar sin acción</button><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>):null}
                     
                     {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
                         let ap = ''
@@ -536,6 +546,8 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         </div>
                         {/* {a.nombre === 'Compañero animal: '? <CompañeroAnimal PV={compa.PV} RD={compa.RD} VM={compa.VM} daño={compa.daño} teleport={compa.teleport} vinculo={personaje['apt2+'].filter(a=>a.nombre === 'Vínculo animal: ').length > 0} bonos={bonos} regen={regen} />:null} */}
                         <button onClick={handleMagiaC} style={{display: ap === 'magiaC'?'block':'none', position:'relative' , left:'300px'}}>Tirar d6</button>
+                        <button value={a.nombre ==='Curar (conjuro): '?'curar1':'curar0'} onClick={handleCurar} style={{display: a.nombre ==='Curar (conjuro): ' || (clase === 'Monje' && a.nombre ==='Uso de ki: ') || a.nombre ==='Imposición de manos: '?'block':'none' , float:'right'}}>Curar</button>
+                        <button onClick={handlePociones} style={{display: ap ==='pociones'?'block':'none'}}>Poción de curación</button>
                         </div>
                         }):null}
                     {personaje.CDP.nombre?<div>

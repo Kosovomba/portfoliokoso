@@ -4,16 +4,17 @@ export default function Objeto({nombre, descripcion, imagen, opcion, cantidad, e
         Usar: function(e) {
             e.preventDefault()
             let cura = Math.floor(Math.random()*3) + 1
+            if (personaje.raza === 'Humano' && personaje.nivel >=3 && cura === 1) cura = 2
+            if (personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length > 0) cura = cura + 1
             let cura2 = cura + (nombre === 'Poción de curación'?4:0)
             nombre === 'Poción de curación'? cura = (cura + 4)+' PV.':cura = cura + ' PV y eliminaste un efecto negativo.'
             let equipamiento = personaje.equipamiento
             equipamiento[e.target.value][0] = equipamiento[e.target.value][0] - 1
             let total = PVTotal + cura2
-            console.log(PVTotal, cura2, total)
             total > 0?total=0:total<0-personaje.PV?total=0-personaje.PV:null
             setPersonaje({...personaje, equipamiento: equipamiento})
             setPVTotal(total)
-            alert(`Te curaste ${cura}`)
+            alert(`Te curaste ${cura}${personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length > 0?' Bono de alquimia potenciada incluido.':''}`)
         },
         Dar: function(e) {
             e.preventDefault()
