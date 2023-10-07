@@ -515,7 +515,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
-            <div><span style={{margin: 5, fontWeight: 700}}>PE: {personaje.PE}</span><button disabled={PEshow} onClick={handlePE}>Editar PE</button></div>
+            <div style={{marginTop:'10px'}}><span style={{margin: 5, fontWeight: 700, fontSize:'18px'}}>PE: {personaje.PE}</span><button disabled={PEshow} onClick={handlePE}>Editar PE</button></div>
             </div>
             <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>            
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>            

@@ -38,7 +38,7 @@ export default function PEBoard({PEshow, setPEshow, personaje, setPersonaje}) {
                 <input style={{width:'40px', height:'30px'}} type="number" min={1} onChange={onPEChange} value={PEChange}></input>
                 <button style={{height:'30px'}} value='Sumar' onClick={handleChange}>Sumar</button>
             </div>
-            <div style={{display:'flex', justifySelf:'flex-end', justifyContent:'space-between', position:'relative', top:'60px'}}>
+            <div style={{display:'flex', justifySelf:'flex-end', justifyContent:'space-around', position:'relative', top:'60px'}}>
                 <button onClick={handleAceptar}>Aceptar</button>
                 <button onClick={handleClose}>Cancelar</button>
             </div>
