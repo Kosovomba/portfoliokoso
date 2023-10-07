@@ -262,10 +262,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
     function guardarPersonaje(e) {
         e.preventDefault()
         let us = localStorage.getItem('usuario')
-        us && usu !== ''?setUsu(us):null
-        if (usu !== '') {
+        us && usu === ''?setUsu(us):null
+        if (us) {
         setGuardando(true)
-        let newCharacter = {...personaje, usuario: usu, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP), equipamiento: JSON.stringify(personaje.equipamiento)}
+        let newCharacter = {...personaje, usuario: us, apt1Arr: JSON.stringify(personaje.apt1[2]), apt2Mas: JSON.stringify(personaje['apt2+']), CDP: JSON.stringify(personaje.CDP), equipamiento: JSON.stringify(personaje.equipamiento)}
         let option = 'add-character'
         localStorage.getItem('currentCharacter')?option = 'update-character': null
         // axios.post(`http://localhost:3000/api/${option}`, newCharacter)
@@ -278,7 +278,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
                 raza: personaje.raza,
                 clase: personaje.clase,
                 nivel: personaje.nivel,
-                Usuario: usu,
+                Usuario: us,
                 apt1arr: personaje.apt1[2],
                 cdp: personaje.CDP,
                 apt2mas: personaje['apt2+'],
