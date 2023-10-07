@@ -501,10 +501,10 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
             <div style={{display:'flex', flexDirection:'column', justifyContent: 'center'}}>
             <div style={{display:'flex', flexFlow:'wrap', minWidth: '95%', justifyContent: 'center'}}>
                 <button onClick={handlePestaña} value={'opciones'} disabled={pestaña === 'opciones'?true:false} style={{height:'50px', width:'120px'}}>Opciones</button>
-                <button onClick={handlePestaña} value={'estadísticas'} disabled={pestaña === 'estadísticas'?true:false} style={{height:'50px', width:'120px'}}>Estadísticas</button>
                 <button onClick={handlePestaña} value={'racialesEIniciales'} disabled={pestaña === 'racialesEIniciales'?true:false} style={{height:'50px', width:'120px', border:(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) ?'solid 2px red':null}}>Aptitudes raciales e iniciales{(personaje.clase === 'Explorador' && personaje.apt1[2].length === 0) || (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2)?<FaArrowDown style={{color:'red', fontSize: 22, position:'absolute', pointerEvents:'none'}}/>:null}</button>
                 <button onClick={handlePestaña} value={'2oMayor'} disabled={pestaña === '2oMayor'?true:false} style={{height:'50px', width:'120px', border:personaje['apt2+'].length + 1 < personaje.nivel?'solid 2px red':null}}>Aptitudes de nivel 2 o mayor{personaje['apt2+'].length + 1 < personaje.nivel?<MdOutlinePlusOne style={{color:'red', fontSize: 25, position:'absolute', pointerEvents:'none'}}/>:null}</button>
                 <button onClick={handlePestaña} value={'cdp'} disabled={pestaña === 'cdp'?true:false} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
+                <button onClick={handlePestaña} value={'estadísticas'} disabled={pestaña === 'estadísticas'?true:false} style={{height:'50px', width:'120px'}}>Estadísticas</button>
                 <button onClick={handlePestaña} value={'equipamiento'} disabled={pestaña === 'equipamiento'?true:false} style={{height:'50px', width:'120px'}}>Equipamiento</button>
             </div>
             <div name={'opciones'} style={{flexDirection:'column', width:'410px', alignSelf:'center', display:pestaña==='opciones'?'flex':'none'}}>
@@ -516,6 +516,52 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
             <div style={{marginTop:'10px'}}><span style={{margin: 5, fontWeight: 700, fontSize:'18px'}}>PE: {personaje.PE}</span><button disabled={PEshow} onClick={handlePE}>Editar PE</button></div>
+            </div>
+            <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
+            <h2> {`Aptitudes raciales: `}</h2>
+            <p style={{maxWidth: '100%'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
+            {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
+            <h2> {`Aptitudes cláseas de nivel 1: `}</h2>
+            {clase !== 'Explorador'? <p style={{maxWidth: '100%'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
+            {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} bonos={bonos} setBonos={setBonos} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
+            </div>
+            </div>
+            <div name={'2oMayor'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
+            <h2> {`Aptitudes de nivel 2 o mayor: `}</h2>
+            {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
+                return <div key={`a2${ind}`}>
+                <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
+                {a.nombre === 'Lanzador experimentado: '?<ConjuroExtra bonos={bonos} setBonos={setBonos} personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null }
+                {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
+                <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
+                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
+                    {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
+                </div>
+                </div>
+            }):null}
+            {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
+            {personaje.claseStatsFiltrados.map((a,i)=> {
+               return <div key={`a${i}`} style={{border:'2px solid brown', margin:'1px'}}>
+                <button disabled={isDisabled(a.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}{a.tabla?<br/>:null}</button>
+                {personaje.claseStatsFiltrados[i].tabla? <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
+                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
+                    {a.tabla?.map((f,i)=> <div key={`f${i}`} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
+                </div>:null}
+            </div>}
+            )}</div>:null}
+            </div>
+            </div>
+            <div name={'cdp'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
+            <h2> {`Clase de prestigio: `}</h2>
+            {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p>{personaje.CDP.hasOwnProperty('extra')?<ConjuroExtra bonos={bonos} setBonos={setBonos} personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={conjurosInicialesCombinadosfiltrados} />:null}<button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
+            {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
+            </div>
             </div>
             <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>            
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>            
@@ -655,52 +701,6 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
             
             {personaje['apt2+'].filter(a => a.nombre === 'Compañero animal: ').length > 0?<div className={styles.card}><span style={{textAlign:'center', fontSize:'18px', marginBottom:'4px'}}>Compañero animal.</span><CompañeroAnimal PV={compa.PV} RD={compa.RD} VM={compa.VM} daño={compa.daño} teleport={compa.teleport} vinculo={personaje['apt2+'].filter(a=>a.nombre === 'Vínculo animal: ').length > 0} bonos={bonos} regen={regen} /></div>:null}
             
-            </div>
-            </div>
-            <div name={'racialesEIniciales'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='racialesEIniciales'?'block':'none'}}>
-            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
-            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <h2> {`Aptitudes raciales: `}</h2>
-            <p style={{maxWidth: '100%'}}> {`${personaje.apt1[0]} (nivel 1)`}</p>
-            {personaje.nivel >2?<p>{`${personaje.apt3} (nivel 3)`}</p>:null}
-            <h2> {`Aptitudes cláseas de nivel 1: `}</h2>
-            {clase !== 'Explorador'? <p style={{maxWidth: '100%'}}> {personaje.apt1[1]}</p>: <AptInicialExp personaje={personaje} setPersonaje={setPersonaje}/>}            
-            {claseStats['conjuros iniciales']?<ConjuroInicial personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} bonos={bonos} setBonos={setBonos} conjurosIniciales={claseStats['conjuros iniciales']} />:null}
-            </div>
-            </div>
-            <div name={'2oMayor'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='2oMayor'?'block':'none'}}>
-            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
-            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <h2> {`Aptitudes de nivel 2 o mayor: `}</h2>
-            {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
-                return <div key={`a2${ind}`}>
-                <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}</p>
-                {a.nombre === 'Lanzador experimentado: '?<ConjuroExtra bonos={bonos} setBonos={setBonos} personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={claseStats['conjuros iniciales']} />:null }
-                {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
-                <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
-                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
-                    {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
-                </div>
-                </div>
-            }):null}
-            {personaje['apt2+'].length + 1 < personaje.nivel? <div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una aptitud para elegirla:</p>
-            {personaje.claseStatsFiltrados.map((a,i)=> {
-               return <div key={`a${i}`} style={{border:'2px solid brown', margin:'1px'}}>
-                <button disabled={isDisabled(a.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleAptitud2} key={`${a.nombre}${a.aptitud}`} value={`${a.nombre}${a.aptitud}`}>{`${a.requisitos?'(Requisitos: '+a.requisitos+') ':''}`}{a.requisitos?<br/>:null}{`${a.nombre}${a.aptitud}`}{a.tabla?<br/>:null}</button>
-                {personaje.claseStatsFiltrados[i].tabla? <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
-                    <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
-                    {a.tabla?.map((f,i)=> <div key={`f${i}`} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}
-                </div>:null}
-            </div>}
-            )}</div>:null}
-            </div>
-            </div>
-            <div name={'cdp'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='cdp'?'block':'none'}}>
-            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
-            <GiWingedScepter style={{color:'#62746D', fontSize: 40, alignSelf: 'center', margin:'2px'}}/>
-            <h2> {`Clase de prestigio: `}</h2>
-            {personaje.CDP.nombre?<div><p style={{width:'fit-content', maxWidth: '100%'}} key={`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}>{`${personaje.CDP.nombre}${personaje.CDP.aptitud}`}</p>{personaje.CDP.hasOwnProperty('extra')?<ConjuroExtra bonos={bonos} setBonos={setBonos} personaje={personaje} setPersonaje={setPersonaje} raza={raza} clase={clase} conjurosIniciales={conjurosInicialesCombinadosfiltrados} />:null}<button onClick={handleEdit} value={'edit'}>Editar</button></div>:<div style={{display: 'flex', flexDirection: 'column'}}><p>Haz clic en una clase de prestigio para elegirla:</p>
-            {personaje.CDPClase.map((c)=> <button disabled={isDisabledCDP(c.requisitos)} style={{width:'fit-content', maxWidth: '100%', textAlign:'left'}} onClick={handleCDP} key={`${c.nombre}${c.aptitud}`} value={`${c.nombre}${c.aptitud}`}>{`${c.requisitos?'(Requisitos: '+c.requisitos+') ':''}`}{c.requisitos?<br/>:null}{`${c.nombre}${c.aptitud}`}</button>)}</div>}
             </div>
             </div>
             <div name={'equipamiento'} style={{width:'410px', minWidth:'60%', alignSelf:'center', display:pestaña==='equipamiento'?'block':'none'}}>
