@@ -14,9 +14,10 @@ import {MdOutlinePlusOne} from 'react-icons/md'
 import { useRouter } from "next/router"
 import Objeto from "./objeto"
 import Mercado from "./mercado"
+import PEBoard from "./PEBoard"
 // import Characters from "./characters"
 
-export default function Character ({conjurosInicialesCombinadosfiltrados, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
+export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID, raza, clase, nombre, razaStats, claseStats, nivel, apt1Arr, CDP, apt2Mas, equipamiento}) {
     const router = useRouter()
     let equip = [
         ['Botas', 'Otorga +1 a VM.', 'https://i.ebayimg.com/thumbs/images/g/QsYAAOSwuU1hIKQj/s-l640.jpg', 'Equipar'],
@@ -37,6 +38,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     equip[4][2] = imagenArmaDis
     const [personaje, setPersonaje] = useState({nombre: nombre,
         ID: ID, 
+        PE: PE,
         raza: raza,
         clase: clase,
         nivel: nivel,
@@ -61,6 +63,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [PVChange, setPVChange] = useState(1)
     const [PVTotal, setPVTotal] = useState(0)
     const [aptitudes, setAptitudes] = useState(false)
+    const [PEshow, setPEshow] = useState(false)
     const [bonos, setBonos] = useState({
         formaSalvaje: false, 
         armaduraMagica: false, 
@@ -89,7 +92,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
     const [armaD, setArmaD] = useState(0)
     const [regen, setRegen] = useState(0)
     const [desp, setDesp] = useState(0)
-    let subirNiv = true
+    let subirNiv = false
     let VMDescription = clase === 'Guerrero' && personaje['apt2+'].filter(a => a.nombre === 'Armadura pesada: ').length !== 0?'Aptitud "Armadura pesada": 1.':personaje['apt2+'].filter(a=> a.nombre === 'Montura: ').length !== 0?(clase === 'Caballero'?'Montura: 2.':'Montura: 3.'):PVTotal <= -10 && personaje['apt2+'].filter(a => a.nombre === 'Furia: ').length !== 0?'Furia: 1.':(personaje['apt2+'].filter(a => a.nombre === 'Maestría en conjuros defensivos: ').length !== 0 && (bonos.armaduraMagica || bonos.desplazamiento))?'Maestría en conjuros defensivos: 2.':personaje['apt2+'].filter((a)=> a.nombre === 'Forma salvaje mayor: ').length !== 0 && bonos.formaSalvaje?'Forma salvaje mayor: 1.':personaje['apt2+'].filter(a => a.nombre === 'Acción astuta: ').length !== 0?'Acción astuta: 1.':bonos.pociones?(personaje['apt2+'].filter(a => a.nombre === 'Mutágeno mejorado: ').length !== 0?'Mutágeno mejorado: 2':'Mutágeno: 1.'):''
     let VM2Description = personaje['apt2+'].filter(a => a.nombre === 'Saqueador: ').length !== 0?'Saqueador: 1.':(bonos.pociones && personaje['apt2+'].filter(a => a.nombre === 'Alquimia potenciada: ').length !== 0)?'Alquimia potenciada: 1.':''
     let RDDescription = bonos.armaduraMagica===false? (personaje.equipamiento[2][1]==='Equipado'?'Armadura equipada: 2.':personaje.equipamiento[1][1]==='Equipado'?'Armadura equipada: 1.':''):(bonos.armaduraMagicax2)?'Armadura (no equipada, bono Cdp): 3.':'Armadura (no equipada): 2.'
@@ -271,6 +274,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
             localStorage.setItem('currentCharacter', JSON.stringify({
                 nombre: personaje.nombre,
                 id: personaje.ID, 
+                pe: personaje.PE, 
                 raza: personaje.raza,
                 clase: personaje.clase,
                 nivel: personaje.nivel,
@@ -475,17 +479,18 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
         return {resultado: result, bono: n, cartel: 'Obtuviste ' + (cartel !== ''?cartel:result + ' en el dado.') + (n !== 0? ` Resultado final: ${result + n}.`:'')}
     }
 
-    // function handleAA(e) {
-    //     e.preventDefault()
-    //     setBonos({...bonos, animalVM: !bonos.animalVM})
-    // }
+    function handlePE(e) {
+        e.preventDefault()
+        setPEshow(true)
+    }
+    if ((personaje.PE >= 44 && personaje.nivel < 5) || (personaje.PE >= 30 && personaje.nivel < 4) || (personaje.PE >= 16 && personaje.nivel < 3) || (personaje.PE >= 6 && personaje.nivel < 2)) subirNiv = true
 
     if (clase === 'Explorador' && personaje.apt1[2].length === 0) {        
         subirNiv = false
         }
     if (claseStats['conjuros iniciales'] && personaje.apt1[2].length + (clase === 'Mago'?0:1) < 2) {        
         subirNiv = false
-        }        
+        }    
 
     return (
         <div>
@@ -502,13 +507,15 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                 <button onClick={handlePestaña} value={'cdp'} disabled={pestaña === 'cdp'?true:false} style={{height:'50px', width:'120px'}}>Clase de prestigio</button>
                 <button onClick={handlePestaña} value={'equipamiento'} disabled={pestaña === 'equipamiento'?true:false} style={{height:'50px', width:'120px'}}>Equipamiento</button>
             </div>
-            <div name={'opciones'} style={{display:'flex', flexDirection:'column', width:'410px', alignSelf:'center', display:pestaña==='opciones'?'block':'none'}}>
+            <div name={'opciones'} style={{flexDirection:'column', width:'410px', alignSelf:'center', display:pestaña==='opciones'?'flex':'none'}}>
+            <PEBoard PEshow={PEshow} setPEshow={setPEshow} personaje={personaje} setPersonaje={setPersonaje}/>
             <img style={{maxWidth: 400, maxHeight: 400, marginRight: '5px', marginLeft: '5px', border: 'ridge #754421 7px'}} width="385" src={usu==='LadyLiz' && raza==='Humano' && clase === 'Druida'?'/imgs/lizy.jpg':images[`${raza}${clase}`]} alt='imagen'/>
             <div>
             <button style={{maxWidth:'fit-content', margin: '5px'}} onClick={guardarPersonaje} disabled={guardando === true || (personaje.nivel === 1 && personaje.apt1[2].length === 0 && Object.keys(personaje.CDP).length === 0 && personaje['apt2+'].length === 0)?true:false} >Guardar personaje</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '69px'}} onClick={bajarNivel} disabled={personaje.nivel < 2} >Bajar de nivel</button>
             <button style={{maxWidth:'fit-content', margin: '5px', position: 'relative', left: '74px'}} onClick={subirNivel} disabled={(personaje.nivel !== personaje['apt2+'].length + 1 || personaje.nivel>4 || subirNiv === false)?true:false} >Subir de nivel</button>
             </div>
+            <div><span style={{margin: 5, fontWeight: 700}}>PE: {personaje.PE}</span><button disabled={PEshow} onClick={handlePE}>Editar PE</button></div>
             </div>
             <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>            
             <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>            
@@ -543,8 +550,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, ID, ra
                         <div style={{display: a.tabla?'flex':'none', flexDirection:'column', width:'fit-content', maxWidth:'100%', border:'1px solid black'}}>
                             <div style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Casillas':'Dado'}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'4px', width:'100%', justifyContent:'center', alignContent:'center', fontWeight: 900}}>{personaje.clase === 'Explorador'?'Daño':'Efecto'}</span></div>
                             {a.tabla?.map((f,i)=> <div key={i} style={{margin:0, display:'flex', flexDirection:'row'}}><span style={{display: 'flex', flexWrap:'wrap', border:'1px solid black', padding:'4px', minWidth:'90px', justifyContent:'center', alignContent:'center'}}>{i+1}</span><span style={{display: 'flex', flexWrap:'wrap',border:'1px solid black', padding:'3px', width:'100%', justifyContent:'left', alignContent:'center'}}>{f}</span></div>)}                            
-                        </div>
-                        {/* {a.nombre === 'Compañero animal: '? <CompañeroAnimal PV={compa.PV} RD={compa.RD} VM={compa.VM} daño={compa.daño} teleport={compa.teleport} vinculo={personaje['apt2+'].filter(a=>a.nombre === 'Vínculo animal: ').length > 0} bonos={bonos} regen={regen} />:null} */}
+                        </div>                        
                         <button onClick={handleMagiaC} style={{display: ap === 'magiaC'?'block':'none', position:'relative' , left:'300px'}}>Tirar d6</button>
                         <button value={a.nombre ==='Curar (conjuro): '?'curar1':'curar0'} onClick={handleCurar} style={{display: a.nombre ==='Curar (conjuro): ' || (clase === 'Monje' && a.nombre ==='Uso de ki: ') || a.nombre ==='Imposición de manos: '?'block':'none' , float:'right'}}>Curar</button>
                         <button onClick={handlePociones} style={{display: ap ==='pociones'?'block':'none'}}>Poción de curación</button>

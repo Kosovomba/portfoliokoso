@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 export default function CharacterBuild() {
   const router = useRouter()
   const {raza, clase, nombre} = router.query
-  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0, equipamiento: [
+  const [stats, setStats] = useState({nivel: 1, apt1Arr: [], CDP:{}, apt2Mas:[], ID: 0, PE: 0, equipamiento: [
     [0, '', ''],
     [0, '', ''],
     [0, '', ''],
@@ -58,6 +58,7 @@ export default function CharacterBuild() {
         CDP: cC.cdp,
         apt2Mas: cC.apt2mas,
         ID: cC.id,
+        PE: cC.pe,
         equipamiento: cC.equipamiento
       })
     }
@@ -67,7 +68,7 @@ export default function CharacterBuild() {
     return (
     <div className={styles[mainX]}>
     {(disp==='show' && mainX !=='main0')?<img src={gifUrls[mainX]} style={{position:'absolute', left:'0px', top:'0px', width: '100%', height:'100%', pointerEvents:'none'}} alt='gif'/>:null}
-    {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas} equipamiento={stats.equipamiento}/>:null}
+    {razaStats?<Character conjurosInicialesCombinadosfiltrados={conjurosInicialesCombinadosfiltrados} PE={stats.PE} ID={stats.ID} raza={raza} clase={clase} nombre={nombre} razaStats={razaStats} claseStats={claseStats} nivel={stats.nivel} apt1Arr={stats.apt1Arr} CDP={stats.CDP} apt2Mas={stats.apt2Mas} equipamiento={stats.equipamiento}/>:null}
     </div>
     )    
 }
