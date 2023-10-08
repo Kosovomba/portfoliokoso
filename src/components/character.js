@@ -64,6 +64,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
     const [PVTotal, setPVTotal] = useState(0)
     const [aptitudes, setAptitudes] = useState(false)
     const [PEshow, setPEshow] = useState(false)
+    const [invocar, setInvocar] = useState(false)
     const [bonos, setBonos] = useState({
         formaSalvaje: false, 
         armaduraMagica: false, 
@@ -463,6 +464,17 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
         alert(cura.cartel + ` Cura ${result}.`)
     }
 
+    function handleInvocar(e){
+        e.preventDefault()
+        setInvocar(!invocar)
+    }
+
+    function handleConjuroInvocar(e) {
+        e.preventDefault()
+        if (e.target.name === 'Armadura mágica: ') setBonos({...bonos, armaduraMagica: !bonos.armaduraMagica})
+        setInvocar(!invocar)
+    }
+
     function tirarD6(n = 0) {
         let result = Math.floor(Math.random()*6) + 1
         let cartel = ''
@@ -564,16 +576,18 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
             </div>
             </div>
             <div name={'estadísticas'} style={{width:'410px', alignSelf:'center', display:pestaña==='estadísticas'?'flex':'none', flexDirection:'column'}}>            
-            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>            
-            
+            <div className={styles.card} style={{border: '5px inset #ECDDD2', justifyContent:'flex-start', maxHeight:'fit-content'}}>
+
                 {aptitudes === false?<button className={styles.c} onClick={handleAptitudes}>Aptitudes</button>:
                 <div className={styles.d}>
                     <p style={{fontSize:'20px', fontWeight:600, margin:0}}>Detalles de aptitudes:</p><button style={{position:'absolute', right:'3px', width:'25px', height:'25px'}} onClick={handleAptitudes}>X</button>
-                    <p style={{margin: 0, marginTop: 10}}> {`${personaje.apt1[0]} (nivel 1, raza)`}</p>
+                    <p className={styles.apt}> {`${personaje.apt1[0]} (nivel 1, raza)`}</p>
                     {personaje.nivel >2?<p className={styles.apt}>{`${personaje.apt3} (nivel 3, raza)`}</p>:null}
 
-                    <div style={{marginTop:'10px'}}><span>{personaje.apt1[1]}</span><button value={'formaSalvaje'} onClick={handleAI} style={{display: clase==='Druida'?'block':'none' , float:'right'}}>{bonos.formaSalvaje===false?'Activar':'Desactivar'}</button><button value={'curar1'} onClick={handleCurar} style={{display: clase==='Clérigo'?'block':'none' , float:'right'}}>Curar</button></div>
+                    <div className={styles.apt}>
+                        <div><span>{personaje.apt1[1]}</span><button value={'formaSalvaje'} onClick={handleAI} style={{display: clase==='Druida'?'block':'none' , float:'right'}}>{bonos.formaSalvaje===false?'Activar':'Desactivar'}</button><button value={'curar1'} onClick={handleCurar} style={{display: clase==='Clérigo'?'block':'none' , float:'right'}}>Curar</button></div>
                     {personaje.apt1[2].length !== 0?personaje.apt1[2].map(a => <div key={a}><span>{a}</span><button value={Object.keys(personaje.CDP).length > 0 && personaje.CDP.nombre === 'Hierofante: '?'curar2':'curar0'} onClick={handleCurar} disabled={bonos.formaSalvaje && personaje['apt2+'].filter(a => a.nombre === 'Forma salvaje mayor: ').length === 0} style={{display: a.slice(0,3)==='Cur'?'block':'none' , float:'right'}}>Curar</button><button value={'curar0'} onClick={handleCurar} disabled={bonos.formaSalvaje && personaje['apt2+'].filter(a => a.nombre === 'Forma salvaje mayor: ').length === 0} style = {{display: a.slice(0,3)==='Cur' && Object.keys(personaje.CDP).length > 0 && personaje.CDP.nombre === 'Hierofante: '?'block':'none' , float:'right'}}>Curar sin acción</button><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>):null}
+                    </div>
                     
                     {personaje['apt2+'].length>0?personaje['apt2+'].map((a,ind)=> {
                         let ap = ''
@@ -589,7 +603,7 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
                         if (a.nombre === 'Espinas (conjuro): ') ap = 'espinas'
                         if (a.nombre === 'Regeneración (conjuro): ') ap = 'regen'
                         if (a.nombre === 'Llamar rayo (conjuro): ') ap = 'llamarRayo'
-                        return <div key={`a2${ind}`}>
+                        return <div key={`a2${ind}`} className={styles.apt}>
                         <p style={{width:'fit-content', maxWidth: '100%', marginBottom:0}} key={`${a.nombre}${a.aptitud}`}>{`${a.nombre}${a.aptitud}`}<span style={{display:'flex'}}><span style={{fontSize:'18px', padding: '4px', color:'#BA1919', fontWeight:'600'}}>{a.nombre === 'Magia caótica: ' && bonos.magiaC?'Efecto 6 activo.':a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?`Activo: ${desp} ${desp > 1?'usos restantes':'uso restante'}`:a.nombre === 'Regeneración (conjuro): ' && bonos.regen?`Regeneración por turno: ${regen}`:bonos[ap]?'Activo.':''}</span><button onClick={handleDesp} style={{display: a.nombre === 'Desplazamiento (conjuro): ' && bonos.desplazamiento?'block':'none', height:'fit-content', alignSelf:'center'}}>Gastar 1 uso</button><button value={ap} disabled={(ap === 'armaDeidad' && personaje.equipamiento[3][1] !== 'Equipado') || (bonos.formaSalvaje && personaje['apt2+'].filter(a => a.nombre === 'Forma salvaje mayor: ').length === 0)} onClick={handleAI} style={{display: ap !== ''?'block':'none', height:'fit-content', alignSelf:'center'}}>{ap !== 'animal'?(bonos[ap]===false?(ap === 'pociones'?'Activar mutágeno':ap === 'magiaC'?'Activar efecto 6':'Activar'):(ap === 'pociones'?'Desactivar mutágeno':ap === 'magiaC'?'Desactivar efecto 6':'Desactivar')):(bonos.animalRD===false?'Activar RD':'Desactivar RD')}</button></span><button value={'animalVM'} onClick={handleAI} style={{display: ap === 'animal'?'block':'none'}}>{!bonos.animalVM?'Activar VM':'Desactivar VM'}</button></p>
                         {a.nombre === 'Lanzador experimentado: ' && a.extra.length >0?<div><span>{a.extra}</span><button value={'armaduraMagica'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm'?'block':'none' , float:'right'}}>{bonos.armaduraMagica===false?'Activar':'Desactivar'}</button><button value={'armaduraMagicax2'} onClick={handleAI} style={{display: a.extra.slice(0,3)==='Arm' && bonos.armaduraMagica && !bonos.armaduraMagicax2 && Object.keys(personaje.CDP).length >0 && personaje.CDP.nombre === 'Mago especialista: '?'block':'none' , float:'right'}}>Reactivar</button></div>:null }
                         {a.nombre === 'Luchador versátil: '? <p style={{border:'dotted brown 2px', padding: '5px', margin:'0px'}}>{personaje.apt1[2][0] !== 'Arquería: Sus ataques pueden ser de rango 6 casillas.'?'Arquería: Sus ataques pueden ser de rango 6 casillas.':'Combate con dos armas: 1xturno, cuando usa 1d6 de acción para atacar, lanza otro d6 extra de ataque. El explorador puede comprar una segunda arma para obtener daño por arma para su ataque extra (el arma extra sólo sumará daño a ataques extra de combate con dos armas).'}</p>:null}
@@ -600,6 +614,11 @@ export default function Character ({conjurosInicialesCombinadosfiltrados, PE, ID
                         <button onClick={handleMagiaC} style={{display: ap === 'magiaC'?'block':'none', position:'relative' , left:'300px'}}>Tirar d6</button>
                         <button value={a.nombre ==='Curar (conjuro): '?'curar1':'curar0'} onClick={handleCurar} style={{display: a.nombre ==='Curar (conjuro): ' || (clase === 'Monje' && a.nombre ==='Uso de ki: ') || a.nombre ==='Imposición de manos: '?'block':'none' , float:'right'}}>Curar</button>
                         <button onClick={handlePociones} style={{display: ap ==='pociones'?'block':'none'}}>Poción de curación</button>
+                        <button onClick={handleInvocar} disabled={invocar} style={{display: a.nombre ==='Invocar conjuro inicial (conjuro): '?'block':'none'}}>Usar</button>
+                        <div style={{display: a.nombre === 'Invocar conjuro inicial (conjuro): ' && invocar?'flex':'none', flexDirection:'column'}}>
+                            {clase === 'Hechicero'?claseStats['conjuros iniciales'].filter((c) => 
+                                (c.requisitos ==='' || c.requisitos.slice(10) === raza.toLowerCase())).map(c => <div key={`${c.nombre}`}><span>{c.nombre + c.aptitud}</span><button name={`${c.nombre}`} onClick={handleConjuroInvocar} style={{float:'right'}}>{c.nombre === 'Armadura mágica: ' && bonos.armaduraMagica?'Desactivar':'Activar'}</button></div>):null}
+                        </div>
                         </div>
                         }):null}
                     {personaje.CDP.nombre?<div>
